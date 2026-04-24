@@ -2,6 +2,7 @@ defmodule TeslaMateWeb.Router do
   use TeslaMateWeb, :router
 
   alias TeslaMate.Settings
+  alias TeslamateWeb.API.V1
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -60,5 +61,20 @@ defmodule TeslaMateWeb.Router do
     conn
     |> assign(:settings, settings)
     |> put_session(:settings, settings)
+  end
+
+  scope "/api/v1", TeslaMateWeb.API.V1 do
+    pipe_through :api
+
+    get  "/vehicles/status",          VehiclesController, :status
+    get  "/drives",                   DrivesController,   :index
+    get  "/drives/:id",               DrivesController,   :show
+    get  "/charges",                  ChargesController,  :index
+    get  "/sentry_events",            SentryEventsController, :index
+    get  "/stats",                    StatsController,    :index
+    get  "/notifications/settings",   NotificationsController, :index
+    put  "/notifications/settings",   NotificationsController, :update
+    post "/fcm/register",             FcmController,      :register
+    delete "/fcm/register",           FcmController,      :unregister
   end
 end
