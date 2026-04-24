@@ -77,4 +77,11 @@ defmodule TeslaMateWeb.Router do
     post "/fcm/register",             FcmController,      :register
     delete "/fcm/register",           FcmController,      :unregister
   end
+
+  scope "/api/v1/vehicles" do
+    pipe_through :api
+
+    get "/", VehiclesController, :index
+    get "/:id", VehiclesController, :show
+  end
 end
