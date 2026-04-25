@@ -1,42 +1,45 @@
 defmodule TeslaMate.Notifications.Settings do
   use Ecto.Schema
+  import Ecto.Changeset
+  import Ecto.Query
+  alias TeslaMate.Repo
 
   schema "notification_settings" do
-    field(:event_type, :string)
-    field(:enabled, :boolean, default: true)
-    field(:threshold, :integer)
-
-    index([:event_type], unique: true)
+    field :event_type, :string
+    field :enabled, :boolean, default: true
+    field :threshold, :integer
+    timestamps()
   end
 
-  @event_types ["sentry_activated", "sentry_deactivated", "charge_complete", "charge_started", "battery_low"]
+  @event_types ~w(sentry_activated sentry_deactivated charge_complete charge_started battery_low)
 
   def get_all do
-    query =
-      from(ns in __MODULE__,
-        select: {ns.event_type, %{enabled: ns.enabled, threshold: ns.threshold}},
-        order_by: [asc: ns.event_type]
-      )
+    rows =
+      Repo.all(__MODULE__)
+      |> Enum.into(%{}, &{&1.event_type, %{enabled: &1.enabled, threshold: &1.threshold}})
 
-    Repo.all(query)
-    |> Enum.into(%{}, fn {event_type, settings} -> {event_type, Map.merge(%{enabled: true, threshold: nil}, settings)} end)
+    Enum.into(@event_types, %{}, fn et ->
+      {et, Map.get(rows, et, %{enabled: true, threshold: nil})}
+    end)
   end
 
   def update(event_type, attrs) do
-    %__MODULE__{}
-    |> cast(attrs, [:event_type, :enabled, :threshold])
+    %__MODULE__{event_type: event_type}
+    |> cast(attrs, [:enabled, :threshold])
+    |> put_change(:event_type, event_type)
     |> validate_required([:event_type])
-    |> unique_constraint(:event_type)
-    |> Repo.upsert()
+    |> Repo.insert(
+      on_conflict: {:replace, [:enabled, :threshold, :updated_at]},
+      conflict_target: :event_type
+    )
   end
 
   def enabled?(event_type) do
-    query =
-      from(ns in __MODULE__,
-        where: ns.event_type == ^event_type,
-        select: ns.enabled
-      )
-
-    Repo.one(query, default: true)
+    from(ns in __MODULE__, where: ns.event_type == ^event_type, select: ns.enabled)
+    |> Repo.one()
+    |> case do
+      nil -> true
+      val -> val
+    end
   end
 end
