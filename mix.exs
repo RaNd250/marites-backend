@@ -75,6 +75,8 @@ defmodule TeslaMate.MixProject do
       {:tzdata, "~> 1.1"},
       {:websockex, "~> 0.5"},
       {:cloak_ecto, "~> 1.3"},
+      {:joken, "~> 2.6"},
+      {:bcrypt_elixir, "~> 3.0"},
       {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
       {:credo, "~> 1.7.1", only: [:dev], runtime: false}
     ]
