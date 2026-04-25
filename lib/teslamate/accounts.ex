@@ -32,7 +32,7 @@ defmodule TeslaMate.Accounts do
 
   def register_user(email, password, invite_code_str) do
     Repo.transaction(fn ->
-      invite = Repo.get_by(InviteCode, code: invite_code_str, used_by: nil)
+      invite = Repo.one(from i in InviteCode, where: i.code == ^invite_code_str and is_nil(i.used_by))
 
       unless invite do
         Repo.rollback(:invalid_invite)
