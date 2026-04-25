@@ -2,8 +2,6 @@ defmodule TeslaMateWeb.Router do
   use TeslaMateWeb, :router
 
   alias TeslaMate.Settings
-  alias TeslamateWeb.API.V1
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
