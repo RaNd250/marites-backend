@@ -3,14 +3,19 @@ defmodule TeslaMateWeb.API.V1.SentryEventsController do
 
   alias TeslaMate.Repo
   alias TeslaMate.SentryEvent
+  alias TeslaMate.Log.Car
   import Ecto.Query
 
   def index(conn, params) do
+    user_id = conn.assigns.current_user.id
     car_id = parse_int(params["car_id"])
     limit = params["limit"] |> parse_int() |> limit_clamp(50, 200)
 
+    user_car_ids = Repo.all(from c in Car, where: c.user_id == ^user_id, select: c.id)
+
     query =
       from e in SentryEvent,
+        where: e.car_id in ^user_car_ids,
         order_by: [desc: e.activated_at],
         limit: ^limit
 
@@ -21,14 +26,9 @@ defmodule TeslaMateWeb.API.V1.SentryEventsController do
 
   defp format_event(e) do
     %{
-      id: e.id,
-      car_id: e.car_id,
-      activated_at: e.activated_at,
-      deactivated_at: e.deactivated_at,
-      duration_seconds: e.duration_seconds,
-      lat: e.start_lat,
-      lng: e.start_lng,
-      address: e.address
+      id: e.id, car_id: e.car_id, activated_at: e.activated_at,
+      deactivated_at: e.deactivated_at, duration_seconds: e.duration_seconds,
+      lat: e.start_lat, lng: e.start_lng, address: e.address
     }
   end
 

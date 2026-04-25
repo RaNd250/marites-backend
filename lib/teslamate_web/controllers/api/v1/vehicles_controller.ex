@@ -6,7 +6,8 @@ defmodule TeslaMateWeb.API.V1.VehiclesController do
   import Ecto.Query
 
   def status(conn, _params) do
-    cars = Repo.all(Car)
+    user_id = conn.assigns.current_user.id
+    cars = Repo.all(from c in Car, where: c.user_id == ^user_id)
 
     result =
       Enum.map(cars, fn car ->
@@ -33,8 +34,7 @@ defmodule TeslaMateWeb.API.V1.VehiclesController do
           model: car.model,
           state: if(latest_state, do: to_string(latest_state.state), else: nil),
           battery_level: pos_field(latest_pos, :battery_level),
-          rated_battery_range_km:
-            to_float(pos_field(latest_pos, :rated_battery_range_km)),
+          rated_battery_range_km: to_float(pos_field(latest_pos, :rated_battery_range_km)),
           latitude: to_float(pos_field(latest_pos, :latitude)),
           longitude: to_float(pos_field(latest_pos, :longitude)),
           odometer: pos_field(latest_pos, :odometer),
