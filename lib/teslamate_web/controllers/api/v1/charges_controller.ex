@@ -2,16 +2,19 @@ defmodule TeslaMateWeb.API.V1.ChargesController do
   use TeslaMateWeb, :controller
 
   alias TeslaMate.Repo
-  alias TeslaMate.Log.ChargingProcess
+  alias TeslaMate.Log.{Car, ChargingProcess}
   import Ecto.Query
 
   def index(conn, params) do
+    user_id = conn.assigns.current_user.id
     car_id = parse_int(params["car_id"])
     limit = params["limit"] |> parse_int() |> limit_clamp(50, 200)
 
+    user_car_ids = Repo.all(from c in Car, where: c.user_id == ^user_id, select: c.id)
+
     query =
       from c in ChargingProcess,
-        where: not is_nil(c.end_date),
+        where: c.car_id in ^user_car_ids and not is_nil(c.end_date),
         order_by: [desc: c.start_date],
         limit: ^limit,
         preload: [:address, :geofence]
@@ -23,14 +26,9 @@ defmodule TeslaMateWeb.API.V1.ChargesController do
 
   defp format_charge(c) do
     %{
-      id: c.id,
-      car_id: c.car_id,
-      start_date: c.start_date,
-      end_date: c.end_date,
-      duration_min: c.duration_min,
-      energy_added_kwh: to_float(c.charge_energy_added),
-      start_battery_level: c.start_battery_level,
-      end_battery_level: c.end_battery_level,
+      id: c.id, car_id: c.car_id, start_date: c.start_date, end_date: c.end_date,
+      duration_min: c.duration_min, energy_added_kwh: to_float(c.charge_energy_added),
+      start_battery_level: c.start_battery_level, end_battery_level: c.end_battery_level,
       location: address_label(c.geofence, c.address)
     }
   end
