@@ -46,8 +46,12 @@ defmodule TeslaMateWeb.TeslaOAuthController do
       {:error, :invalid_state} ->
         conn |> put_status(400) |> text("Invalid or expired state parameter — please try signing in again")
       {:error, reason} ->
+        require Logger
+        Logger.error("Tesla OAuth callback failed: #{inspect(reason)}")
         conn |> put_status(502) |> text("Sign-in failed: #{inspect(reason)}")
-      _ ->
+      other ->
+        require Logger
+        Logger.error("Tesla OAuth callback unexpected: #{inspect(other)}")
         conn |> put_status(502) |> text("Sign-in failed: unexpected error")
     end
   end
