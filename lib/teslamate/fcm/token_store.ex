@@ -7,19 +7,20 @@ defmodule TeslaMate.FCM.TokenStore do
   schema "fcm_tokens" do
     field :device_id, :string
     field :token, :string
+    field :user_id, :integer
     timestamps()
   end
 
   def changeset(token_store, attrs) do
     token_store
-    |> cast(attrs, [:device_id, :token])
-    |> validate_required([:device_id, :token])
+    |> cast(attrs, [:device_id, :token, :user_id])
+    |> validate_required([:device_id, :token, :user_id])
   end
 
-  def register(device_id, token) do
+  def register(device_id, token, user_id) do
     Repo.insert(
-      %__MODULE__{device_id: device_id, token: token},
-      on_conflict: [set: [token: token, updated_at: DateTime.utc_now()]],
+      %__MODULE__{device_id: device_id, token: token, user_id: user_id},
+      on_conflict: [set: [token: token, user_id: user_id, updated_at: DateTime.utc_now()]],
       conflict_target: :device_id
     )
   end
@@ -29,7 +30,7 @@ defmodule TeslaMate.FCM.TokenStore do
     |> Repo.delete_all()
   end
 
-  def all_tokens do
-    Repo.all(from t in __MODULE__, select: t.token)
+  def tokens_for_user(user_id) do
+    Repo.all(from t in __MODULE__, where: t.user_id == ^user_id, select: t.token)
   end
 end

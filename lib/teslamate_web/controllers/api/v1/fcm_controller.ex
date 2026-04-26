@@ -4,7 +4,8 @@ defmodule TeslaMateWeb.API.V1.FcmController do
   alias TeslaMate.FCM.TokenStore
 
   def register(conn, %{"device_id" => device_id, "token" => token}) do
-    case TokenStore.register(device_id, token) do
+    user_id = conn.assigns.current_user.id
+    case TokenStore.register(device_id, token, user_id) do
       {:ok, _} ->
         json(conn, %{ok: true})
 
