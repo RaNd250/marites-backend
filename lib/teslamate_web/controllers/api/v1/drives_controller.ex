@@ -49,9 +49,16 @@ defmodule TeslaMateWeb.API.V1.DrivesController do
       distance_km: d.distance, duration_min: d.duration_min, speed_max: d.speed_max,
       outside_temp_avg: to_float(d.outside_temp_avg),
       start_address: address_label(d.start_geofence, d.start_address),
-      end_address: address_label(d.end_geofence, d.end_address)
+      end_address: address_label(d.end_geofence, d.end_address),
+      start_lat: address_coord(d.start_address, :latitude),
+      start_lng: address_coord(d.start_address, :longitude),
+      end_lat: address_coord(d.end_address, :latitude),
+      end_lng: address_coord(d.end_address, :longitude)
     }
   end
+
+  defp address_coord(nil, _), do: nil
+  defp address_coord(addr, field), do: to_float(Map.get(addr, field))
 
   defp address_label(geofence, address) do
     cond do
