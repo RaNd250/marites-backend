@@ -38,6 +38,14 @@ defmodule TeslaMateWeb.Router do
     plug :require_admin
   end
 
+  # ---- Tesla OAuth PKCE flow ----
+  scope "/auth/tesla", TeslaMateWeb do
+    pipe_through :browser
+
+    get "/", TeslaOAuthController, :authorize
+    get "/callback", TeslaOAuthController, :callback
+  end
+
   # ---- Browser routes (TeslaMate internal UI) ----
   scope "/", TeslaMateWeb do
     pipe_through :browser
