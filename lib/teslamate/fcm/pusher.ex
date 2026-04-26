@@ -89,13 +89,19 @@ defmodule TeslaMate.FCM.Pusher do
   # --- Push notifications ---
 
   defp push_events(events, summary, state) do
-    tokens = TokenStore.all_tokens()
+    user_id = Repo.one(from c in Car, where: c.id == ^summary.car.id, select: c.user_id)
 
-    if tokens != [] do
-      for event <- events do
-        if Settings.enabled?(to_string(event)) do
-          {title, body} = notification_text(event, summary)
-          send_to_all(tokens, event, title, body, summary, state.access_token)
+    if user_id != nil do
+      tokens = TokenStore.tokens_for_user(user_id)
+
+      if tokens != [] do
+        for event <- events do
+          {enabled, delivery} = Settings.get_delivery(user_id, to_string(event))
+
+          if enabled and delivery == "push" do
+            {title, body} = notification_text(event, summary)
+            send_to_all(tokens, event, title, body, summary, state.access_token)
+          end
         end
       end
     end
