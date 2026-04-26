@@ -120,13 +120,14 @@ defmodule TeslaMate.Accounts do
       nil ->
         {:error, :invalid}
 
-      rt when DateTime.compare(rt.expires_at, now) == :lt ->
-        Repo.delete(rt)
-        {:error, :expired}
-
       rt ->
-        Repo.delete(rt)
-        {:ok, rt.user_id}
+        if DateTime.compare(rt.expires_at, now) == :lt do
+          Repo.delete(rt)
+          {:error, :expired}
+        else
+          Repo.delete(rt)
+          {:ok, rt.user_id}
+        end
     end
   end
 
