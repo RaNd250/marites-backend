@@ -5,16 +5,14 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   alias TeslaMate.Auth.{JWT, Tokens}
 
   @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds"
+  @state_ttl_seconds 600
 
   def authorize(conn, _params) do
     code_verifier = :crypto.strong_rand_bytes(32) |> Base.url_encode64(padding: false)
     code_challenge = :crypto.hash(:sha256, code_verifier) |> Base.url_encode64(padding: false)
-    state = :crypto.strong_rand_bytes(16) |> Base.url_encode64(padding: false)
 
-    conn =
-      conn
-      |> put_session(:code_verifier, code_verifier)
-      |> put_session(:oauth_state, state)
+    # Embed code_verifier in a signed state param — no session needed
+    state = build_state(code_verifier)
 
     auth_host = System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
     auth_path = System.get_env("TESLA_AUTH_PATH", "/oauth2/v3")
@@ -34,38 +32,60 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   end
 
   def callback(conn, %{"code" => code, "state" => state}) do
-    stored_state = get_session(conn, :oauth_state)
-    code_verifier = get_session(conn, :code_verifier)
-
-    conn =
-      conn
-      |> delete_session(:oauth_state)
-      |> delete_session(:code_verifier)
-
-    if state != stored_state do
-      conn |> put_status(400) |> text("Invalid state — possible CSRF attempt")
+    with {:ok, code_verifier} <- verify_state(state),
+         {:ok, %{access_token: access, refresh_token: refresh}} <- exchange_code(code, code_verifier),
+         {:ok, userinfo} <- get_userinfo(access),
+         {:ok, email} <- extract_email(userinfo),
+         :ok <- store_in_teslamate(access, refresh),
+         {:ok, user} <- Accounts.find_or_create_by_email(email),
+         {:ok, access_tok} <- JWT.generate_access_token(user),
+         {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
+      params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
+      redirect(conn, external: "/?#{params}")
     else
-      with {:ok, %{access_token: access, refresh_token: refresh}} <- exchange_code(code, code_verifier),
-           {:ok, userinfo} <- get_userinfo(access),
-           {:ok, email} <- extract_email(userinfo),
-           :ok <- store_in_teslamate(access, refresh),
-           {:ok, user} <- Accounts.find_or_create_by_email(email),
-           {:ok, access_tok} <- JWT.generate_access_token(user),
-           {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
-        params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
-        redirect(conn, external: "/?#{params}")
-      else
-        {:error, reason} ->
-          conn |> put_status(502) |> text("Sign-in failed: #{inspect(reason)}")
-        _ ->
-          conn |> put_status(502) |> text("Sign-in failed: unexpected error")
-      end
+      {:error, :invalid_state} ->
+        conn |> put_status(400) |> text("Invalid or expired state parameter — please try signing in again")
+      {:error, reason} ->
+        conn |> put_status(502) |> text("Sign-in failed: #{inspect(reason)}")
+      _ ->
+        conn |> put_status(502) |> text("Sign-in failed: unexpected error")
     end
   end
 
   def callback(conn, _params) do
     conn |> put_status(400) |> text("Missing code or state parameter")
   end
+
+  # --- State: signed JSON containing code_verifier + expiry ---
+
+  defp build_state(code_verifier) do
+    payload = Jason.encode!(%{
+      "cv" => code_verifier,
+      "exp" => System.os_time(:second) + @state_ttl_seconds
+    })
+    sig = hmac_sign(payload)
+    Base.url_encode64(payload, padding: false) <> "." <> sig
+  end
+
+  defp verify_state(state) do
+    with [encoded, sig] <- String.split(state, ".", parts: 2),
+         {:ok, payload_json} <- Base.url_decode64(encoded, padding: false),
+         expected = hmac_sign(payload_json),
+         true <- Plug.Crypto.secure_compare(sig, expected),
+         {:ok, %{"cv" => cv, "exp" => exp}} <- Jason.decode(payload_json),
+         true <- System.os_time(:second) < exp do
+      {:ok, cv}
+    else
+      _ -> {:error, :invalid_state}
+    end
+  end
+
+  defp hmac_sign(data) do
+    secret = Application.fetch_env!(:teslamate, :jwt_secret)
+    :crypto.mac(:hmac, :sha256, secret, data) |> Base.url_encode64(padding: false)
+  end
+
+  # --- Token exchange & userinfo ---
 
   defp exchange_code(code, code_verifier) do
     auth_host = System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
