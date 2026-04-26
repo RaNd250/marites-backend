@@ -11,6 +11,20 @@ defmodule TeslaMate.Accounts do
     Repo.get_by(User, email: String.downcase(email))
   end
 
+  def find_or_create_by_email(email) do
+    email = String.downcase(email)
+    case Repo.get_by(User, email: email) do
+      %User{} = user ->
+        if is_nil(user.notification_email) do
+          Repo.update(Ecto.Changeset.change(user, notification_email: email))
+        else
+          {:ok, user}
+        end
+      nil ->
+        Repo.insert(User.oauth_changeset(%User{}, %{email: email, notification_email: email}))
+    end
+  end
+
   def authenticate(email, password) do
     user = get_user_by_email(email)
 

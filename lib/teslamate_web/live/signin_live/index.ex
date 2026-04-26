@@ -2,7 +2,9 @@ defmodule TeslaMateWeb.SignInLive.Index do
   use TeslaMateWeb, :live_view
 
   import Core.Dependency, only: [call: 3]
-  alias TeslaMate.{Auth, Api}
+  alias TeslaMate.{Auth, Api, Accounts}
+  alias TeslaMate.Auth.JWT
+  alias TeslaApi.Auth, as: TeslaAuth
 
   on_mount {TeslaMateWeb.InitAssigns, :locale}
 
@@ -49,7 +51,7 @@ defmodule TeslaMateWeb.SignInLive.Index do
     case result do
       :ok ->
         Process.sleep(250)
-        {:noreply, redirect_to_carlive(socket)}
+        {:noreply, issue_teslami_session(socket)}
 
       {:error, %TeslaApi.Error{} = e} ->
         message =
@@ -78,9 +80,22 @@ defmodule TeslaMateWeb.SignInLive.Index do
     end
   end
 
-  defp redirect_to_carlive(socket) do
-    socket
-    |> put_flash(:success, gettext("Signed in successfully"))
-    |> redirect(to: Routes.car_path(socket, :index))
+  defp issue_teslami_session(socket) do
+    with {:ok, auth}        <- Api.get_auth(),
+         {:ok, userinfo}    <- TeslaAuth.get_userinfo(auth),
+         email              = Map.get(userinfo, "email") || Map.get(userinfo, :email),
+         true               <- is_binary(email),
+         {:ok, user}        <- Accounts.find_or_create_by_email(email),
+         {:ok, access_tok}  <- JWT.generate_access_token(user),
+         {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
+      params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
+      redirect(socket, external: "/?#{params}")
+    else
+      _ ->
+        # Fallback: Tesla auth succeeded but we couldn't issue a TeslaMi JWT — go to legacy UI
+        socket
+        |> put_flash(:success, gettext("Signed in successfully"))
+        |> redirect(to: Routes.car_path(socket, :index))
+    end
   end
 end
