@@ -23,6 +23,14 @@ defmodule TeslaMate.Accounts.User do
     |> put_password_hash()
   end
 
+  def oauth_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :notification_email])
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:email)
+  end
+
   defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: pw}} = cs) do
     put_change(cs, :password_hash, Bcrypt.hash_pwd_salt(pw))
   end

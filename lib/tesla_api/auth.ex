@@ -27,6 +27,19 @@ defmodule TeslaApi.Auth do
 
   defdelegate refresh(auth), to: __MODULE__.Refresh
 
+  def get_userinfo(%__MODULE__{token: access_token}) do
+    base = System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
+    path = System.get_env("TESLA_AUTH_PATH", "/oauth2/v3")
+
+    case Tesla.get("#{base}#{path}/userinfo",
+           headers: [{"authorization", "Bearer #{access_token}"}],
+           middleware: [Tesla.Middleware.JSON]) do
+      {:ok, %{status: 200, body: body}} -> {:ok, body}
+      {:ok, %{status: status}} -> {:error, "userinfo returned #{status}"}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   def issuer_url(%__MODULE__{token: access_token}) do
     case derive_issuer_url_from_oat(access_token) do
       {:ok, issuer_url} ->

@@ -64,6 +64,8 @@ defmodule TeslaMate.Api do
     end
   end
 
+  def get_auth(name \\ @name), do: fetch_auth(name)
+
   def sign_in(name \\ @name, args)
 
   def sign_in(name, %Tokens{} = tokens) do
