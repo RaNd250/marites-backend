@@ -29,9 +29,14 @@ defmodule TeslaMateWeb.API.V1.ChargesController do
       id: c.id, car_id: c.car_id, start_date: c.start_date, end_date: c.end_date,
       duration_min: c.duration_min, energy_added_kwh: to_float(c.charge_energy_added),
       start_battery_level: c.start_battery_level, end_battery_level: c.end_battery_level,
-      location: address_label(c.geofence, c.address)
+      location: address_label(c.geofence, c.address),
+      lat: address_coord(c.address, :latitude),
+      lng: address_coord(c.address, :longitude)
     }
   end
+
+  defp address_coord(nil, _), do: nil
+  defp address_coord(addr, field), do: to_float(Map.get(addr, field))
 
   defp address_label(geofence, address) do
     cond do
