@@ -105,8 +105,8 @@ defmodule TeslaMateWeb.Router do
   scope "/api/v1/vehicles" do
     pipe_through [:api, :authenticated]
 
-    get "/", VehiclesController, :index
-    get "/:id", VehiclesController, :show
+    get "/", TeslaMateWeb.API.V1.VehiclesController, :index
+    get "/:id", TeslaMateWeb.API.V1.VehiclesController, :show
   end
 
   def fetch_settings(conn, _opts) do
