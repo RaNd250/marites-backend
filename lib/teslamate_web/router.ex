@@ -98,6 +98,11 @@ defmodule TeslaMateWeb.Router do
     put    "/notifications/settings", NotificationsController, :update
     post   "/fcm/register",           FcmController,           :register
     delete "/fcm/register",           FcmController,           :unregister
+
+    post   "/vehicles/:car_id/commands/:command", CommandsController,  :run
+    get    "/vehicles/:car_id/schedule",          SchedulesController, :show
+    put    "/vehicles/:car_id/schedule",          SchedulesController, :update
+    delete "/vehicles/:car_id/schedule",          SchedulesController, :delete
   end
 
   # ---- Admin-only endpoints ----
