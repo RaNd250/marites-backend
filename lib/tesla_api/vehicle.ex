@@ -66,6 +66,50 @@ defmodule TeslaApi.Vehicle do
     |> handle_response(transform: &result/1)
   end
 
+  def command(%Auth{} = auth, vehicle_id, command_name, body \\ %{}) do
+    endpoint_url =
+      case Auth.region(auth) do
+        :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
+        _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+      end
+
+    TeslaApi.post(
+      endpoint_url <> "/api/1/vehicles/#{vehicle_id}/command/#{command_name}",
+      body,
+      opts: [access_token: auth.token]
+    )
+    |> handle_command_response()
+  end
+
+  defp handle_command_response(
+         {:ok, %Tesla.Env{status: 200, body: %{"response" => %{"result" => true}}}}
+       ),
+       do: {:ok, :command_sent}
+
+  defp handle_command_response(
+         {:ok,
+          %Tesla.Env{
+            status: 200,
+            body: %{"response" => %{"result" => false, "reason" => reason}}
+          }}
+       ),
+       do: {:error, {:command_failed, reason}}
+
+  defp handle_command_response({:ok, %Tesla.Env{status: 408}}),
+    do: {:error, :vehicle_unavailable}
+
+  defp handle_command_response({:ok, %Tesla.Env{status: 401} = env}),
+    do: {:error, %Error{reason: :unauthorized, env: env}}
+
+  defp handle_command_response({:ok, %Tesla.Env{status: 400, body: body}}),
+    do: {:error, {:bad_request, body}}
+
+  defp handle_command_response({:ok, %Tesla.Env{} = env}),
+    do: {:error, %Error{reason: :unknown, env: env}}
+
+  defp handle_command_response({:error, reason}),
+    do: {:error, %Error{reason: :unknown, message: inspect(reason)}}
+
   def list_result(result) do
     result
     |> Enum.filter(fn x -> Map.has_key?(x, "vehicle_id") end)

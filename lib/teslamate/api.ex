@@ -49,6 +49,19 @@ defmodule TeslaMate.Api do
     end
   end
 
+  def run_command(name \\ @name, vehicle_id, command_name, body \\ %{}) do
+    with {:ok, auth} <- fetch_auth(name) do
+      case TeslaApi.Vehicle.command(auth, vehicle_id, command_name, body) do
+        {:error, %TeslaApi.Error{reason: :unauthorized}} ->
+          send(name, :refresh_auth)
+          {:error, :unauthorized}
+
+        result ->
+          result
+      end
+    end
+  end
+
   def stream(name \\ @name, vid, receiver) do
     with {:ok, %Auth{} = auth} <- fetch_auth(name) do
       TeslaApi.Stream.start_link(auth: auth, vehicle_id: vid, receiver: receiver)
