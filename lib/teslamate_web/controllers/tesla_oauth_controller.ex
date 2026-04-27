@@ -40,6 +40,7 @@ defmodule TeslaMateWeb.TeslaOAuthController do
          {:ok, user} <- Accounts.find_or_create_by_email(email),
          {:ok, access_tok} <- JWT.generate_access_token(user),
          {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
+      link_cars_to_user(user.id)
       params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
       redirect(conn, external: "/?#{params}")
     else
@@ -134,6 +135,19 @@ defmodule TeslaMateWeb.TeslaOAuthController do
 
   defp extract_email(%{"email" => email}) when is_binary(email) and email != "", do: {:ok, email}
   defp extract_email(_), do: {:error, "email not found in Tesla userinfo"}
+
+  # Link all TeslaMate cars that have no user_id to this user.
+  # TeslaMate creates cars asynchronously after sign_in, so we run the update
+  # immediately (for existing cars) and again after a short delay (for new ones).
+  defp link_cars_to_user(user_id) do
+    import Ecto.Query
+    alias TeslaMate.{Repo, Log.Car}
+    Repo.update_all(from(c in Car, where: is_nil(c.user_id)), set: [user_id: user_id])
+    Task.start(fn ->
+      Process.sleep(8_000)
+      Repo.update_all(from(c in Car, where: is_nil(c.user_id)), set: [user_id: user_id])
+    end)
+  end
 
   defp store_in_teslamate(access, refresh) do
     tokens = %Tokens{access: access, refresh: refresh}
