@@ -12,7 +12,7 @@ defmodule TeslaMate.FCM.Pusher do
 
   defstruct car_states: %{}, access_token: nil, token_expires_at: 0
 
-  # car_states: %{car_id => %{sentry_mode: bool | nil, charging_state: string | nil}}
+  # car_states: %{car_id => %{sentry_mode: bool | nil, sentry_mode_active: bool | nil, charging_state: string | nil}}
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -32,7 +32,7 @@ defmodule TeslaMate.FCM.Pusher do
 
   @impl true
   def handle_info(%Summary{car: %Car{id: car_id}} = summary, state) do
-    prev = Map.get(state.car_states, car_id, %{sentry_mode: nil, charging_state: nil})
+    prev = Map.get(state.car_states, car_id, %{sentry_mode: nil, sentry_mode_active: nil, charging_state: nil})
     events = detect_events(prev, summary)
 
     new_state =
@@ -52,6 +52,7 @@ defmodule TeslaMate.FCM.Pusher do
 
     updated = Map.put(new_state.car_states, car_id, %{
       sentry_mode: summary.sentry_mode,
+      sentry_mode_active: summary.sentry_mode_active,
       charging_state: summary.charging_state
     })
 
@@ -65,6 +66,7 @@ defmodule TeslaMate.FCM.Pusher do
   defp detect_events(prev, summary) do
     []
     |> check_sentry(prev, summary)
+    |> check_sentry_alarm(prev, summary)
     |> check_charge(prev, summary)
   end
 
@@ -74,6 +76,14 @@ defmodule TeslaMate.FCM.Pusher do
       prev == false and curr == true -> [:sentry_activated | events]
       prev == true and curr != true -> [:sentry_deactivated | events]
       true -> events
+    end
+  end
+
+  defp check_sentry_alarm(events, %{sentry_mode_active: prev}, %Summary{sentry_mode_active: curr}) do
+    if prev == false and curr == true do
+      [:sentry_alarm | events]
+    else
+      events
     end
   end
 
@@ -112,15 +122,21 @@ defmodule TeslaMate.FCM.Pusher do
     url = "https://fcm.googleapis.com/v1/projects/#{project_id}/messages:send"
 
     for token <- tokens do
+      base_data = %{
+        "event" => to_string(event),
+        "lat"   => to_string(summary.latitude),
+        "lng"   => to_string(summary.longitude)
+      }
+
+      data = if event == :sentry_alarm,
+        do: Map.put(base_data, "deep_link", "tesla_app"),
+        else: base_data
+
       payload = Jason.encode!(%{
         "message" => %{
-          "token" => token,
+          "token"        => token,
           "notification" => %{"title" => title, "body" => body},
-          "data" => %{
-            "event" => to_string(event),
-            "lat" => to_string(summary.latitude),
-            "lng" => to_string(summary.longitude)
-          }
+          "data"         => data
         }
       })
 
@@ -161,6 +177,11 @@ defmodule TeslaMate.FCM.Pusher do
     name = summary.display_name || "Your Tesla"
     pct = summary.battery_level || 0
     {"Charging Complete", "#{name} is charged to #{pct}%"}
+  end
+
+  defp notification_text(:sentry_alarm, summary) do
+    name = summary.display_name || "Your Tesla"
+    {"Alarm Triggered", "#{name} detected someone nearby"}
   end
 
   defp notification_text(event, summary) do
