@@ -8,7 +8,7 @@ defmodule TeslaMate.Vehicles.Vehicle.Summary do
   defstruct ~w(
     car display_name state since healthy latitude longitude heading battery_level charging_state usable_battery_level
     ideal_battery_range_km est_battery_range_km rated_battery_range_km charge_energy_added
-    speed outside_temp inside_temp is_climate_on is_preconditioning locked sentry_mode
+    speed outside_temp inside_temp is_climate_on is_preconditioning locked sentry_mode sentry_mode_active
     plugged_in scheduled_charging_start_time charge_limit_soc charger_power windows_open
     doors_open driver_front_door_open driver_rear_door_open passenger_front_door_open passenger_rear_door_open
     odometer shift_state charge_port_door_open time_to_full_charge charger_phases
@@ -129,6 +129,7 @@ defmodule TeslaMate.Vehicles.Vehicle.Summary do
       odometer: get_in_struct(vehicle, [:vehicle_state, :odometer]) |> miles_to_km(2),
       locked: get_in_struct(vehicle, [:vehicle_state, :locked]),
       sentry_mode: get_in_struct(vehicle, [:vehicle_state, :sentry_mode]),
+      sentry_mode_active: get_in_struct(vehicle, [:vehicle_state, :sentry_mode_active]),
       windows_open: window_open(vehicle),
       doors_open: doors_open(vehicle),
       driver_front_door_open: driver_front_door_open(vehicle),
