@@ -103,6 +103,9 @@ defmodule TeslaMateWeb.Router do
     get    "/vehicles/:car_id/schedule",          SchedulesController, :show
     put    "/vehicles/:car_id/schedule",          SchedulesController, :update
     delete "/vehicles/:car_id/schedule",          SchedulesController, :delete
+
+    get "/alarm-response", AlarmResponseController, :show
+    put "/alarm-response", AlarmResponseController, :update
   end
 
   # ---- Admin-only endpoints ----
