@@ -142,10 +142,12 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   defp link_cars_to_user(user_id) do
     import Ecto.Query
     alias TeslaMate.{Repo, Log.Car}
-    Repo.update_all(from(c in Car, where: is_nil(c.user_id)), set: [user_id: user_id])
+    # TeslaMate is single-tenant — all cars belong to whoever just signed in via Tesla OAuth.
+    # Update every car unconditionally, and again after a short delay for newly created ones.
+    Repo.update_all(Car, set: [user_id: user_id])
     Task.start(fn ->
       Process.sleep(8_000)
-      Repo.update_all(from(c in Car, where: is_nil(c.user_id)), set: [user_id: user_id])
+      Repo.update_all(Car, set: [user_id: user_id])
     end)
   end
 
