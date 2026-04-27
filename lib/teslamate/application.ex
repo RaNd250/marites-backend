@@ -33,6 +33,7 @@ defmodule TeslaMate.Application do
           TeslaMate.Vehicles,
           TeslaMate.FCM.Pusher,
           TeslaMate.SentryEvents,
+          TeslaMate.AlarmResponder,
           TeslaMate.SentryScheduler,
           if(mqtt_config != nil, do: {TeslaMate.Mqtt, mqtt_config}),
           TeslaMate.Repair
