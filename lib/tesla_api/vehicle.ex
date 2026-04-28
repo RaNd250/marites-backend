@@ -101,6 +101,12 @@ defmodule TeslaApi.Vehicle do
   defp handle_command_response({:ok, %Tesla.Env{status: 401} = env}),
     do: {:error, %Error{reason: :unauthorized, env: env}}
 
+  defp handle_command_response({:ok, %Tesla.Env{status: 403, body: %{"error" => msg}}}),
+    do: {:error, {:command_unauthorized, msg}}
+
+  defp handle_command_response({:ok, %Tesla.Env{status: 403}}),
+    do: {:error, {:command_unauthorized, "forbidden"}}
+
   defp handle_command_response({:ok, %Tesla.Env{status: 400, body: body}}),
     do: {:error, {:bad_request, body}}
 
