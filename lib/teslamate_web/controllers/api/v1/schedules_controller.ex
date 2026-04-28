@@ -10,34 +10,23 @@ defmodule TeslaMateWeb.API.V1.SchedulesController do
     user_id = conn.assigns.current_user.id
 
     case verify_car_owner(car_id, user_id) do
-      :error ->
-        conn |> put_status(404) |> json(%{error: "car not found"})
-
+      :error -> conn |> put_status(404) |> json(%{error: "car not found"})
       :ok ->
-        case SentrySchedule.for_car(car_id, user_id) do
-          nil      -> conn |> put_status(404) |> json(%{error: "no schedule"})
-          schedule -> json(conn, serialize(schedule))
-        end
+        schedules = SentrySchedule.for_car(car_id, user_id)
+        json(conn, Enum.map(schedules, &serialize/1))
     end
   end
 
-  def update(conn, %{"car_id" => car_id_str} = params) do
+  def update(conn, %{"car_id" => car_id_str, "days" => days}) do
     car_id = String.to_integer(car_id_str)
     user_id = conn.assigns.current_user.id
 
     case verify_car_owner(car_id, user_id) do
-      :error ->
-        conn |> put_status(404) |> json(%{error: "car not found"})
-
+      :error -> conn |> put_status(404) |> json(%{error: "car not found"})
       :ok ->
-        attrs = Map.take(params, ["enabled", "on_hour", "on_minute", "off_hour", "off_minute"])
-
-        case SentrySchedule.upsert(user_id, car_id, attrs) do
-          {:ok, schedule} ->
-            json(conn, serialize(schedule))
-
-          {:error, changeset} ->
-            conn |> put_status(422) |> json(%{error: format_errors(changeset)})
+        case SentrySchedule.upsert_all(user_id, car_id, days) do
+          {:ok, rows}        -> json(conn, Enum.map(rows, &serialize/1))
+          {:error, changeset} -> conn |> put_status(422) |> json(%{error: format_errors(changeset)})
         end
     end
   end
@@ -58,13 +47,14 @@ defmodule TeslaMateWeb.API.V1.SchedulesController do
 
   defp serialize(s) do
     %{
-      id:         s.id,
-      car_id:     s.car_id,
-      enabled:    s.enabled,
-      on_hour:    s.on_hour,
-      on_minute:  s.on_minute,
-      off_hour:   s.off_hour,
-      off_minute: s.off_minute
+      id:          s.id,
+      car_id:      s.car_id,
+      day_of_week: s.day_of_week,
+      enabled:     s.enabled,
+      on_hour:     s.on_hour,
+      on_minute:   s.on_minute,
+      off_hour:    s.off_hour,
+      off_minute:  s.off_minute
     }
   end
 
