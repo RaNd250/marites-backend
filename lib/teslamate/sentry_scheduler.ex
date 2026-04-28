@@ -35,11 +35,12 @@ defmodule TeslaMate.SentryScheduler do
     now = DateTime.utc_now()
     hour = now.hour
     minute = now.minute
+    day_of_week = Date.day_of_week(DateTime.to_date(now)) - 1
 
     schedules_with_eid =
       Repo.all(
         from s in SentrySchedule,
-          where: s.enabled == true,
+          where: s.enabled == true and s.day_of_week == ^day_of_week,
           join: c in Car, on: c.id == s.car_id,
           select: {s, c.eid}
       )
