@@ -4,7 +4,7 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   alias TeslaMate.{Accounts, Api}
   alias TeslaMate.Auth.{JWT, Tokens}
 
-  @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds"
+  @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds vehicle_location"
   @state_ttl_seconds 600
 
   def authorize(conn, _params) do
@@ -23,6 +23,7 @@ defmodule TeslaMateWeb.TeslaOAuthController do
       redirect_uri: callback_uri(),
       response_type: "code",
       scope: @scope,
+      prompt: "consent",
       code_challenge: code_challenge,
       code_challenge_method: "S256",
       state: state
@@ -140,7 +141,6 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   # TeslaMate creates cars asynchronously after sign_in, so we run the update
   # immediately (for existing cars) and again after a short delay (for new ones).
   defp link_cars_to_user(user_id) do
-    import Ecto.Query
     alias TeslaMate.{Repo, Log.Car}
     # TeslaMate is single-tenant — all cars belong to whoever just signed in via Tesla OAuth.
     # Update every car unconditionally, and again after a short delay for newly created ones.

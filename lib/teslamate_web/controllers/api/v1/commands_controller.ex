@@ -45,6 +45,11 @@ defmodule TeslaMateWeb.API.V1.CommandsController do
             |> put_status(503)
             |> json(%{error: "Tesla authentication expired — reconnecting, please try again in a moment"})
 
+          {:error, {:command_unauthorized, _}} ->
+            conn
+            |> put_status(403)
+            |> json(%{error: "Commands not authorized — add TeslaMi as a key to your vehicle in the Tesla app, then re-sign-in at the web interface"})
+
           {:error, reason} ->
             conn |> put_status(500) |> json(%{error: inspect(reason)})
         end
