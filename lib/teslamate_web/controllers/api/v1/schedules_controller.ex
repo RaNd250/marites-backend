@@ -34,8 +34,13 @@ defmodule TeslaMateWeb.API.V1.SchedulesController do
   def delete(conn, %{"car_id" => car_id_str}) do
     car_id = String.to_integer(car_id_str)
     user_id = conn.assigns.current_user.id
-    SentrySchedule.delete(car_id, user_id)
-    json(conn, %{ok: true})
+
+    case verify_car_owner(car_id, user_id) do
+      :error -> conn |> put_status(404) |> json(%{error: "car not found"})
+      :ok ->
+        SentrySchedule.delete(car_id, user_id)
+        json(conn, %{ok: true})
+    end
   end
 
   defp verify_car_owner(car_id, user_id) do
