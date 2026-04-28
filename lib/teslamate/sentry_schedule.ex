@@ -36,20 +36,16 @@ defmodule TeslaMate.SentrySchedule do
   end
 
   defp upsert_day(user_id, car_id, day_of_week, attrs) do
-    case Repo.one(
-           from s in __MODULE__,
-             where: s.car_id == ^car_id and s.user_id == ^user_id and s.day_of_week == ^day_of_week
-         ) do
-      nil ->
-        %__MODULE__{}
-        |> changeset(Map.merge(attrs, %{"user_id" => user_id, "car_id" => car_id, "day_of_week" => day_of_week}))
-        |> Repo.insert()
-
-      existing ->
-        existing
-        |> changeset(attrs)
-        |> Repo.update()
-    end
+    %__MODULE__{}
+    |> changeset(Map.merge(attrs, %{
+         "user_id"     => user_id,
+         "car_id"      => car_id,
+         "day_of_week" => day_of_week
+       }))
+    |> Repo.insert(
+         on_conflict: {:replace, [:enabled, :on_hour, :on_minute, :off_hour, :off_minute, :updated_at]},
+         conflict_target: [:user_id, :car_id, :day_of_week]
+       )
   end
 
   def upsert_all(user_id, car_id, days) when is_list(days) do
