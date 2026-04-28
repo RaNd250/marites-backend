@@ -24,7 +24,7 @@ defmodule TeslaMateWeb.API.V1.CommandsController do
         {tesla_cmd, body} = map_command(command)
 
         case Api.run_command(eid, tesla_cmd, body) do
-          {:ok, :command_sent} ->
+          {:ok, _} ->
             json(conn, %{ok: true})
 
           {:error, {:command_failed, reason}} ->
@@ -36,7 +36,14 @@ defmodule TeslaMateWeb.API.V1.CommandsController do
             |> json(%{error: "vehicle is asleep — wake it from the Tesla app first"})
 
           {:error, :not_signed_in} ->
-            conn |> put_status(401) |> json(%{error: "not authenticated with Tesla"})
+            conn
+            |> put_status(503)
+            |> json(%{error: "TeslaMate is not authenticated with Tesla — please sign in at the web interface"})
+
+          {:error, :unauthorized} ->
+            conn
+            |> put_status(503)
+            |> json(%{error: "Tesla authentication expired — reconnecting, please try again in a moment"})
 
           {:error, reason} ->
             conn |> put_status(500) |> json(%{error: inspect(reason)})
