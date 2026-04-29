@@ -153,6 +153,8 @@ defmodule TeslaMateWeb.TeslaOAuthController do
 
   defp store_in_teslamate(access, refresh) do
     tokens = %Tokens{access: access, refresh: refresh}
+    # Always replace the token — user explicitly went through OAuth to update scopes
+    Api.sign_out()
     case Api.sign_in(tokens) do
       :ok -> :ok
       {:error, :already_signed_in} -> :ok
