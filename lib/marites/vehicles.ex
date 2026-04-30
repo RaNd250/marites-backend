@@ -4,6 +4,7 @@ defmodule Marites.Vehicles do
   require Logger
 
   alias __MODULE__.Vehicle
+  alias GenStateMachine
   alias Marites.Settings.CarSettings
   alias Marites.Log.Car
   alias Marites.Log
@@ -44,6 +45,10 @@ defmodule Marites.Vehicles do
   defdelegate suspend_logging(id), to: Vehicle
   defdelegate subscribe_to_summary(id), to: Vehicle
   defdelegate subscribe_to_fetch(id), to: Vehicle
+
+  def handle_fleet_telemetry(car_id, fields) do
+    GenStateMachine.cast(:"#{car_id}", {:fleet_telemetry, fields})
+  end
 
   # Callbacks
 

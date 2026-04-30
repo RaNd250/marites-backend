@@ -36,6 +36,7 @@ defmodule Marites.Application do
           Marites.AlarmResponder,
           Marites.SentryScheduler,
           if(mqtt_config != nil, do: {Marites.Mqtt, mqtt_config}),
+          Marites.FleetTelemetry.Consumer,
           Marites.Repair
         ]
         |> Enum.reject(&is_nil/1)
