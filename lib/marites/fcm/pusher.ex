@@ -12,7 +12,7 @@ defmodule Marites.FCM.Pusher do
 
   defstruct car_states: %{}, access_token: nil, token_expires_at: 0
 
-  # car_states: %{car_id => %{sentry_mode: bool | nil, sentry_mode_active: bool | nil, charging_state: string | nil}}
+  # car_states: %{car_id => %{sentry_mode: bool | nil, sentry_mode_active: bool | nil, charging_state: string | nil, shift_state: string | nil}}
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -32,7 +32,7 @@ defmodule Marites.FCM.Pusher do
 
   @impl true
   def handle_info(%Summary{car: %Car{id: car_id}} = summary, state) do
-    prev = Map.get(state.car_states, car_id, %{sentry_mode: nil, sentry_mode_active: nil, charging_state: nil})
+    prev = Map.get(state.car_states, car_id, %{sentry_mode: nil, sentry_mode_active: nil, charging_state: nil, shift_state: nil})
     events = detect_events(prev, summary)
 
     new_state =
@@ -53,7 +53,8 @@ defmodule Marites.FCM.Pusher do
     updated = Map.put(new_state.car_states, car_id, %{
       sentry_mode: summary.sentry_mode,
       sentry_mode_active: summary.sentry_mode_active,
-      charging_state: summary.charging_state
+      charging_state: summary.charging_state,
+      shift_state: summary.shift_state
     })
 
     {:noreply, %{new_state | car_states: updated}}
@@ -65,10 +66,22 @@ defmodule Marites.FCM.Pusher do
 
   defp detect_events(prev, summary) do
     []
+    |> check_drive(prev, summary)
     |> check_sentry(prev, summary)
     |> check_sentry_alarm(prev, summary)
     |> check_charge(prev, summary)
   end
+
+  defp check_drive(events, prev, summary) do
+    if drive_started?(prev, summary), do: [:drive_started | events], else: events
+  end
+
+  def drive_started?(%{shift_state: prev}, %Summary{shift_state: curr}) do
+    driving = ["D", "R", "N"]
+    curr in driving and prev not in driving
+  end
+
+  def drive_started?(_, _), do: false
 
   defp check_sentry(events, %{sentry_mode: prev}, %Summary{sentry_mode: curr}) do
     cond do
@@ -123,9 +136,11 @@ defmodule Marites.FCM.Pusher do
 
     for token <- tokens do
       base_data = %{
-        "event" => to_string(event),
-        "lat"   => to_string(summary.latitude),
-        "lng"   => to_string(summary.longitude)
+        "event"        => to_string(event),
+        "type"         => to_string(event),
+        "display_name" => summary.display_name || "Marit.es",
+        "lat"          => to_string(summary.latitude),
+        "lng"          => to_string(summary.longitude)
       }
 
       data = if event == :sentry_alarm,
@@ -156,6 +171,11 @@ defmodule Marites.FCM.Pusher do
           Logger.error("FCM push #{event} error: #{inspect(reason)}")
       end
     end
+  end
+
+  defp notification_text(:drive_started, summary) do
+    name = summary.display_name || "Marit.es"
+    {"Marit.es", "#{name}: Ξεκίνησε οδήγηση"}
   end
 
   defp notification_text(:sentry_activated, summary) do
