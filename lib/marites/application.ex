@@ -36,7 +36,9 @@ defmodule Marites.Application do
           Marites.AlarmResponder,
           Marites.SentryScheduler,
           if(mqtt_config != nil, do: {Marites.Mqtt, mqtt_config}),
-          Marites.FleetTelemetry.Consumer,
+          if(Application.get_env(:marites, :fleet_telemetry_mqtt_host) != nil,
+            do: Marites.FleetTelemetry.Consumer
+          ),
           Marites.Repair
         ]
         |> Enum.reject(&is_nil/1)

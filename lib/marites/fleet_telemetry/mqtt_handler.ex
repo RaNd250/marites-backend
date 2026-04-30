@@ -4,9 +4,10 @@ defmodule Marites.FleetTelemetry.MqttHandler do
   @impl true
   def init(_opts), do: {:ok, []}
 
+  # topic_levels is a list of binary segments e.g. ["marites", "fleet", "<vin>"]
   @impl true
-  def handle_message(topic, payload, state) do
-    GenServer.cast(Marites.FleetTelemetry.Consumer, {:mqtt_message, topic, payload})
+  def handle_message(topic_levels, payload, state) do
+    GenServer.cast(Marites.FleetTelemetry.Consumer, {:mqtt_message, topic_levels, payload})
     {:ok, state}
   end
 
