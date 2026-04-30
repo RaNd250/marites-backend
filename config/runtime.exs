@@ -182,6 +182,12 @@ if config_env() != :test do
     import_directory: System.get_env("IMPORT_DIR", "import") |> Util.validate_import_dir()
 end
 
+if System.get_env("FLEET_TELEMETRY_MQTT_HOST") do
+  config :marites,
+    fleet_telemetry_mqtt_host: System.get_env("FLEET_TELEMETRY_MQTT_HOST") |> String.to_charlist(),
+    fleet_telemetry_mqtt_port: System.get_env("FLEET_TELEMETRY_MQTT_PORT", "1883") |> String.to_integer()
+end
+
 config :marites, :srtm_cache, System.get_env("SRTM_CACHE", ".srtm_cache")
 
 config :marites, Marites.Vault, key: Util.get_env("ENCRYPTION_KEY", test: "secret")
