@@ -107,7 +107,7 @@ defmodule Marites.MixProject do
 
   defp releases do
     [
-      Marites: [
+      marites: [
         include_executables_for: [:unix],
         applications: [runtime_tools: :permanent]
       ]
