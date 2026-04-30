@@ -3,7 +3,7 @@ defmodule Marites.FleetTelemetry.Payload do
 
   field :vin,  1, type: :string
   field :txid, 4, type: :string
-  field :data, 2, label: :repeated, type: Marites.FleetTelemetry.Datum
+  field :data, 2, repeated: true, type: Marites.FleetTelemetry.Datum
 end
 
 defmodule Marites.FleetTelemetry.Datum do
