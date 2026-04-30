@@ -87,7 +87,7 @@ defmodule MaritesWeb.TeslaOAuthController do
   end
 
   defp hmac_sign(data) do
-    secret = Application.fetch_env!(:Marites, :jwt_secret)
+    secret = Application.fetch_env!(:marites, :jwt_secret)
     :crypto.mac(:hmac, :sha256, secret, data) |> Base.url_encode64(padding: false)
   end
 

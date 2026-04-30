@@ -1,10 +1,10 @@
 import Config
 
-config :Marites, MaritesWeb.Endpoint,
+config :marites, MaritesWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   root: ".",
   server: true,
-  version: Application.spec(:Marites, :vsn)
+  version: Application.spec(:marites, :vsn)
 
 config :logger,
   level: :info

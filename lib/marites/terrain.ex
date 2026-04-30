@@ -194,6 +194,6 @@ defmodule Marites.Terrain do
   end
 
   defp cache_path do
-    Application.fetch_env!(:Marites, :srtm_cache)
+    Application.fetch_env!(:marites, :srtm_cache)
   end
 end

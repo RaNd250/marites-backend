@@ -37,7 +37,7 @@ defmodule MaritesWeb do
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/Marites_web/templates",
+        root: "lib/marites_web/templates",
         namespace: MaritesWeb
 
       # Import convenience functions from controllers

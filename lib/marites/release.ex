@@ -1,5 +1,5 @@
 defmodule Marites.Release do
-  @app :Marites
+  @app :marites
 
   import Ecto.Query
   alias Marites.Repo

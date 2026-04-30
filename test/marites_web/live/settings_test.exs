@@ -533,7 +533,7 @@ defmodule MaritesWeb.SettingsLiveTest do
         assert {:ok, _view, html} = live(conn, "/settings")
         html = Floki.parse_document!(html)
 
-        assert "#{Application.spec(:Marites, :vsn)} (Update available: 1.1.3)" ==
+        assert "#{Application.spec(:marites, :vsn)} (Update available: 1.1.3)" ==
                  html
                  |> Floki.find(".about tr:first-child td")
                  |> Floki.text()

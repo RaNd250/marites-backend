@@ -1,6 +1,6 @@
 defmodule Marites.Vault do
   use Cloak.Vault,
-    otp_app: :Marites
+    otp_app: :marites
 
   defmodule Encrypted.Binary do
     use Cloak.Ecto.Binary, vault: Marites.Vault
@@ -98,7 +98,7 @@ defmodule Marites.Vault do
   end
 
   defp get_encryption_key_from_config do
-    Application.get_env(:Marites, Marites.Vault)
+    Application.get_env(:marites, Marites.Vault)
     |> Access.fetch!(:key)
     |> case do
       key when is_binary(key) and byte_size(key) > 0 -> {:ok, key}

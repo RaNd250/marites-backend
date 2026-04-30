@@ -3,9 +3,9 @@
 Application.stop(:logger)
 Application.start(:logger)
 
-Application.load(:Marites)
+Application.load(:marites)
 
-for app <- Application.spec(:Marites, :applications) do
+for app <- Application.spec(:marites, :applications) do
   {:ok, _} = Application.ensure_all_started(app)
 end
 

@@ -18,6 +18,6 @@ while ! nc -z "${DATABASE_HOST}" "${DATABASE_PORT}" 2>/dev/null; do
 done
 
 # apply migrations
-bin/teslamate eval "TeslaMate.Release.migrate"
+bin/marites eval "Marites.Release.migrate"
 
 exec "$@"

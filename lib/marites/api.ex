@@ -226,7 +226,7 @@ defmodule Marites.Api do
   ## Private
 
   defp refresh_tokens(%Auth{} = tokens) do
-    case Application.get_env(:Marites, :disable_token_refresh, false) do
+    case Application.get_env(:marites, :disable_token_refresh, false) do
       true ->
         Logger.info("Token refresh is disabled")
         {:ok, tokens}

@@ -146,7 +146,7 @@ defmodule Marites.Mqtt.PubSub.VehicleSubscriber do
   defp add_geofence(map, %Summary{} = summary) do
     case summary.geofence do
       nil ->
-        Map.put(map, :geofence, Application.get_env(:Marites, :default_geofence))
+        Map.put(map, :geofence, Application.get_env(:marites, :default_geofence))
 
       geofence ->
         Map.put(map, :geofence, geofence.name)
