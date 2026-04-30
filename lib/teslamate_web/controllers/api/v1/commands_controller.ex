@@ -38,7 +38,7 @@ defmodule TeslaMateWeb.API.V1.CommandsController do
           {:error, :not_signed_in} ->
             conn
             |> put_status(503)
-            |> json(%{error: "TeslaMi is not authenticated with Tesla — please sign in at the web interface"})
+            |> json(%{error: "Marit.es is not authenticated with Tesla — please sign in at the web interface"})
 
           {:error, :unauthorized} ->
             conn
@@ -48,7 +48,7 @@ defmodule TeslaMateWeb.API.V1.CommandsController do
           {:error, {:command_unauthorized, _}} ->
             conn
             |> put_status(403)
-            |> json(%{error: "Commands not authorized — add TeslaMi as a key to your vehicle in the Tesla app, then re-sign-in at the web interface"})
+            |> json(%{error: "Commands not authorized — add Marit.es as a key to your vehicle in the Tesla app, then re-sign-in at the web interface"})
 
           {:error, reason} ->
             conn |> put_status(500) |> json(%{error: inspect(reason)})
