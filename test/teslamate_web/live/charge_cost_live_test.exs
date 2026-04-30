@@ -1,9 +1,9 @@
-defmodule TeslaMateWeb.ChargeLive.CostTest do
-  use TeslaMateWeb.ConnCase, async: false
-  use TeslaMate.VehicleCase, async: false
+defmodule MaritesWeb.ChargeLive.CostTest do
+  use MaritesWeb.ConnCase, async: false
+  use Marites.VehicleCase, async: false
 
-  alias TeslaMate.Log.ChargingProcess
-  alias TeslaMate.{Log, Locations, Repo}
+  alias Marites.Log.ChargingProcess
+  alias Marites.{Log, Locations, Repo}
 
   import TestHelper, only: [decimal: 1]
 

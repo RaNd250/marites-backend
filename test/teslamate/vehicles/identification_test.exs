@@ -1,8 +1,8 @@
-defmodule TeslaMate.Vehicles.Vehicle.IdentificationTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.IdentificationTest do
+  use Marites.VehicleCase, async: false
 
-  alias TeslaMate.Log.Car
-  alias TeslaMate.Log
+  alias Marites.Log.Car
+  alias Marites.Log
 
   test "identifies the vehicle" do
     events = [
@@ -66,7 +66,7 @@ defmodule TeslaMate.Vehicles.Vehicle.IdentificationTest do
 
     {:ok, _pid} =
       start_supervised(
-        {TeslaMate.Vehicles,
+        {Marites.Vehicles,
          vehicle: VehicleMock,
          vehicles: [
            %TeslaApi.Vehicle{

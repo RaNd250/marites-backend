@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DropPowerAvg do
+defmodule Marites.Repo.Migrations.DropPowerAvg do
   use Ecto.Migration
 
   def change do

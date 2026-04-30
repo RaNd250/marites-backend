@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.ReplaceDateBtreeIndexesWithBrin do
+defmodule Marites.Repo.Migrations.ReplaceDateBtreeIndexesWithBrin do
   use Ecto.Migration
 
   def change do

@@ -1,5 +1,5 @@
 defmodule GeocoderMock do
-  alias TeslaMate.Locations.Address
+  alias Marites.Locations.Address
 
   def reverse_lookup(%Decimal{} = lat, %Decimal{} = lon, lang) do
     reverse_lookup(Decimal.to_float(lat), Decimal.to_float(lon), lang)

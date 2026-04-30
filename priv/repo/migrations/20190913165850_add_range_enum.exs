@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddRangeEnum do
+defmodule Marites.Repo.Migrations.AddRangeEnum do
   use Ecto.Migration
 
   def change do

@@ -1,10 +1,10 @@
-defmodule TeslaMateWeb.CarControllerTest do
-  use TeslaMateWeb.ConnCase
-  use TeslaMate.VehicleCase
+defmodule MaritesWeb.CarControllerTest do
+  use MaritesWeb.ConnCase
+  use Marites.VehicleCase
 
-  alias TeslaMate.Settings.CarSettings
-  alias TeslaMate.{Log, Settings, Repo}
-  alias TeslaMate.Log.Car
+  alias Marites.Settings.CarSettings
+  alias Marites.{Log, Settings, Repo}
+  alias Marites.Log.Car
 
   defp table_row(html, key, value, opts \\ []) do
     assert {"tr", _, [{"td", _, [td_key]}, {"td", [], [td_value]}]} =
@@ -60,7 +60,7 @@ defmodule TeslaMateWeb.CarControllerTest do
   describe "index" do
     test "redirects if not signed in", %{conn: conn} do
       assert conn = get(conn, Routes.car_path(conn, :index))
-      assert redirected_to(conn, 302) == Routes.live_path(conn, TeslaMateWeb.SignInLive.Index)
+      assert redirected_to(conn, 302) == Routes.live_path(conn, MaritesWeb.SignInLive.Index)
     end
 
     @tag :signed_in
@@ -72,7 +72,7 @@ defmodule TeslaMateWeb.CarControllerTest do
 
       {:ok, _pid} =
         start_supervised(
-          {TeslaMate.Vehicles,
+          {Marites.Vehicles,
            vehicle: VehicleMock,
            vehicles: [
              %TeslaApi.Vehicle{display_name: "f00o", id: 4241, vehicle_id: 11111, vin: "1221"},
@@ -587,7 +587,7 @@ defmodule TeslaMateWeb.CarControllerTest do
 
   describe "resume" do
     test "resumes logging", %{conn: conn} do
-      alias TeslaMate.Vehicles.Vehicle.Summary
+      alias Marites.Vehicles.Vehicle.Summary
 
       _car = car_fixture(%{suspend_min: 60, suspend_after_idle_min: 1, use_streaming_api: false})
 
@@ -604,7 +604,7 @@ defmodule TeslaMateWeb.CarControllerTest do
       Process.sleep(100)
 
       %Car{id: id} = Log.get_car_by(vin: "xxxxx")
-      assert %Summary{state: :suspended} = TeslaMate.Vehicles.summary(id)
+      assert %Summary{state: :suspended} = Marites.Vehicles.summary(id)
 
       conn = put(conn, Routes.car_path(conn, :resume_logging, id))
       assert "" == response(conn, 204)
@@ -616,7 +616,7 @@ defmodule TeslaMateWeb.CarControllerTest do
 
     {:ok, _pid} =
       start_supervised(
-        {TeslaMate.Vehicles,
+        {Marites.Vehicles,
          vehicle: VehicleMock,
          vehicles: [
            %TeslaApi.Vehicle{

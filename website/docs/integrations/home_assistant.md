@@ -5,11 +5,11 @@ sidebar_label: Home Assistant
 
 ## Introduction
 
-Whilst Home Assistant provides an official component for Tesla vehicles, the component has not been updated recently, and does not have the sophistication of TeslaMate's polling mechanism, resulting in the component's default values keeping the vehicle awake and draining the battery.
+Whilst Home Assistant provides an official component for Tesla vehicles, the component has not been updated recently, and does not have the sophistication of Marites's polling mechanism, resulting in the component's default values keeping the vehicle awake and draining the battery.
 
-The ultimate goal of this guide is to consume as much of the TeslaMate polling data as possible to replace the majority of the official Tesla component's polling functionality.
+The ultimate goal of this guide is to consume as much of the Marites polling data as possible to replace the majority of the official Tesla component's polling functionality.
 
-If your intention is to only use read-only sensor values, those provided by TeslaMate via MQTT are sufficient, and you do not need to utilise the official Tesla component. If however you would like to be able to write values to the Tesla API (Lock/Unlock Doors or automate Climate), there is a solution which involves configuring an extremely high polling interval for the Tesla component and using automation to populate the values from the TeslaMate MQTT parameters.
+If your intention is to only use read-only sensor values, those provided by Marites via MQTT are sufficient, and you do not need to utilise the official Tesla component. If however you would like to be able to write values to the Tesla API (Lock/Unlock Doors or automate Climate), there is a solution which involves configuring an extremely high polling interval for the Tesla component and using automation to populate the values from the Marites MQTT parameters.
 
 ### Screenshots
 
@@ -25,7 +25,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Configuration
 
-The following configurations assume a car ID of 1 (`teslamate/cars/1`). It usually starts at 1, but it can be different if you have multiple cars in TeslaMate for example.
+The following configurations assume a car ID of 1 (`Marites/cars/1`). It usually starts at 1, but it can be different if you have multiple cars in Marites for example.
 
 ### configuration.yaml
 
@@ -55,39 +55,39 @@ mqtt: !include mqtt_sensors.yaml
 
 ### mqtt_sensors.yaml (mqtt: section of configuration.yaml)
 
-Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla name>` with correct corresponding values.
+Don't forget to replace `<Marites url>`, `<your tesla model>` and `<your tesla name>` with correct corresponding values.
 
 ```yml title="mqtt_sensors.yaml"
 - sensor:
     name: Display Name
     default_entity_id: sensor.tesla_display_name # entity_id
-    unique_id: teslamate_1_display_name # internal id, used for device grouping
-    device: &teslamate_device_info
-      identifiers: [teslamate_car_1]
-      configuration_url: <teslamate url> # update this with your teslamate URL, e.g. https://teslamate.example.com/
+    unique_id: Marites_1_display_name # internal id, used for device grouping
+    device: &Marites_device_info
+      identifiers: [Marites_car_1]
+      configuration_url: <Marites url> # update this with your Marites URL, e.g. https://Marites.example.com/
       manufacturer: Tesla
       model: <your tesla model> # update this with your car model, e.g. Model 3
       name: <your tesla name> # update this with your car name, e.g. Tesla Model 3
-    state_topic: "teslamate/cars/1/display_name"
+    state_topic: "Marites/cars/1/display_name"
     icon: mdi:car
 
 - device_tracker:
     name: Location
     default_entity_id: device_tracker.tesla_location
-    unique_id: teslamate_1_location
-    device: *teslamate_device_info
-    json_attributes_topic: "teslamate/cars/1/location"
+    unique_id: Marites_1_location
+    device: *Marites_device_info
+    json_attributes_topic: "Marites/cars/1/location"
     icon: mdi:crosshairs-gps
 
 - device_tracker:
     name: Active route location
     default_entity_id: device_tracker.tesla_active_route_location
-    unique_id: teslamate_1_active_route_location
-    availability: &teslamate_active_route_availability
-      - topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_location
+    availability: &Marites_active_route_availability
+      - topic: "Marites/cars/1/active_route"
         value_template: "{{ 'offline' if value_json.error else 'online' }}"
-    device: *teslamate_device_info
-    json_attributes_topic: "teslamate/cars/1/active_route"
+    device: *Marites_device_info
+    json_attributes_topic: "Marites/cars/1/active_route"
     json_attributes_template: >
       {% if not value_json.error and value_json.location %}
         {{ value_json.location | tojson }}
@@ -99,96 +99,96 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: State
     default_entity_id: sensor.tesla_state
-    unique_id: teslamate_1_state
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/state"
+    unique_id: Marites_1_state
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/state"
     icon: mdi:car-connected
 
 - sensor:
     name: Since
     default_entity_id: sensor.tesla_since
-    unique_id: teslamate_1_since
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/since"
+    unique_id: Marites_1_since
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/since"
     device_class: timestamp
     icon: mdi:clock-outline
 
 - sensor:
     name: Version
     default_entity_id: sensor.tesla_version
-    unique_id: teslamate_1_version
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/version"
+    unique_id: Marites_1_version
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/version"
     icon: mdi:alphabetical
 
 - sensor:
     name: Update Version
     default_entity_id: sensor.tesla_update_version
-    unique_id: teslamate_1_update_version
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/update_version"
+    unique_id: Marites_1_update_version
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/update_version"
     icon: mdi:alphabetical
 
 - sensor:
     name: Model
     default_entity_id: sensor.tesla_model
-    unique_id: teslamate_1_model
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/model"
+    unique_id: Marites_1_model
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/model"
 
 - sensor:
     name: Trim Badging
     default_entity_id: sensor.tesla_trim_badging
-    unique_id: teslamate_1_trim_badging
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/trim_badging"
+    unique_id: Marites_1_trim_badging
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/trim_badging"
     icon: mdi:shield-star-outline
 
 - sensor:
     name: Exterior Color
     default_entity_id: sensor.tesla_exterior_color
-    unique_id: teslamate_1_exterior_color
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/exterior_color"
+    unique_id: Marites_1_exterior_color
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/exterior_color"
     icon: mdi:palette
 
 - sensor:
     name: Wheel Type
     default_entity_id: sensor.tesla_wheel_type
-    unique_id: teslamate_1_wheel_type
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/wheel_type"
+    unique_id: Marites_1_wheel_type
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/wheel_type"
 
 - sensor:
     name: Spoiler Type
     default_entity_id: sensor.tesla_spoiler_type
-    unique_id: teslamate_1_spoiler_type
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/spoiler_type"
+    unique_id: Marites_1_spoiler_type
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/spoiler_type"
     icon: mdi:car-sports
 
 - sensor:
     name: Geofence
     default_entity_id: sensor.tesla_geofence
-    unique_id: teslamate_1_geofence
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/geofence"
+    unique_id: Marites_1_geofence
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/geofence"
     icon: mdi:earth
 
 - sensor:
     name: Shift State
     default_entity_id: sensor.tesla_shift_state
-    unique_id: teslamate_1_shift_state
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/shift_state"
+    unique_id: Marites_1_shift_state
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/shift_state"
     icon: mdi:car-shift-pattern
 
 - binary_sensor:
     name: Parking Brake
     default_entity_id: sensor.tesla_park_brake
-    unique_id: teslamate_1_park_brake
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/shift_state"
+    unique_id: Marites_1_park_brake
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/shift_state"
     value_template: >-
       {% if value == 'P' %}
           ON
@@ -200,9 +200,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Power
     default_entity_id: sensor.tesla_power
-    unique_id: teslamate_1_power
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/power"
+    unique_id: Marites_1_power
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/power"
     device_class: power
     unit_of_measurement: kW
     icon: mdi:flash
@@ -210,9 +210,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Speed
     default_entity_id: sensor.tesla_speed
-    unique_id: teslamate_1_speed
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/speed"
+    unique_id: Marites_1_speed
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/speed"
     device_class: speed
     unit_of_measurement: "km/h"
     icon: mdi:speedometer
@@ -220,18 +220,18 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Heading
     default_entity_id: sensor.tesla_heading
-    unique_id: teslamate_1_heading
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/heading"
+    unique_id: Marites_1_heading
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/heading"
     unit_of_measurement: °
     icon: mdi:compass
 
 - sensor:
     name: Elevation
     default_entity_id: sensor.tesla_elevation
-    unique_id: teslamate_1_elevation
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/elevation"
+    unique_id: Marites_1_elevation
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/elevation"
     device_class: distance
     unit_of_measurement: m
     icon: mdi:image-filter-hdr
@@ -239,9 +239,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Inside Temp
     default_entity_id: sensor.tesla_inside_temp
-    unique_id: teslamate_1_inside_temp
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/inside_temp"
+    unique_id: Marites_1_inside_temp
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/inside_temp"
     device_class: temperature
     unit_of_measurement: °C
     icon: mdi:thermometer-lines
@@ -249,9 +249,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Outside Temp
     default_entity_id: sensor.tesla_outside_temp
-    unique_id: teslamate_1_outside_temp
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/outside_temp"
+    unique_id: Marites_1_outside_temp
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/outside_temp"
     device_class: temperature
     unit_of_measurement: °C
     icon: mdi:thermometer-lines
@@ -259,9 +259,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Odometer
     default_entity_id: sensor.tesla_odometer
-    unique_id: teslamate_1_odometer
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/odometer"
+    unique_id: Marites_1_odometer
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/odometer"
     device_class: distance
     unit_of_measurement: km
     icon: mdi:counter
@@ -269,19 +269,19 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Est Battery Range
     default_entity_id: sensor.tesla_est_battery_range
-    unique_id: teslamate_1_est_battery_range
-    device: *teslamate_device_info
+    unique_id: Marites_1_est_battery_range
+    device: *Marites_device_info
     device_class: distance
-    state_topic: "teslamate/cars/1/est_battery_range_km"
+    state_topic: "Marites/cars/1/est_battery_range_km"
     unit_of_measurement: km
     icon: mdi:gauge
 
 - sensor:
     name: Rated Battery Range
     default_entity_id: sensor.tesla_rated_battery_range
-    unique_id: teslamate_1_rated_battery_range
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/rated_battery_range_km"
+    unique_id: Marites_1_rated_battery_range
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/rated_battery_range_km"
     device_class: distance
     unit_of_measurement: km
     icon: mdi:gauge
@@ -289,9 +289,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Ideal Battery Range
     default_entity_id: sensor.tesla_ideal_battery_range
-    unique_id: teslamate_1_ideal_battery_range
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/ideal_battery_range_km"
+    unique_id: Marites_1_ideal_battery_range
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/ideal_battery_range_km"
     device_class: distance
     unit_of_measurement: km
     icon: mdi:gauge
@@ -299,9 +299,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Battery Level
     default_entity_id: sensor.tesla_battery_level
-    unique_id: teslamate_1_battery_level
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/battery_level"
+    unique_id: Marites_1_battery_level
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/battery_level"
     device_class: battery
     unit_of_measurement: "%"
     icon: mdi:battery-80
@@ -309,9 +309,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Usable Battery Level
     default_entity_id: sensor.tesla_usable_battery_level
-    unique_id: teslamate_1_usable_battery_level
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/usable_battery_level"
+    unique_id: Marites_1_usable_battery_level
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/usable_battery_level"
     device_class: battery
     unit_of_measurement: "%"
     icon: mdi:battery-80
@@ -319,9 +319,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Charge Energy Added
     default_entity_id: sensor.tesla_charge_energy_added
-    unique_id: teslamate_1_charge_energy_added
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charge_energy_added"
+    unique_id: Marites_1_charge_energy_added
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charge_energy_added"
     device_class: energy
     state_class: total
     unit_of_measurement: kWh
@@ -330,9 +330,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Charge Limit Soc
     default_entity_id: sensor.tesla_charge_limit_soc
-    unique_id: teslamate_1_charge_limit_soc
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charge_limit_soc"
+    unique_id: Marites_1_charge_limit_soc
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charge_limit_soc"
     device_class: battery
     unit_of_measurement: "%"
     icon: mdi:battery-charging-100
@@ -340,9 +340,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Charger Actual Current
     default_entity_id: sensor.tesla_charger_actual_current
-    unique_id: teslamate_1_charger_actual_current
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charger_actual_current"
+    unique_id: Marites_1_charger_actual_current
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charger_actual_current"
     device_class: current
     unit_of_measurement: A
     icon: mdi:lightning-bolt
@@ -350,17 +350,17 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Charger Phases
     default_entity_id: sensor.tesla_charger_phases
-    unique_id: teslamate_1_charger_phases
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charger_phases"
+    unique_id: Marites_1_charger_phases
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charger_phases"
     icon: mdi:sine-wave
 
 - sensor:
     name: Charger Power
     default_entity_id: sensor.tesla_charger_power
-    unique_id: teslamate_1_charger_power
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charger_power"
+    unique_id: Marites_1_charger_power
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charger_power"
     device_class: power
     unit_of_measurement: kW
     icon: mdi:lightning-bolt
@@ -368,9 +368,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Charger Voltage
     default_entity_id: sensor.tesla_charger_voltage
-    unique_id: teslamate_1_charger_voltage
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/charger_voltage"
+    unique_id: Marites_1_charger_voltage
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/charger_voltage"
     device_class: voltage
     unit_of_measurement: V
     icon: mdi:lightning-bolt
@@ -378,18 +378,18 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Scheduled Charging Start Time
     default_entity_id: sensor.tesla_scheduled_charging_start_time
-    unique_id: teslamate_1_scheduled_charging_start_time
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/scheduled_charging_start_time"
+    unique_id: Marites_1_scheduled_charging_start_time
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/scheduled_charging_start_time"
     device_class: timestamp
     icon: mdi:clock-outline
 
 - sensor:
     name: Time To Full Charge
     default_entity_id: sensor.tesla_time_to_full_charge
-    unique_id: teslamate_1_time_to_full_charge
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/time_to_full_charge"
+    unique_id: Marites_1_time_to_full_charge
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/time_to_full_charge"
     device_class: duration
     unit_of_measurement: h
     icon: mdi:clock-outline
@@ -397,9 +397,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Front Left
     default_entity_id: sensor.tesla_tpms_pressure_fl
-    unique_id: teslamate_1_tpms_pressure_fl
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_fl"
+    unique_id: Marites_1_tpms_pressure_fl
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_fl"
     device_class: pressure
     unit_of_measurement: bar
     icon: mdi:car-tire-alert
@@ -407,9 +407,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Front Left (psi)
     default_entity_id: sensor.tesla_tpms_pressure_fl_psi
-    unique_id: teslamate_1_tpms_pressure_fl_psi
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_fl"
+    unique_id: Marites_1_tpms_pressure_fl_psi
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_fl"
     device_class: pressure
     unit_of_measurement: psi
     icon: mdi:car-tire-alert
@@ -419,9 +419,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Front Right
     default_entity_id: sensor.tesla_tpms_pressure_fr
-    unique_id: teslamate_1_tpms_pressure_fr
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_fr"
+    unique_id: Marites_1_tpms_pressure_fr
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_fr"
     device_class: pressure
     unit_of_measurement: bar
     icon: mdi:car-tire-alert
@@ -429,9 +429,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Front Right (psi)
     default_entity_id: sensor.tesla_tpms_pressure_fr_psi
-    unique_id: teslamate_1_tpms_pressure_fr_psi
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_fr"
+    unique_id: Marites_1_tpms_pressure_fr_psi
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_fr"
     device_class: pressure
     unit_of_measurement: psi
     icon: mdi:car-tire-alert
@@ -441,9 +441,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Rear Left
     default_entity_id: sensor.tesla_tpms_pressure_rl
-    unique_id: teslamate_1_tpms_pressure_rl
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_rl"
+    unique_id: Marites_1_tpms_pressure_rl
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_rl"
     device_class: pressure
     unit_of_measurement: bar
     icon: mdi:car-tire-alert
@@ -451,9 +451,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Rear Left (psi)
     default_entity_id: sensor.tesla_tpms_pressure_rl_psi
-    unique_id: teslamate_1_tpms_pressure_rl_psi
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_rl"
+    unique_id: Marites_1_tpms_pressure_rl_psi
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_rl"
     device_class: pressure
     unit_of_measurement: psi
     icon: mdi:car-tire-alert
@@ -463,9 +463,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Rear Right
     default_entity_id: sensor.tesla_tpms_pressure_rr
-    unique_id: teslamate_1_tpms_pressure_rr
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_rr"
+    unique_id: Marites_1_tpms_pressure_rr
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_rr"
     device_class: pressure
     unit_of_measurement: bar
     icon: mdi:car-tire-alert
@@ -473,9 +473,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: TPMS Pressure Rear Right (psi)
     default_entity_id: sensor.tesla_tpms_pressure_rr_psi
-    unique_id: teslamate_1_tpms_pressure_rr_psi
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/tpms_pressure_rr"
+    unique_id: Marites_1_tpms_pressure_rr_psi
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/tpms_pressure_rr"
     device_class: pressure
     unit_of_measurement: psi
     icon: mdi:car-tire-alert
@@ -485,10 +485,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Active route destination
     default_entity_id: sensor.tesla_active_route_destination
-    unique_id: teslamate_1_active_route_destination
-    availability: *teslamate_active_route_availability
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_destination
+    availability: *Marites_active_route_availability
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/active_route"
     value_template: >
       {% if not value_json.error and value_json.destination %}
         {{ value_json.destination }}
@@ -498,10 +498,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Active route energy at arrival
     default_entity_id: sensor.tesla_active_route_energy_at_arrival
-    unique_id: teslamate_1_active_route_energy_at_arrival
-    availability: *teslamate_active_route_availability
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_energy_at_arrival
+    availability: *Marites_active_route_availability
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/active_route"
     value_template: >
       {% if not value_json.error and value_json.energy_at_arrival %}
         {{ value_json.energy_at_arrival }}
@@ -513,10 +513,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Active route distance to arrival
     default_entity_id: sensor.tesla_active_route_distance_to_arrival
-    unique_id: teslamate_1_active_route_distance_to_arrival
-    availability: *teslamate_active_route_availability
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_distance_to_arrival
+    availability: *Marites_active_route_availability
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/active_route"
     value_template: >
       {% if not value_json.error and value_json.miles_to_arrival %}
         {{ (value_json.miles_to_arrival | float * 1.60934) | round(2) }}
@@ -528,10 +528,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Active route minutes to arrival
     default_entity_id: sensor.tesla_active_route_minutes_to_arrival
-    unique_id: teslamate_1_active_route_minutes_to_arrival
-    availability: *teslamate_active_route_availability
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_minutes_to_arrival
+    availability: *Marites_active_route_availability
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/active_route"
     value_template: >
       {% if not value_json.error and value_json.minutes_to_arrival %}
         {{ value_json.minutes_to_arrival }}
@@ -543,10 +543,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - sensor:
     name: Active route traffic minutes delay
     default_entity_id: sensor.tesla_active_route_traffic_minutes_delay
-    unique_id: teslamate_1_active_route_traffic_minutes_delay
-    availability: *teslamate_active_route_availability
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/active_route"
+    unique_id: Marites_1_active_route_traffic_minutes_delay
+    availability: *Marites_active_route_availability
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/active_route"
     value_template: >
       {% if not value_json.error and value_json.traffic_minutes_delay %}
         {{ value_json.traffic_minutes_delay }}
@@ -558,9 +558,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Healthy
     default_entity_id: binary_sensor.tesla_healthy
-    unique_id: teslamate_1_healthy
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/healthy"
+    unique_id: Marites_1_healthy
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/healthy"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:heart-pulse
@@ -568,9 +568,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Update Available
     default_entity_id: binary_sensor.tesla_update_available
-    unique_id: teslamate_1_update_available
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/update_available"
+    unique_id: Marites_1_update_available
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/update_available"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:alarm
@@ -578,19 +578,19 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Locked
     default_entity_id: binary_sensor.tesla_locked
-    unique_id: teslamate_1_locked
-    device: *teslamate_device_info
+    unique_id: Marites_1_locked
+    device: *Marites_device_info
     device_class: lock
-    state_topic: "teslamate/cars/1/locked"
+    state_topic: "Marites/cars/1/locked"
     payload_on: "false"
     payload_off: "true"
 
 - binary_sensor:
     name: Sentry Mode
     default_entity_id: binary_sensor.tesla_sentry_mode
-    unique_id: teslamate_1_sentry_mode
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/sentry_mode"
+    unique_id: Marites_1_sentry_mode
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/sentry_mode"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:cctv
@@ -598,10 +598,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Windows Open
     default_entity_id: binary_sensor.tesla_windows_open
-    unique_id: teslamate_1_windows_open
-    device: *teslamate_device_info
+    unique_id: Marites_1_windows_open
+    device: *Marites_device_info
     device_class: window
-    state_topic: "teslamate/cars/1/windows_open"
+    state_topic: "Marites/cars/1/windows_open"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:car-door
@@ -609,10 +609,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Doors Open
     default_entity_id: binary_sensor.tesla_doors_open
-    unique_id: teslamate_1_doors_open
-    device: *teslamate_device_info
+    unique_id: Marites_1_doors_open
+    device: *Marites_device_info
     device_class: door
-    state_topic: "teslamate/cars/1/doors_open"
+    state_topic: "Marites/cars/1/doors_open"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:car-door
@@ -620,10 +620,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Trunk Open
     default_entity_id: binary_sensor.tesla_trunk_open
-    unique_id: teslamate_1_trunk_open
-    device: *teslamate_device_info
+    unique_id: Marites_1_trunk_open
+    device: *Marites_device_info
     device_class: opening
-    state_topic: "teslamate/cars/1/trunk_open"
+    state_topic: "Marites/cars/1/trunk_open"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:car-side
@@ -631,10 +631,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Frunk Open
     default_entity_id: binary_sensor.tesla_frunk_open
-    unique_id: teslamate_1_frunk_open
-    device: *teslamate_device_info
+    unique_id: Marites_1_frunk_open
+    device: *Marites_device_info
     device_class: opening
-    state_topic: "teslamate/cars/1/frunk_open"
+    state_topic: "Marites/cars/1/frunk_open"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:car-side
@@ -642,10 +642,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Is User Present
     default_entity_id: binary_sensor.tesla_is_user_present
-    unique_id: teslamate_1_is_user_present
-    device: *teslamate_device_info
+    unique_id: Marites_1_is_user_present
+    device: *Marites_device_info
     device_class: presence
-    state_topic: "teslamate/cars/1/is_user_present"
+    state_topic: "Marites/cars/1/is_user_present"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:human-greeting
@@ -653,9 +653,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Is Climate On
     default_entity_id: binary_sensor.tesla_is_climate_on
-    unique_id: teslamate_1_is_climate_on
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/is_climate_on"
+    unique_id: Marites_1_is_climate_on
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/is_climate_on"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:fan
@@ -663,9 +663,9 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Is Preconditioning
     default_entity_id: binary_sensor.tesla_is_preconditioning
-    unique_id: teslamate_1_is_preconditioning
-    device: *teslamate_device_info
-    state_topic: "teslamate/cars/1/is_preconditioning"
+    unique_id: Marites_1_is_preconditioning
+    device: *Marites_device_info
+    state_topic: "Marites/cars/1/is_preconditioning"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:fan
@@ -673,10 +673,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Plugged In
     default_entity_id: binary_sensor.tesla_plugged_in
-    unique_id: teslamate_1_plugged_in
-    device: *teslamate_device_info
+    unique_id: Marites_1_plugged_in
+    device: *Marites_device_info
     device_class: plug
-    state_topic: "teslamate/cars/1/plugged_in"
+    state_topic: "Marites/cars/1/plugged_in"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:ev-station
@@ -684,10 +684,10 @@ Don't forget to replace `<teslamate url>`, `<your tesla model>` and `<your tesla
 - binary_sensor:
     name: Charge Port Door OPEN
     default_entity_id: binary_sensor.tesla_charge_port_door_open
-    unique_id: teslamate_1_charge_port_door_open
-    device: *teslamate_device_info
+    unique_id: Marites_1_charge_port_door_open
+    device: *Marites_device_info
     device_class: opening
-    state_topic: "teslamate/cars/1/charge_port_door_open"
+    state_topic: "Marites/cars/1/charge_port_door_open"
     payload_on: "true"
     payload_off: "false"
     icon: mdi:ev-plug-tesla
@@ -903,7 +903,7 @@ views:
 
 ## Useful Automations
 
-The below automations leverage TeslaMate MQTT topics to provide some useful automations
+The below automations leverage Marites MQTT topics to provide some useful automations
 
 ### Garage Door Automation based on Tesla location
 
@@ -934,20 +934,20 @@ For example, opening the door will open the door and the window. If we don't del
 #### automation.yaml
 
 ```yml title="automation.yaml"
-- alias: Set timer if teslamate reports something is open to alert us
+- alias: Set timer if Marites reports something is open to alert us
   initial_state: on
   trigger:
     - platform: mqtt
-      topic: teslamate/cars/1/windows_open
+      topic: Marites/cars/1/windows_open
       payload: "true"
     - platform: mqtt
-      topic: teslamate/cars/1/doors_open
+      topic: Marites/cars/1/doors_open
       payload: "true"
     - platform: mqtt
-      topic: teslamate/cars/1/trunk_open
+      topic: Marites/cars/1/trunk_open
       payload: "true"
     - platform: mqtt
-      topic: teslamate/cars/1/frunk_open
+      topic: Marites/cars/1/frunk_open
       payload: "true"
   action:
     - service: script.turn_on
@@ -958,16 +958,16 @@ For example, opening the door will open the door and the window. If we don't del
   initial_state: on
   trigger:
     - platform: mqtt
-      topic: teslamate/cars/1/windows_open
+      topic: Marites/cars/1/windows_open
       payload: "false"
     - platform: mqtt
-      topic: teslamate/cars/1/doors_open
+      topic: Marites/cars/1/doors_open
       payload: "false"
     - platform: mqtt
-      topic: teslamate/cars/1/trunk_open
+      topic: Marites/cars/1/trunk_open
       payload: "false"
     - platform: mqtt
-      topic: teslamate/cars/1/frunk_open
+      topic: Marites/cars/1/frunk_open
       payload: "false"
   action:
     - service: script.turn_off

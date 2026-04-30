@@ -1,9 +1,9 @@
-defmodule TeslaMateWeb.CarLive.SummaryTest do
-  use TeslaMateWeb.ConnCase
-  use TeslaMate.VehicleCase
+defmodule MaritesWeb.CarLive.SummaryTest do
+  use MaritesWeb.ConnCase
+  use Marites.VehicleCase
 
   alias TeslaApi.Vehicle.State.VehicleState.SoftwareUpdate
-  alias TeslaMate.{Settings, Log, Repo}
+  alias Marites.{Settings, Log, Repo}
 
   defp table_row(html, key, value, opts \\ []) do
     assert {"tr", _, [{"td", _, [^key]}, {"td", [], [v]}]} =
@@ -489,7 +489,7 @@ defmodule TeslaMateWeb.CarLive.SummaryTest do
 
     {:ok, _pid} =
       start_supervised(
-        {TeslaMate.Vehicles,
+        {Marites.Vehicles,
          vehicle: VehicleMock,
          vehicles: [
            %TeslaApi.Vehicle{

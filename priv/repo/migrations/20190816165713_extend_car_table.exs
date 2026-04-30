@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.ExtendCarTable do
+defmodule Marites.Repo.Migrations.ExtendCarTable do
   use Ecto.Migration
 
   def change do

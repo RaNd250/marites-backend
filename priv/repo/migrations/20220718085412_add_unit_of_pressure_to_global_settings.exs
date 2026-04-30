@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddUnitOfPressureToGlobalSettings do
+defmodule Marites.Repo.Migrations.AddUnitOfPressureToGlobalSettings do
   use Ecto.Migration
 
   def change do

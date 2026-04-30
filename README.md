@@ -1,13 +1,13 @@
-# TeslaMate
+# Marites
 
-[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](https://github.com/teslamate-org/teslamate/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](https://github.com/Marites-org/Marites/blob/main/LICENSE)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10859/badge)](https://www.bestpractices.dev/projects/10859)
-[![CI](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml)
-[![Publish Docker images](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml)
-[![Coverage](https://coveralls.io/repos/github/teslamate-org/teslamate/badge.svg?branch=main)](https://coveralls.io/github/teslamate-org/teslamate?branch=main)
-[![current version](https://img.shields.io/docker/v/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
-[![docker image size](https://img.shields.io/docker/image-size/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
-[![docker pulls](https://img.shields.io/docker/pulls/teslamate/teslamate?color=%23099cec)](https://hub.docker.com/r/teslamate/teslamate)
+[![CI](https://github.com/Marites-org/Marites/actions/workflows/devops.yml/badge.svg)](https://github.com/Marites-org/Marites/actions/workflows/devops.yml)
+[![Publish Docker images](https://github.com/Marites-org/Marites/actions/workflows/buildx.yml/badge.svg)](https://github.com/Marites-org/Marites/actions/workflows/buildx.yml)
+[![Coverage](https://coveralls.io/repos/github/Marites-org/Marites/badge.svg?branch=main)](https://coveralls.io/github/Marites-org/Marites?branch=main)
+[![current version](https://img.shields.io/docker/v/Marites/Marites/latest)](https://hub.docker.com/r/Marites/Marites)
+[![docker image size](https://img.shields.io/docker/image-size/Marites/Marites/latest)](https://hub.docker.com/r/Marites/Marites)
+[![docker pulls](https://img.shields.io/docker/pulls/Marites/Marites?color=%23099cec)](https://hub.docker.com/r/Marites/Marites)
 
 A powerful, self-hosted data logger for your Tesla.
 
@@ -21,16 +21,16 @@ A powerful, self-hosted data logger for your Tesla.
 [!CAUTION]
 **Use Official Versions Only**
 
-To protect yourself from malicious forks, malware, and data theft, please ensure you only obtain TeslaMate from the official source:
+To protect yourself from malicious forks, malware, and data theft, please ensure you only obtain Marites from the official source:
 
-- Official Repository: [https://github.com/teslamate-org/teslamate](https://github.com/teslamate-org/teslamate)
-- Official Documentation: [https://docs.teslamate.org](https://docs.teslamate.org/)
+- Official Repository: [https://github.com/Marites-org/Marites](https://github.com/Marites-org/Marites)
+- Official Documentation: [https://docs.Marites.org](https://docs.Marites.org/)
 
-We have received reports of deceptive websites and unofficial mobile apps (e.g. on the App Store) using the TeslaMate name to distribute modified or harmful versions. If you are using a version from another source, your Tesla account credentials and vehicle data may be at risk.
+We have received reports of deceptive websites and unofficial mobile apps (e.g. on the App Store) using the Marites name to distribute modified or harmful versions. If you are using a version from another source, your Tesla account credentials and vehicle data may be at risk.
 
 ## Documentation
 
-The documentation is available at [https://docs.teslamate.org](https://docs.teslamate.org/)
+The documentation is available at [https://docs.Marites.org](https://docs.Marites.org/)
 
 ## Features
 
@@ -51,31 +51,31 @@ The documentation is available at [https://docs.teslamate.org](https://docs.tesl
 
 Sample screenshots of bundled dashboards can be seen by clicking the links below.
 
-- [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
-- [Charge Level](https://docs.teslamate.org/docs/screenshots/#charge-level)
-- [Charges (Energy added / used)](https://docs.teslamate.org/docs/screenshots#charges)
-- [Charge Details](https://docs.teslamate.org/docs/screenshots#charge-details)
-- [Charging Stats](https://docs.teslamate.org/docs/screenshots#charging-stats)
-- [Database Information](https://docs.teslamate.org/docs/screenshots/#database-information)
-- [Drive Stats](https://docs.teslamate.org/docs/screenshots#drive-stats)
-- [Drives (Distance / Energy consumed (net))](https://docs.teslamate.org/docs/screenshots/#drives)
-- [Drive Details](https://docs.teslamate.org/docs/screenshots/#drive-details)
-- [Efficiency (Consumption (net / gross))](https://docs.teslamate.org/docs/screenshots#efficiency)
-- [Locations (addresses)](https://docs.teslamate.org/docs/screenshots/#location-addresses)
-- [Mileage](https://docs.teslamate.org/docs/screenshots/#mileage)
-- [Overview](https://docs.teslamate.org/docs/screenshots/#overview)
-- [Projected Range (battery degradation)](https://docs.teslamate.org/docs/screenshots#projected-range)
-- [States (see when your car was online or asleep)](https://docs.teslamate.org/docs/screenshots#states)
-- [Statistics](https://docs.teslamate.org/docs/screenshots/#statistics)
-- [Timeline](https://docs.teslamate.org/docs/screenshots/#timeline)
-- [Trip](https://docs.teslamate.org/docs/screenshots/#trip)
-- [Updates (History of installed updates)](https://docs.teslamate.org/docs/screenshots#updates)
-- [Vampire Drain](https://docs.teslamate.org/docs/screenshots#vampire-drain)
-- [Visited (Lifetime driving map)](https://docs.teslamate.org/docs/screenshots/#visited-lifetime-driving-map)
+- [Battery Health](https://docs.Marites.org/docs/screenshots/#battery-health)
+- [Charge Level](https://docs.Marites.org/docs/screenshots/#charge-level)
+- [Charges (Energy added / used)](https://docs.Marites.org/docs/screenshots#charges)
+- [Charge Details](https://docs.Marites.org/docs/screenshots#charge-details)
+- [Charging Stats](https://docs.Marites.org/docs/screenshots#charging-stats)
+- [Database Information](https://docs.Marites.org/docs/screenshots/#database-information)
+- [Drive Stats](https://docs.Marites.org/docs/screenshots#drive-stats)
+- [Drives (Distance / Energy consumed (net))](https://docs.Marites.org/docs/screenshots/#drives)
+- [Drive Details](https://docs.Marites.org/docs/screenshots/#drive-details)
+- [Efficiency (Consumption (net / gross))](https://docs.Marites.org/docs/screenshots#efficiency)
+- [Locations (addresses)](https://docs.Marites.org/docs/screenshots/#location-addresses)
+- [Mileage](https://docs.Marites.org/docs/screenshots/#mileage)
+- [Overview](https://docs.Marites.org/docs/screenshots/#overview)
+- [Projected Range (battery degradation)](https://docs.Marites.org/docs/screenshots#projected-range)
+- [States (see when your car was online or asleep)](https://docs.Marites.org/docs/screenshots#states)
+- [Statistics](https://docs.Marites.org/docs/screenshots/#statistics)
+- [Timeline](https://docs.Marites.org/docs/screenshots/#timeline)
+- [Trip](https://docs.Marites.org/docs/screenshots/#trip)
+- [Updates (History of installed updates)](https://docs.Marites.org/docs/screenshots#updates)
+- [Vampire Drain](https://docs.Marites.org/docs/screenshots#vampire-drain)
+- [Visited (Lifetime driving map)](https://docs.Marites.org/docs/screenshots/#visited-lifetime-driving-map)
 
 ## Screenshots
 
-Sneak peak into TeslaMate interface and bundled dashboards. See [the docs](https://docs.teslamate.org/docs/screenshots) for additional screenshots.
+Sneak peak into Marites interface and bundled dashboards. See [the docs](https://docs.Marites.org/docs/screenshots) for additional screenshots.
 
 ![Web Interface](/website/static/screenshots/web_interface.png)
 
@@ -85,34 +85,34 @@ Sneak peak into TeslaMate interface and bundled dashboards. See [the docs](https
 
 ## License
 
-TeslaMate is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**.
+Marites is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**.
 
-This license is designed to ensure that TeslaMate remains free and open for everyone. By using, modifying, or building upon this project, you agree to the following:
+This license is designed to ensure that Marites remains free and open for everyone. By using, modifying, or building upon this project, you agree to the following:
 
-- Reciprocal Sharing (Copyleft): If you modify TeslaMate or incorporate it into another project, you must release the entire source code of your version under the same AGPLv3 license.
+- Reciprocal Sharing (Copyleft): If you modify Marites or incorporate it into another project, you must release the entire source code of your version under the same AGPLv3 license.
 - Universal Access to Source: This requirement applies regardless of how you provide the software to others—whether you distribute it as a downloadable application (e.g., in an App Store), as a pre-packaged image, or provide access to its functionality via a network service (SaaS).
-- No Closed-Source Derivatives: We do not permit the use of TeslaMate or its components in closed-source commercial products. If your software interacts with or relies on TeslaMate, it must be open-source. If you build upon this project, you are expected to contribute back to the community.
+- No Closed-Source Derivatives: We do not permit the use of Marites or its components in closed-source commercial products. If your software interacts with or relies on Marites, it must be open-source. If you build upon this project, you are expected to contribute back to the community.
 
-For the full legal terms, please refer to the [LICENSE](https://github.com/teslamate-org/teslamate/blob/main/LICENSE) file.
+For the full legal terms, please refer to the [LICENSE](https://github.com/Marites-org/Marites/blob/main/LICENSE) file.
 
 Key Requirements:
 
-- Copyleft: If you modify TeslaMate and distribute it (e.g., as an app, binary, or package) or offer it as a service over a network (SaaS), you must make your modified source code available to all users under the same AGPLv3 license.
+- Copyleft: If you modify Marites and distribute it (e.g., as an app, binary, or package) or offer it as a service over a network (SaaS), you must make your modified source code available to all users under the same AGPLv3 license.
 - No "Closed" Forks: This license ensures that improvements made by commercial entities or third parties remain open to the entire community.
 - Attribution: You must keep all original copyright notices and license information intact.
 
-**Trademark Policy**: The use of the TeslaMate name and logo is governed by our [Trademark Policy](https://github.com/teslamate-org/teslamate/blob/main/TRADEMARK.md).
+**Trademark Policy**: The use of the Marites name and logo is governed by our [Trademark Policy](https://github.com/Marites-org/Marites/blob/main/TRADEMARK.md).
 
-**Contributions:** All contributors must sign our [Contributor License Agreement](https://github.com/teslamate-org/legal/blob/main/CLA.md). This is handled via cla-assistant.io automatically on first PR and does not take long. **Why do we need this?** It guarantees that TeslaMate will **always remain Free Software** (AGPL-3.0) and allows the [teslamate-org](https://github.com/teslamate-org) to legally defend the project against license violations.
+**Contributions:** All contributors must sign our [Contributor License Agreement](https://github.com/Marites-org/legal/blob/main/CLA.md). This is handled via cla-assistant.io automatically on first PR and does not take long. **Why do we need this?** It guarantees that Marites will **always remain Free Software** (AGPL-3.0) and allows the [Marites-org](https://github.com/Marites-org) to legally defend the project against license violations.
 
 ## Star History
 
 <!-- markdownlint-disable MD033 -->
-<a href="https://www.star-history.com/#teslamate-org/teslamate&type=date&legend=top-left">
+<a href="https://www.star-history.com/#Marites-org/Marites&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=teslamate-org/teslamate&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=teslamate-org/teslamate&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=teslamate-org/teslamate&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&legend=top-left" />
  </picture>
 </a>
 <!-- markdownlint-enable MD033 -->
@@ -121,4 +121,4 @@ Key Requirements:
 
 - Initial Author: Adrian Kumpf
 - List of Contributors:
-- [![TeslaMate Contributors](https://contrib.rocks/image?repo=teslamate-org/teslamate)](https://github.com/teslamate-org/teslamate/graphs/contributors)
+- [![Marites Contributors](https://contrib.rocks/image?repo=Marites-org/Marites)](https://github.com/Marites-org/Marites/graphs/contributors)

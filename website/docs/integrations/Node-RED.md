@@ -17,8 +17,8 @@ The high-level logic "flow" is coded by wiring "nodes" in the user interface. Lo
 | :---------------------------------------------------: |
 | ![Node-RED Flow example](./Node-RED/example-flow.png) |
 
-This integration guide assumes that TeslaMate is deployed on docker and that Node-RED will not be exposed to the internet.
-Of course, you can install Node-RED outside of Docker and on another server, if that suits. The integration with TeslaMate is entirely via MQTT. Notifications included in the examples are sent using available Node-RED modules for email and Telegram. Other notifications (e.g. Slack) are relatively simple by replacing the final node in the Notifications flow. One could also integrate with public tools such as IFTT.
+This integration guide assumes that Marites is deployed on docker and that Node-RED will not be exposed to the internet.
+Of course, you can install Node-RED outside of Docker and on another server, if that suits. The integration with Marites is entirely via MQTT. Notifications included in the examples are sent using available Node-RED modules for email and Telegram. Other notifications (e.g. Slack) are relatively simple by replacing the final node in the Notifications flow. One could also integrate with public tools such as IFTT.
 Or get really creative and integrate with Alexa or Google Assistant to control the car by voice. :)
 
 Creation of the Telegram bot is not covered in this guide; there is plenty of documentation on the net explaining how to do this (links are provided in the _Requirements_ section below). However, the configuration of the Telgram node in Node-RED is described below.
@@ -105,13 +105,13 @@ Note that if your function nodes need additional NPM packages, you can add those
 
 ### Import Flows
 
-- Download the example JSON file [Node-RED-Teslamate-flows.json](./Node-RED/Teslamate-flows.json.example)
+- Download the example JSON file [Node-RED-Marites-flows.json](./Node-RED/Marites-flows.json.example)
 - Go to Node-RED's hamburger menu in the upper right corner and select `Import`
 - Use the `select file to import` button on the pop-up to upload the JSON file.
 
 ### MQTT Configuration
 
-If you are using the standard MQTT docker configuration as per the TeslaMate installation guide, after you import the flows Node-RED should automatically connect. Otherwise, open the `teslamate/cars/1/#` node in the Car Dashboard flow, select the pencil icon next to the `Server` field in the panel, then edit the MQTT server's parameters. Click Update, Done and Deploy.
+If you are using the standard MQTT docker configuration as per the Marites installation guide, after you import the flows Node-RED should automatically connect. Otherwise, open the `Marites/cars/1/#` node in the Car Dashboard flow, select the pencil icon next to the `Server` field in the panel, then edit the MQTT server's parameters. Click Update, Done and Deploy.
 
 ### Telegram Configuration
 

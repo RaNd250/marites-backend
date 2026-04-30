@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.UseVariableLengthTypeForTokens do
+defmodule Marites.Repo.Migrations.UseVariableLengthTypeForTokens do
   use Ecto.Migration
 
   def change do

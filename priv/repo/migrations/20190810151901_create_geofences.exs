@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateGeofences do
+defmodule Marites.Repo.Migrations.CreateGeofences do
   use Ecto.Migration
 
   def change do

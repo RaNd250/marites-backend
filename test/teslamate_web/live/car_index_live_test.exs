@@ -1,9 +1,9 @@
-defmodule TeslaMateWeb.CarLive.Indextest do
-  use TeslaMateWeb.ConnCase
-  use TeslaMate.VehicleCase
+defmodule MaritesWeb.CarLive.Indextest do
+  use MaritesWeb.ConnCase
+  use Marites.VehicleCase
 
-  alias TeslaMate.Settings.GlobalSettings
-  alias TeslaMate.Settings
+  alias Marites.Settings.GlobalSettings
+  alias Marites.Settings
 
   describe "base URL" do
     @tag :signed_in
@@ -57,7 +57,7 @@ defmodule TeslaMateWeb.CarLive.Indextest do
 
     {:ok, _pid} =
       start_supervised(
-        {TeslaMate.Vehicles,
+        {Marites.Vehicles,
          vehicle: VehicleMock,
          vehicles: [
            %TeslaApi.Vehicle{

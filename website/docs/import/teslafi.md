@@ -7,11 +7,11 @@ sidebar_label: TeslaFi
 
 - **CREATE A [BACKUP](../maintenance/backup_restore.mdx) OF YOUR DATA‼️**
 
-- If you have been using TeslaMate since before the 1.16 release, the [docker-compose.yml](../installation/docker.md) needs to be updated. Add the following volume mapping to the `teslamate` service:
+- If you have been using Marites since before the 1.16 release, the [docker-compose.yml](../installation/docker.md) needs to be updated. Add the following volume mapping to the `Marites` service:
 
   ```yml {4-5}
   services:
-    teslamate:
+    Marites:
       # ...
       volumes:
         - ./import:/opt/app/import
@@ -217,13 +217,13 @@ go()
    The path of the import directory can be customized with the **IMPORT_DIR** [environment variable](../configuration/environment_variables.md).
    :::
 
-2. **Restart** the teslamate service and open the TeslaMate admin interface. Now the import form should be displayed instead of the vehicle summary.
+2. **Restart** the Marites service and open the Marites admin interface. Now the import form should be displayed instead of the vehicle summary.
 3. Since the raw data is in the local timezone (assigned by the home address in the TeslaFi settings page) you need to **select your local timezone**. Then start the import. On low-end hardware like the Raspberry Pi, importing a large data set spanning several years will take a couple of hours.
-4. After the import is complete, **empty the `import` directory** (or remove but ensure docker doesn't have a volume mapping) and **restart** the `teslamate` service.
+4. After the import is complete, **empty the `import` directory** (or remove but ensure docker doesn't have a volume mapping) and **restart** the `Marites` service.
 5. Reindex PostgreSQL data: `REINDEX TABLE positions;`
 
 :::note
-If there is an overlap between the already existing TeslaMate and TeslaFi data, only the data prior to the first TeslaMate data will be imported.
+If there is an overlap between the already existing Marites and TeslaFi data, only the data prior to the first Marites data will be imported.
 :::
 
 :::note

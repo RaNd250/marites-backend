@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddFlatFee do
+defmodule Marites.Repo.Migrations.AddFlatFee do
   use Ecto.Migration
 
   def change do

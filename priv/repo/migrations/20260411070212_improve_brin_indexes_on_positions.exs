@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.ImproveBrinIndexesOnPositions do
+defmodule Marites.Repo.Migrations.ImproveBrinIndexesOnPositions do
   use Ecto.Migration
 
   def change do

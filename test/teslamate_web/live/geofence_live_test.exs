@@ -1,8 +1,8 @@
-defmodule TeslaMateWeb.GeoFenceLiveTest do
-  use TeslaMateWeb.ConnCase
+defmodule MaritesWeb.GeoFenceLiveTest do
+  use MaritesWeb.ConnCase
 
-  alias TeslaMate.{Locations, Settings, Log, Repo}
-  alias TeslaMate.Locations.GeoFence
+  alias Marites.{Locations, Settings, Log, Repo}
+  alias Marites.Locations.GeoFence
 
   import TestHelper, only: [decimal: 1]
   import Ecto.Query
@@ -397,7 +397,7 @@ defmodule TeslaMateWeb.GeoFenceLiveTest do
   end
 
   describe "grafana URL" do
-    alias TeslaMate.Settings.GlobalSettings
+    alias Marites.Settings.GlobalSettings
 
     test "sets the base URL", %{conn: conn} do
       assert %GlobalSettings{grafana_url: nil} = Settings.get_global_settings!()
@@ -452,8 +452,8 @@ defmodule TeslaMateWeb.GeoFenceLiveTest do
   end
 
   describe "charging cost" do
-    alias TeslaMate.Log.{ChargingProcess, Position}
-    alias TeslaMate.Log
+    alias Marites.Log.{ChargingProcess, Position}
+    alias Marites.Log
 
     test "shows modal if cost per kWh was entered", %{conn: conn} do
       car = car_fixture()

@@ -1,8 +1,8 @@
-defmodule TeslaMate.LocationsGeofencesTest do
-  use TeslaMate.DataCase
+defmodule Marites.LocationsGeofencesTest do
+  use Marites.DataCase
 
-  alias TeslaMate.{Locations, Log, Repo}
-  alias TeslaMate.Locations.GeoFence
+  alias Marites.{Locations, Log, Repo}
+  alias Marites.Locations.GeoFence
   alias Log.{Drive, ChargingProcess}
 
   @valid_attrs %{

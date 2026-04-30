@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddCostFieldToCharges do
+defmodule Marites.Repo.Migrations.AddCostFieldToCharges do
   use Ecto.Migration
 
   def change do

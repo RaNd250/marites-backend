@@ -1,6 +1,6 @@
 # Website
 
-This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator and automatically deployed to [docs.teslamate.org](https://docs.teslamate.org).
+This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator and automatically deployed to [docs.Marites.org](https://docs.Marites.org).
 
 ## Installation
 

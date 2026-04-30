@@ -1,9 +1,9 @@
-defmodule TeslaMate.Vehicles.VehicleTest do
-  use TeslaMate.VehicleCase, async: true
+defmodule Marites.Vehicles.VehicleTest do
+  use Marites.VehicleCase, async: true
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Vehicles.Vehicle
-  alias TeslaMate.Log.{Car, Update}
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Vehicles.Vehicle
+  alias Marites.Log.{Car, Update}
 
   describe "starting" do
     @tag :capture_log
@@ -64,7 +64,7 @@ defmodule TeslaMate.Vehicles.VehicleTest do
   end
 
   describe "resume_logging/1" do
-    alias TeslaMate.Vehicles.Vehicle
+    alias Marites.Vehicles.Vehicle
 
     test "does nothing of already online", %{test: name} do
       events = [
@@ -139,8 +139,8 @@ defmodule TeslaMate.Vehicles.VehicleTest do
   end
 
   describe "settings change" do
-    alias TeslaMate.Vehicles.Vehicle
-    alias TeslaMate.Settings.CarSettings
+    alias Marites.Vehicles.Vehicle
+    alias Marites.Settings.CarSettings
 
     test "applies new sleep settings", %{test: name} do
       events = [

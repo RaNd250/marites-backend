@@ -1,11 +1,11 @@
-defmodule TeslaMate.ImportTest do
-  use TeslaMate.DataCase
+defmodule Marites.ImportTest do
+  use Marites.DataCase
 
-  alias TeslaMate.Log.{Car, Drive, ChargingProcess, State, Update}
-  alias TeslaMate.{Repo, Log, Repair}
+  alias Marites.Log.{Car, Drive, ChargingProcess, State, Update}
+  alias Marites.{Repo, Log, Repair}
 
-  alias TeslaMate.Import.Status
-  alias TeslaMate.Import
+  alias Marites.Import.Status
+  alias Marites.Import
 
   import TestHelper, only: [decimal: 1]
   import Mock
@@ -383,13 +383,13 @@ defmodule TeslaMate.ImportTest do
       end
 
       assert [
-               %TeslaMate.Log.State{
+               %Marites.Log.State{
                  car_id: car_id,
                  start_date: ~U[2019-10-26 23:30:40.000000Z],
                  end_date: ~U[2019-10-27 02:14:44.000000Z],
                  state: :asleep
                },
-               %TeslaMate.Log.State{
+               %Marites.Log.State{
                  car_id: car_id,
                  start_date: ~U[2019-10-27 02:14:44.000000Z],
                  end_date: nil,

@@ -1,7 +1,7 @@
-defmodule TeslaMate.TerrainTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.TerrainTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Terrain
+  alias Marites.Terrain
 
   def start_terrain(name, responses \\ %{}) do
     log_name = :"log_#{name}"

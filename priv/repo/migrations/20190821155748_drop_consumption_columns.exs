@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DropConsumptionColumns do
+defmodule Marites.Repo.Migrations.DropConsumptionColumns do
   use Ecto.Migration
 
   def change do

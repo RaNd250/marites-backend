@@ -14,7 +14,7 @@
 
 #### Build, CI, internal
 
-- build(deps): bump ex_cldr from 2.46.0 to 2.47.1 to fix 100% CPU lock when accessing TeslaMate web (#5166)
+- build(deps): bump ex_cldr from 2.46.0 to 2.47.1 to fix 100% CPU lock when accessing Marites web (#5166)
 - ci: migrate runners for arm from buildjet to gha native (#5206 - @adriankumpf)
 - ci: limit DevOps workflow runs of type push to branch main to prevent duplicate runs on PR (#5211 - @swiffer)
 - build(deps): update flake.lock (#5186)
@@ -62,31 +62,31 @@
 
 ## [3.0.0] - 2026-02-28
 
-Let's start with a quote: "Why do programmers like dark mode? Because light attracts bugs.". Yes, you read that right. TeslaMate Webview now has a dark mode.
+Let's start with a quote: "Why do programmers like dark mode? Because light attracts bugs.". Yes, you read that right. Marites Webview now has a dark mode.
 
 As always, lots of improvements have been made. Memory usage has been reduced, while performance has been increased — it sounds too good to be true, but it's the reality.
 Battery heating is now also shown on the overview dashboard, and the drives dashboard now always shows the consumption.
-To make your TeslaMate experience even better, we have also made more than 52 other improvements.
+To make your Marites experience even better, we have also made more than 52 other improvements.
 
 Enjoy!
 
 ### 📄 License Change Notice
 
-As of PR #5131, TeslaMate has transitioned from the MIT License to the GNU Affero General Public License v3.0 (AGPLv3).
+As of PR #5131, Marites has transitioned from the MIT License to the GNU Affero General Public License v3.0 (AGPLv3).
 
 What does this mean for you?
 
-- For Private Users: Nothing changes. You can continue to use, host, and modify TeslaMate for your personal use for free, just as before.
-- For the Community: This change ensures that TeslaMate remains open and free. It prevents companies from taking the community's hard work and turning it into a closed-source commercial service without giving back.
-- For Developers: If you modify or use TeslaMate, you must now share your source code modifications under the same license.
+- For Private Users: Nothing changes. You can continue to use, host, and modify Marites for your personal use for free, just as before.
+- For the Community: This change ensures that Marites remains open and free. It prevents companies from taking the community's hard work and turning it into a closed-source commercial service without giving back.
+- For Developers: If you modify or use Marites, you must now share your source code modifications under the same license.
 
 We believe this step is necessary to protect the project from exploitation and to ensure its long-term sustainability.
 
 ### Known issues
 
 - We have received reports from users suffering with "No Data" errors when viewing dashboards in Grafana (#5157).
-  This issue is currently assumed to be instance specific and caused by changes in Grafana (v12.1.1 -> v12.4.0). If you are affected please try saving the TeslaMate datasource by clicking on "Save & test" in Grafana -> Connections -> Data sources -> TeslaMate.
-- Dashboards containing a Geofence filter fail to load if no Geofence is defined (#5191). While being a regression in Grafana v12.4.0 most likely it can be fixed by defining at least one Geofence. We will provide a workaround in TeslaMate v3.0.1 until it's fixed upstream.
+  This issue is currently assumed to be instance specific and caused by changes in Grafana (v12.1.1 -> v12.4.0). If you are affected please try saving the Marites datasource by clicking on "Save & test" in Grafana -> Connections -> Data sources -> Marites.
+- Dashboards containing a Geofence filter fail to load if no Geofence is defined (#5191). While being a regression in Grafana v12.4.0 most likely it can be fixed by defining at least one Geofence. We will provide a workaround in Marites v3.0.1 until it's fixed upstream.
 
 ### New features
 
@@ -161,12 +161,12 @@ We believe this step is necessary to protect the project from exploitation and t
 - docs: fix external image rendering with Traefik SSL (#5074 - @swiffer)
 - docs(home_assistant): default tesla_active_route_distance_to_arrival sensor to kilometers (#5086 - @kenni)
 - docs: Remove hints to now deprecated Grafana VS Code Extension in contribution guide (#5110 - @swiffer)
-- docs: Add reference to TeslaMate Achievements (#5134 - @crstian19)
+- docs: Add reference to Marites Achievements (#5134 - @crstian19)
 
 ## [2.2.0] - 2025-11-06
 
 As always, there have been many improvements. We now support a proxy for the OpenStreetMap API. If you live in a geo-blocked location, this could simplify your setup. Your tokens are now more secure.
-We use the latest dependencies and support PostgreSQL 18 (To update, back up your data and follow [the guide](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) **Please note: Volume mounts have changed in PostgreSQL18, see point 4 of the guide.**).
+We use the latest dependencies and support PostgreSQL 18 (To update, back up your data and follow [the guide](https://docs.Marites.org/docs/maintenance/upgrading_postgres) **Please note: Volume mounts have changed in PostgreSQL18, see point 4 of the guide.**).
 We also avoid memory bloat on misconfigured Docker hosts. If your host has limited hardware, this will greatly improve your experience.
 The dashboards have been improved in terms of performance, and all dashboards now function as expected when set to miles.
 
@@ -307,7 +307,7 @@ Enjoy it.
 - build(deps-dev): bump mock from 0.3.8 to 0.3.9 (#4712)
 - build(deps-dev): bump credo from 1.7.11 to 1.7.12 (#4711)
 - build(deps): bump crate-ci/typos from 1.31.1 to 1.31.2 (#4710)
-- fix(nix): update mix dependency hash in nix builds ([08fe0ac](https://github.com/teslamate-org/teslamate/commit/08fe0ac934176484c84fd4329c8d64925b6b0b97) - @JakobLichterfeld)
+- fix(nix): update mix dependency hash in nix builds ([08fe0ac](https://github.com/Marites-org/Marites/commit/08fe0ac934176484c84fd4329c8d64925b6b0b97) - @JakobLichterfeld)
 - feat(nix): use nixos-25.05 (#4716 - @JakobLichterfeld)
 - build(deps): update flake.lock (#4716)
 - fix(nix): skip duplicate cldr download to fix build on darwin and improve reproducibility (#4763 - @JakobLichterfeld)
@@ -328,8 +328,8 @@ Enjoy it.
 - chore(issue-template): enhance bug report template with additional fields and guidance (#4827 - @JakobLichterfeld)
 - build(deps): bump on-headers from 1.0.2 to 1.1.0 and compression from 1.0.2 to 1.1.0 in /website (#4831)
 - sec(deps): override webpack-dev-server to version 5.2.1 to fix CVE-2025-30360 (#4833 - @JakobLichterfeld)
-- ci(coverage): explicitly set mix-env to test ([322c2a2](https://github.com/teslamate-org/teslamate/commit/322c2a26e61ce68d5b44cb7f0f1a7c1820e0164d) and [e6931ab](https://github.com/teslamate-org/teslamate/commit/e6931aba6809c457cc7224aec934b8e419d2c116) - @JakobLichterfeld)
-- fix(mix): add "coveralls.github" to preferred_cli_env to avoid missing task error in CI runs ([1c76994](https://github.com/teslamate-org/teslamate/commit/1c76994b563a4e61514a1cf62c310532775add46) - @JakobLichterfeld)
+- ci(coverage): explicitly set mix-env to test ([322c2a2](https://github.com/Marites-org/Marites/commit/322c2a26e61ce68d5b44cb7f0f1a7c1820e0164d) and [e6931ab](https://github.com/Marites-org/Marites/commit/e6931aba6809c457cc7224aec934b8e419d2c116) - @JakobLichterfeld)
+- fix(mix): add "coveralls.github" to preferred_cli_env to avoid missing task error in CI runs ([1c76994](https://github.com/Marites-org/Marites/commit/1c76994b563a4e61514a1cf62c310532775add46) - @JakobLichterfeld)
 - build(deps): update flake.lock (#4834)
 - chore(issue-template): update bug report template to include Unraid as unsupported installation method (#4829 - @JakobLichterfeld)
 
@@ -359,19 +359,19 @@ Enjoy it.
 - docs: streamline installation guides (#4829 - @JakobLichterfeld)
 - docs: add nix develop to run treefmt to support non nix direnv users (#4829 - @JakobLichterfeld)
 - docs: add Unraid installation and maintenance instructions (no support) (#4758, #4829 - @vypergts and @JakobLichterfeld)
-- docs: clarify the use of secure connection to access TeslaMate (#4829 - @JakobLichterfeld)
+- docs: clarify the use of secure connection to access Marites (#4829 - @JakobLichterfeld)
 - docs: reorder guides into advanced guides, categories FleetAPI documentation as config (#4829 - @JakobLichterfeld)
 - docs: clarify which installation methods are supported and which are not (#4829 - @JakobLichterfeld)
 - docs: mention dedicated version for MCU2 upgraded cars (#4829 - @JakobLichterfeld)
 
 ## [2.0.0] - 2025-04-26
 
-**This is a breaking change release:** TeslaMate uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. We now require PostgreSQL 16.7 or 17.3 or higher as we are upgrading the bundled earthdistance extension to v1.2. TeslaMate will now fail to start if you are using an older version. Ensure to upgrade your database before upgrading TeslaMate. To upgrade PostgreSQL, you need to follow these instructions:
+**This is a breaking change release:** Marites uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. We now require PostgreSQL 16.7 or 17.3 or higher as we are upgrading the bundled earthdistance extension to v1.2. Marites will now fail to start if you are using an older version. Ensure to upgrade your database before upgrading Marites. To upgrade PostgreSQL, you need to follow these instructions:
 
-- [Backup your data](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
-- [Upgrade PostgreSQL to postgres:17](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
-- [Upgrade TeslaMate to this version](https://docs.teslamate.org/docs/upgrading)
-- [Backup your data after the upgrade](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
+- [Backup your data](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
+- [Upgrade PostgreSQL to postgres:17](https://docs.Marites.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
+- [Upgrade Marites to this version](https://docs.Marites.org/docs/upgrading)
+- [Backup your data after the upgrade](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
 
 **Note for user which revoked permissions:** If the SUPERUSER privilege has been revoked after the initial (manual) installation, it must be temporarily granted for pending earthdistance migrations to succeed. The privilege can then be safely revoked.
 
@@ -379,7 +379,7 @@ As always, there are also many improvements. The webview now shows the TPMS valu
 
 Enjoy it.
 
-**Note for contributors:** The default branch was renamed to `main`. Please update your local repository accordingly (see GitHub hint when visiting [teslamate-org/teslamate](https://github.com/teslamate-org/teslamate) or [GitHub documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch#updating-a-local-clone-after-a-branch-name-changes) for more information).
+**Note for contributors:** The default branch was renamed to `main`. Please update your local repository accordingly (see GitHub hint when visiting [Marites-org/Marites](https://github.com/Marites-org/Marites) or [GitHub documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch#updating-a-local-clone-after-a-branch-name-changes) for more information).
 
 ### Breaking Changes
 
@@ -404,12 +404,12 @@ Enjoy it.
 - build(deps): bump actions/cache from 4.2.2 to 4.2.3 (#4613)
 - build(deps): bump tesla from 1.13.2 to 1.14.1 (#4616)
 - ci(sec): remove pull_request_target workflow triggers to improve sec even further, the downside is that test images are now only created for repo's own PRs (#4637 - @JakobLichterfeld / Thanks to @Firebasky for responsibly disclosing the vulnerability)
-- ci: fix ghcr build ([..ddf85e6](https://github.com/teslamate-org/teslamate/commit/ba35f417014e6be742ee2b0713cfa7876ddf85e6) - @JakobLichterfeld)
+- ci: fix ghcr build ([..ddf85e6](https://github.com/Marites-org/Marites/commit/ba35f417014e6be742ee2b0713cfa7876ddf85e6) - @JakobLichterfeld)
 - ci: ensure ghcr images build correctly even if branch contains backslash (#4655 - @JakobLichterfeld)
-- ci: skip ghcr build for PRs from outside repo (#4660 and [462b568](https://github.com/teslamate-org/teslamate/commit/462b5680abbfbdfd26f028d88f7a62f4ae4183cd) - @JakobLichterfeld)
+- ci: skip ghcr build for PRs from outside repo (#4660 and [462b568](https://github.com/Marites-org/Marites/commit/462b5680abbfbdfd26f028d88f7a62f4ae4183cd) - @JakobLichterfeld)
 - build(deps): bump estree-util-value-to-estree in /website (#4641)
 - build(deps): update flake.lock (#4653)
-- fix(nix): update mix dependency hash in nix builds ([3d08431](https://github.com/teslamate-org/teslamate/commit/3d08431ee3de0eaf3d3045aa0018c687627c4dac) - @JakobLichterfeld)
+- fix(nix): update mix dependency hash in nix builds ([3d08431](https://github.com/Marites-org/Marites/commit/3d08431ee3de0eaf3d3045aa0018c687627c4dac) - @JakobLichterfeld)
 - ci(dependabot): add ignore rules for path-based dependencies (#4666 - @JakobLichterfeld)
 - sec: upgrade esbuild to 0.25.2 and esbuild-sass-plugin to 3.3.1 to avoid GHSA-67mh-4wv8-2f99 (#4669 - @JakobLichterfeld)
 - build(deps): bump http-proxy-middleware from 2.0.7 to 2.0.9 in /website (#4670)
@@ -448,7 +448,7 @@ Enjoy it.
 
 As always, there are many improvements.
 
-We now use Grafana 11.6.0 which was release the last days, improved the logging and state transitions, added a new dashboard for database information and improved other dashboards. We also added a new section to the documentation about the Entity Relationship Model (ERM) of TeslaMate. This is a great help for developers who want to understand the data model of TeslaMate and how to extend it.
+We now use Grafana 11.6.0 which was release the last days, improved the logging and state transitions, added a new dashboard for database information and improved other dashboards. We also added a new section to the documentation about the Entity Relationship Model (ERM) of Marites. This is a great help for developers who want to understand the data model of Marites and how to extend it.
 
 Enjoy it.
 
@@ -456,7 +456,7 @@ Enjoy it.
 
 ### Improvements and bug fixes
 
-- fix(nix): wait for mosquitto to start before starting teslamate (#4419 - @brianmay)
+- fix(nix): wait for mosquitto to start before starting Marites (#4419 - @brianmay)
 - feat: use Grafana 11.4.0 (#4299 - @swiffer)
 - feat: improve logging messages (#4467 - @micves and @brianmay)
 - feat: optimize state transitions (#4473 - @micves and @brianmay)
@@ -488,7 +488,7 @@ Enjoy it.
 - build(deps-dev): bump dialyxir from 1.4.4 to 1.4.5 (#4460)
 - build(deps): bump ex_cldr from 2.40.1 to 2.40.2 (#4461)
 - build(deps): bump crate-ci/typos from 1.28.1 to 1.29.0 (#4464)
-- ci: update actions/cache to v4.2.0 ([79107d5](https://github.com/teslamate-org/teslamate/commit/79107d53b7712934587bbe40c503e63d5dd9f122) - @JakobLichterfeld)
+- ci: update actions/cache to v4.2.0 ([79107d5](https://github.com/Marites-org/Marites/commit/79107d53b7712934587bbe40c503e63d5dd9f122) - @JakobLichterfeld)
 - build(deps): bump DeterminateSystems/magic-nix-cache-action from 8 to 9 (#4515)
 - build(deps): bump actions/stale from 9.0.0 to 9.1.0 (#4516)
 - build(deps): bump crate-ci/typos from 1.29.0 to 1.29.5 (#4514)
@@ -497,9 +497,9 @@ Enjoy it.
 - build(deps): bump @docusaurus/preset-classic from 3.6.3 to 3.7.0 in /website (#4518)
 - build(deps): bump serialize-javascript from 6.0.1 to 6.0.2 in /website (#4548)
 - build(deps): update flake.lock (#4455)
-- style(markdownlint): allow 'details', 'summary', and 'TabItem' elements ([d5b1a55](https://github.com/teslamate-org/teslamate/commit/d5b1a55007eefedd5d852ecd50d67b8c4d36faa5) - @JakobLichterfeld)
-- style(environment_variables): remove multiple whitespaces ([603ff82](https://github.com/teslamate-org/teslamate/commit/603ff824b052b4465fcce9fe77e5e40ad586c07a) - @JakobLichterfeld)
-- style(docs): fix line length fenced-code-style, no bare url links, multiple whitespaces, alt text, header style ([1972584](https://github.com/teslamate-org/teslamate/commit/1972584d8f9d11c2f640de046a8e9fd47b43c4fb) - @JakobLichterfeld)
+- style(markdownlint): allow 'details', 'summary', and 'TabItem' elements ([d5b1a55](https://github.com/Marites-org/Marites/commit/d5b1a55007eefedd5d852ecd50d67b8c4d36faa5) - @JakobLichterfeld)
+- style(environment_variables): remove multiple whitespaces ([603ff82](https://github.com/Marites-org/Marites/commit/603ff824b052b4465fcce9fe77e5e40ad586c07a) - @JakobLichterfeld)
+- style(docs): fix line length fenced-code-style, no bare url links, multiple whitespaces, alt text, header style ([1972584](https://github.com/Marites-org/Marites/commit/1972584d8f9d11c2f640de046a8e9fd47b43c4fb) - @JakobLichterfeld)
 - build(deps): bump actions/cache from 4.2.0 to 4.2.2 (#4564)
 - build(deps): bump crate-ci/typos from 1.29.5 to 1.30.0 (#4563)
 - build(deps): bump castore from 1.0.11 to 1.0.12 (#4565)
@@ -531,7 +531,7 @@ Enjoy it.
 - doc: Fixing typo for sensor psi calculation (#4470 - @Phazz)
 - doc: Simplify Home Assistant sensors, add device_class to allow changing measurement units (#4472 - @longzheng)
 - docs: add reindexing instructions for database maintenance to improve performance in case of index bloat due to frequent updates or deletions (#4558 and #4574 - @jheredianet)
-- docs: Update projects using TeslaMate (#4573 - @jheredianet)
+- docs: Update projects using Marites (#4573 - @jheredianet)
 - docs: fix and rearrange screenshot links (alphabetical) (#4580 - @swiffer)
 - docs: enhance TeslaFi import documentation with updated Python script for bulk data export (#4575 - @TheLinuxGuy and @JakobLichterfeld)
 - docs: add Entity Relationship Model section to development documentation (#4586 - @DrMichael and @JakobLichterfeld)
@@ -550,7 +550,7 @@ As always, there are many improvements. The focus has been on quality of life im
 
 #### Build, CI, internal
 
-- ci: remove unknown flag --ref for gh cache delete in cleanup_caches workflow ([3a515df](https://github.com/teslamate-org/teslamate/commit/3a515df5aa400139acf8ef638e5ae37339c553cf) - @JakobLichterfeld)
+- ci: remove unknown flag --ref for gh cache delete in cleanup_caches workflow ([3a515df](https://github.com/Marites-org/Marites/commit/3a515df5aa400139acf8ef638e5ae37339c553cf) - @JakobLichterfeld)
 - build(deps): bump actions/checkout from 4.2.1 to 4.2.2 (#4340)
 - build(deps): bump actions/cache from 4.0.2 to 4.1.2 (#4341)
 - build(deps): bump cachix/install-nix-action from 27 to 30 (#4342)
@@ -558,8 +558,8 @@ As always, there are many improvements. The focus has been on quality of life im
 - build(deps): bump floki from 0.36.2 to 0.36.3 (#4336)
 - feat: add CONTRIBUTING file to exclusion lists for treefmt (#4359 - @JakobLichterfeld)
 - ci: create PR to update flake.lock every saturday (#4372 - @brianmay)
-- ci(fix): correct permissions for flake.lock updates ([c673ef3](https://github.com/teslamate-org/teslamate/commit/c673ef363ba73ad076680d71ef54bd549582d41f)- @JakobLichterfeld)
-- ci: update flake.lock workflow with appropriate labels for created pr's ([54c41c1](https://github.com/teslamate-org/teslamate/commit/54c41c1fe66664b62d817502d1b2bdb244b70dc2) - @JakobLichterfeld)
+- ci(fix): correct permissions for flake.lock updates ([c673ef3](https://github.com/Marites-org/Marites/commit/c673ef363ba73ad076680d71ef54bd549582d41f)- @JakobLichterfeld)
+- ci: update flake.lock workflow with appropriate labels for created pr's ([54c41c1](https://github.com/Marites-org/Marites/commit/54c41c1fe66664b62d817502d1b2bdb244b70dc2) - @JakobLichterfeld)
 - build(deps): bump cross-spawn from 7.0.3 to 7.0.6 in /website (#4391)
 - build(deps): bump crate-ci/typos from 1.26.0 to 1.27.0 (#4344)
 - build(deps): update flake.lock (#4381)
@@ -582,12 +582,12 @@ As always, there are many improvements. The focus has been on quality of life im
 docs: add contributing guidelines link for GitHub (#4345 - @JakobLichterfeld)
 docs: update Home Assistant integration documentation with configuration URL and model name hints (#4359 - @JakobLichterfeld)
 docs: Remove availability from Home Assistant MQTT sensors, as it can be misleading and prevent sensors from receiving updated values (#4362 - @longzheng)
-docs: Introducing TeslaMate Guru on Gurubase.io (#4390 - @kursataktas)
+docs: Introducing Marites Guru on Gurubase.io (#4390 - @kursataktas)
 
 ## [1.31.1] - 2024-10-29
 
 This release primarily prevents beam.smp from overloading the CPU on ARM hosts. It also includes a number of other bug fixes and performance improvements. Enjoy it.
-Please also note: [v1.31.0 Release Notes](https://github.com/teslamate-org/teslamate/releases/tag/v1.31.0)
+Please also note: [v1.31.0 Release Notes](https://github.com/Marites-org/Marites/releases/tag/v1.31.0)
 
 ### New features
 
@@ -597,8 +597,8 @@ Please also note: [v1.31.0 Release Notes](https://github.com/teslamate-org/tesla
 
 #### Build, CI, internal
 
-- ci(fix): update cleanup_caches.yml to use new cache management commands and fix permissions ([d6793ce](https://github.com/teslamate-org/teslamate/commit/d6793ce5717687b9e984067bf4c208415e15fdac), [b0b694f](https://github.com/teslamate-org/teslamate/commit/b0b694fc8c3c45036aafda45200f3b0d068a2f50), [16bb503](https://github.com/teslamate-org/teslamate/commit/16bb5032c7d81cb86e76cc19662e3332456291a0) - @JakobLichterfeld)
-- ci: Add workflow to manually cleanup largest 100 caches ([dad7e3d](https://github.com/teslamate-org/teslamate/commit/dad7e3dea0ae1d799398bf1b31a0d598eff784bf), [523419d](https://github.com/teslamate-org/teslamate/commit/523419d35a610c7b06bbf7e9c2edd105e7d089aa) - @JakobLichterfeld)
+- ci(fix): update cleanup_caches.yml to use new cache management commands and fix permissions ([d6793ce](https://github.com/Marites-org/Marites/commit/d6793ce5717687b9e984067bf4c208415e15fdac), [b0b694f](https://github.com/Marites-org/Marites/commit/b0b694fc8c3c45036aafda45200f3b0d068a2f50), [16bb503](https://github.com/Marites-org/Marites/commit/16bb5032c7d81cb86e76cc19662e3332456291a0) - @JakobLichterfeld)
+- ci: Add workflow to manually cleanup largest 100 caches ([dad7e3d](https://github.com/Marites-org/Marites/commit/dad7e3dea0ae1d799398bf1b31a0d598eff784bf), [523419d](https://github.com/Marites-org/Marites/commit/523419d35a610c7b06bbf7e9c2edd105e7d089aa) - @JakobLichterfeld)
 
 #### Dashboards
 
@@ -619,16 +619,16 @@ Please also note: [v1.31.0 Release Notes](https://github.com/teslamate-org/tesla
 
 ## [1.31.0] - 2024-10-27
 
-As always, lots of improvements. The focus has been on performance improvements, especially on slow HW like Raspberry Pi 3B+. We achieved 240x speed improvements in several dashboards :rocket: And we welcomed @swiffer to the TeslaMate-Org team :wave: And much, much more. Enjoy it.
+As always, lots of improvements. The focus has been on performance improvements, especially on slow HW like Raspberry Pi 3B+. We achieved 240x speed improvements in several dashboards :rocket: And we welcomed @swiffer to the Marites-Org team :wave: And much, much more. Enjoy it.
 
-**Regarding PostgreSQL 17:** TeslaMate uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. Although TeslaMate currently runs fine with PostgreSQL 14+ we strongly recommend upgrading to the latest supported version. We recommend that you do this as follows:
+**Regarding PostgreSQL 17:** Marites uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. Although Marites currently runs fine with PostgreSQL 14+ we strongly recommend upgrading to the latest supported version. We recommend that you do this as follows:
 
-- [Backup your data](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
-- [Upgrade TeslaMate to this version](https://docs.teslamate.org/docs/upgrading)
-- [Backup your data after the upgrade](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
-- [Upgrade PostgreSQL to postgres:17](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
+- [Backup your data](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
+- [Upgrade Marites to this version](https://docs.Marites.org/docs/upgrading)
+- [Backup your data after the upgrade](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
+- [Upgrade PostgreSQL to postgres:17](https://docs.Marites.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
 
-**Additional info:** In some very rare cases with very old installations of TeslaMate (from 2019) we have observed performance issues due to missing indexes. These should normally be added with our automatic migrations. If you think your installation may be missing some indexes, see #4201 for the corrective SQL command.
+**Additional info:** In some very rare cases with very old installations of Marites (from 2019) we have observed performance issues due to missing indexes. These should normally be added with our automatic migrations. If you think your installation may be missing some indexes, see #4201 for the corrective SQL command.
 
 ### New features
 
@@ -670,12 +670,12 @@ As always, lots of improvements. The focus has been on performance improvements,
 - ci(fix): run ghcr build workflow only for specific conditions (#4219 - @JakobLichterfeld)
 - ci: remove branch restriction for check_paths workflow to increase sec (#4219 - @JakobLichterfeld)
 - build(deps): bump actions/checkout from 4.1.7 to 4.2.1 (#4262)
-- ci(fix): only run ghcr build in DevOps workflow on own repo ([022b173](https://github.com/teslamate-org/teslamate/commit/022b173430221d385479f4ec9d91d8ccffbfe7b9) - @JakobLichterfeld)
-- ci: pin ubuntu-24.04 as runner OS ([40dab3e](https://github.com/teslamate-org/teslamate/commit/40dab3e2a978b8a867f1159626d4c157ccab6c56) - @JakobLichterfeld)
-- ci: cleanup caches when pr is closed ([75cfc7c](https://github.com/teslamate-org/teslamate/commit/75cfc7cdd4b8f83f247211dc7fc5c5cd433bf746) - @JakobLichterfeld)
-- ci(fix): run ghcr build in DevOps workflow for forks ([688147e](https://github.com/teslamate-org/teslamate/commit/688147e2cf3fb5b55e702185a97a4a4ebb14d7ca) - @JakobLichterfeld)
-- ci(fix): correct syntax in ghcr_build workflow for workflow_call ([9e6a275](https://github.com/teslamate-org/teslamate/commit/9e6a2758d5ff21604976184ad69befc1c546e600) - @JakobLichterfeld)
-- ci(fix): run ghcr build as separate workflow to fix permission issues with forks ([0410593](https://github.com/teslamate-org/teslamate/commit/0410593850cde00e8f201a9b7d6009f0581ed43c) - @JakobLichterfeld)
+- ci(fix): only run ghcr build in DevOps workflow on own repo ([022b173](https://github.com/Marites-org/Marites/commit/022b173430221d385479f4ec9d91d8ccffbfe7b9) - @JakobLichterfeld)
+- ci: pin ubuntu-24.04 as runner OS ([40dab3e](https://github.com/Marites-org/Marites/commit/40dab3e2a978b8a867f1159626d4c157ccab6c56) - @JakobLichterfeld)
+- ci: cleanup caches when pr is closed ([75cfc7c](https://github.com/Marites-org/Marites/commit/75cfc7cdd4b8f83f247211dc7fc5c5cd433bf746) - @JakobLichterfeld)
+- ci(fix): run ghcr build in DevOps workflow for forks ([688147e](https://github.com/Marites-org/Marites/commit/688147e2cf3fb5b55e702185a97a4a4ebb14d7ca) - @JakobLichterfeld)
+- ci(fix): correct syntax in ghcr_build workflow for workflow_call ([9e6a275](https://github.com/Marites-org/Marites/commit/9e6a2758d5ff21604976184ad69befc1c546e600) - @JakobLichterfeld)
+- ci(fix): run ghcr build as separate workflow to fix permission issues with forks ([0410593](https://github.com/Marites-org/Marites/commit/0410593850cde00e8f201a9b7d6009f0581ed43c) - @JakobLichterfeld)
 - build(deps-dev): bump credo from 1.7.1 to 1.7.8 (#4238)
 - build(deps): bump crate-ci/typos from 1.22.9 to 1.26.0 (#4261)
 - refactor: Cleanup nix code (#4265 - @scottbot95)
@@ -754,12 +754,12 @@ As always with many improvements. Cleaner LFP battery handling, 100x speed impro
 
 ### New features
 
-- Track open/close states for individual doors (#3962 - @SaswatPadhi), new MQTT values see [documentation](https://docs.teslamate.org/docs/integrations/mqtt)
+- Track open/close states for individual doors (#3962 - @SaswatPadhi), new MQTT values see [documentation](https://docs.Marites.org/docs/integrations/mqtt)
 - Allow Fleet API users to change client_id (#3984 - @jlestel)
 - Customize intervals between vehicle_data calls (#3940 - @jlestel)
 - feat: Create NixOS module (#3998 - @scottbot95)
 - feat: Add ability to enable and disable data collection for cars (#3993 - @mark3-dev)
-- publish center_display_state to mqtt (#3813 - @Atrox), new MQTT values see [documentation](https://docs.teslamate.org/docs/integrations/mqtt)
+- publish center_display_state to mqtt (#3813 - @Atrox), new MQTT values see [documentation](https://docs.Marites.org/docs/integrations/mqtt)
 - feat: add LFP Battery setting for car settings (#4007 -@cwanja)
 - Add icon to summary when Sentry Mode is triggered and recording (#4043 -@kolaCZek)
 
@@ -803,7 +803,7 @@ As always with many improvements. Cleaner LFP battery handling, 100x speed impro
 #### Documentation
 
 - doc: remove outdated, unsupported, unmaintained portainer doc (#3972 - @JakobLichterfeld)
-- doc: fix MMM-Teslamate and ha-addon-teslamate project links (#3973 - @olexs)
+- doc: fix MMM-Marites and ha-addon-Marites project links (#3973 - @olexs)
 - doc: update the Contributor's Guide with the latest requirements (#4017 - @JakobLichterfeld)
 - doc: Documentation for new endpoint changes (#3978 - @jlestel)
 - doc: Add Grafana VS Code extension documentation (#4025 - @JakobLichterfeld)
@@ -812,7 +812,7 @@ As always with many improvements. Cleaner LFP battery handling, 100x speed impro
 
 ## [1.29.2] - 2024-06-18
 
-This release improve TeslaMate behavior on Tesla API rate limits, which occur from time to time. We respect the retry-after header on 429 response code to not hammer the API unnecessarily in these cases.
+This release improve Marites behavior on Tesla API rate limits, which occur from time to time. We respect the retry-after header on 429 response code to not hammer the API unnecessarily in these cases.
 
 ### New features
 
@@ -877,8 +877,8 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 - build(deps): bump grafana/grafana from 10.4.0 to 10.4.1 in /grafana (#3800)
 - build(deps): bump grafana/grafana from 10.4.1 to 10.4.2 in /grafana (#3876)
 - ci: update typos false positive list (#3808 - @JakobLichterfeld)
-- build(deps): bump docker/login-action from 3.0.0 to 3.1.0 in custom action ([b9f1f8b](https://github.com/teslamate-org/teslamate/commit/b9f1f8b956c7fb531321a2d3d875efffd4be6ead) - @JakobLichterfeld)
-- ci: pin crate-ci/typos action to version v1.20.1 ([bd50177](https://github.com/teslamate-org/teslamate/commit/bd50177a454426501a9dd7fca000b44c62f10113) and [53d8e62](https://github.com/teslamate-org/teslamate/commit/53d8e625ae4483789b456458a8bb43af9f009361) - @JakobLichterfeld)
+- build(deps): bump docker/login-action from 3.0.0 to 3.1.0 in custom action ([b9f1f8b](https://github.com/Marites-org/Marites/commit/b9f1f8b956c7fb531321a2d3d875efffd4be6ead) - @JakobLichterfeld)
+- ci: pin crate-ci/typos action to version v1.20.1 ([bd50177](https://github.com/Marites-org/Marites/commit/bd50177a454426501a9dd7fca000b44c62f10113) and [53d8e62](https://github.com/Marites-org/Marites/commit/53d8e625ae4483789b456458a8bb43af9f009361) - @JakobLichterfeld)
 - build(deps): bump crate-ci/typos from 1.20.1 to 1.21.0 (#3875)
 
 #### Dashboards
@@ -902,8 +902,8 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 
 #### Documentation
 
-- doc: remove update steps in installation instructions and link to maintenance section ([dbf23fa](https://github.com/teslamate-org/teslamate/commit/dbf23faa31d84f222c99dba9f5de52c69dd43afb) and #3794 - @JakobLichterfeld and @brianmay)
-- doc: add instructions how to update pot files to development guide ([3ab8ee8](https://github.com/teslamate-org/teslamate/commit/3ab8ee8535da32ba0c11307aaacc65379ddcc0b2) - @JakobLichterfeld)
+- doc: remove update steps in installation instructions and link to maintenance section ([dbf23fa](https://github.com/Marites-org/Marites/commit/dbf23faa31d84f222c99dba9f5de52c69dd43afb) and #3794 - @JakobLichterfeld and @brianmay)
+- doc: add instructions how to update pot files to development guide ([3ab8ee8](https://github.com/Marites-org/Marites/commit/3ab8ee8535da32ba0c11307aaacc65379ddcc0b2) - @JakobLichterfeld)
 - doc: update links to token apps in FAQ (#3833 - @JakobLichterfeld)
 - doc: add testing with ci build docker images to contributing guide (#3856- @JakobLichterfeld)
 - doc: adding filename specification for TeslaFi import file (#3872 - @spinecho31)
@@ -950,10 +950,10 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 
 #### Build, CI, internal
 
-- ci: prevent workflow runs for certain conditions and allow scheduled runs ([f71cc51](https://github.com/teslamate-org/teslamate/commit/f71cc51271007da70e7dc57c00e292acdf20e8d6) and [596a10f](https://github.com/teslamate-org/teslamate/commit/596a10f1eeb5c81f1f79293684a06241cc68d465) - @JakobLichterfeld)
+- ci: prevent workflow runs for certain conditions and allow scheduled runs ([f71cc51](https://github.com/Marites-org/Marites/commit/f71cc51271007da70e7dc57c00e292acdf20e8d6) and [596a10f](https://github.com/Marites-org/Marites/commit/596a10f1eeb5c81f1f79293684a06241cc68d465) - @JakobLichterfeld)
 - feat: Upgrade web development framework to Phoenix 1.7 (#3615 - @marvelm and @JakobLichterfeld)
-- ci: stale after 30 days ([07670fa](https://github.com/teslamate-org/teslamate/commit/07670fa014b4d79d6907e7198960ec13c5cdae71) -@JakobLichterfeld)
-- ci: run edge build every night ([206d731](https://github.com/teslamate-org/teslamate/commit/206d731935a5e8ebc350a7981df8c6d92480b88b) - @JakobLichterfeld)
+- ci: stale after 30 days ([07670fa](https://github.com/Marites-org/Marites/commit/07670fa014b4d79d6907e7198960ec13c5cdae71) -@JakobLichterfeld)
+- ci: run edge build every night ([206d731](https://github.com/Marites-org/Marites/commit/206d731935a5e8ebc350a7981df8c6d92480b88b) - @JakobLichterfeld)
 - ci: update upload-artifact action (#3689 - @JakobLichterfeld)
 - fix: upload and merge artifact naming conflict since action version v4 (#3689 - @JakobLichterfeld)
 - build: bump app base image to fix 'GLIBC_2.34' not found error (#3691- @JakobLichterfeld)
@@ -972,7 +972,7 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 
 - feat: Add stat panel for selected duration in drive details dashboard (#3667 - @oivindoh)
 - Change tracking line color on Maps to blue (#3670 - @jheredianet)
-- Select last three drives in trip dashboard now opens in new tab to work reliable ([ca9816b](https://github.com/teslamate-org/teslamate/commit/ca9816ba4905c653b5f4daad533bf2caf2fe1d9c) - @DrMichael)
+- Select last three drives in trip dashboard now opens in new tab to work reliable ([ca9816b](https://github.com/Marites-org/Marites/commit/ca9816ba4905c653b5f4daad533bf2caf2fe1d9c) - @DrMichael)
 - Battery health dashboard: Added Distance (Logged - Mileage) stats (#3741 - @jheredianet)
 - Update timeline.json: column Action correct width with new grafana version (#3744 - @DrMichael)
 
@@ -992,14 +992,14 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 - doc: add instructions, how to connect to database before editing cars (#3656 - @JakobLichterfeld)
 - Fix name in lovelace example to match sensor name (#3718 - @js94x)
 - doc: Hint for null value in Grafana if car has not been renamed yet (#3720 -@js94x)
-- doc: Updated links for TeslaMate projects ([bf50f79](https://github.com/teslamate-org/teslamate/commit/bf50f799941ade1810fadacc408392e274afa459) - @JakobLichterfeld)
+- doc: Updated links for Marites projects ([bf50f79](https://github.com/Marites-org/Marites/commit/bf50f799941ade1810fadacc408392e274afa459) - @JakobLichterfeld)
 
 ## [1.28.3] - 2024-02-02
 
 ### New features
 
 - Support listening on unix domain socket (#3328 - @PhracturedBlue)
-- Added expected finish charging localtime to teslamate overview in web (#3646 - @NirKli)
+- Added expected finish charging localtime to Marites overview in web (#3646 - @NirKli)
 
 ### Improvements and bug fixes
 
@@ -1034,7 +1034,7 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 ### Configure Timezone Setting for Accurate Local Time Display
 
 To ensure time-related features display accurately in your local timezone, configure the TZ environment variable.
-Detailed instructions are available in our [configuration guide](https://docs.teslamate.org/docs/configuration/environment_variables/).
+Detailed instructions are available in our [configuration guide](https://docs.Marites.org/docs/configuration/environment_variables/).
 
 ## [1.28.2] - 2023-11-27
 
@@ -1069,11 +1069,11 @@ Detailed instructions are available in our [configuration guide](https://docs.te
 
 ## [1.28.0] - 2023-11-26
 
-Note: First release as @teslamate-org organization.
+Note: First release as @Marites-org organization.
 
 ### New features
 
-- Added tire low pressure icon to teslamate web (#3424 - @NirKli)
+- Added tire low pressure icon to Marites web (#3424 - @NirKli)
 - Add charging_state to VehicleSummary (#3471 - @brianmay)
 
 ### Improvements and bug fixes
@@ -1112,7 +1112,7 @@ Note: First release as @teslamate-org organization.
 
 ## [1.27.4] - 2023-11-12
 
-Note: TeslaMate moved to the new @teslamate-org organization.
+Note: Marites moved to the new @Marites-org organization.
 
 ### Improvements and Bug Fixes
 
@@ -1219,12 +1219,12 @@ Note: TeslaMate moved to the new @teslamate-org organization.
 
 To ensure that the Tesla API tokens are stored securely, **an encryption key must be provided via the `ENCRYPTION_KEY` environment variable**.
 
-If you use a `docker-compose.yml` file to run TeslaMate, add a line with the `ENCRYPTION_KEY` to the `environment` section or check out the updated installation guides on [docs.teslamate.org](https://docs.teslamate.org):
+If you use a `docker-compose.yml` file to run Marites, add a line with the `ENCRYPTION_KEY` to the `environment` section or check out the updated installation guides on [docs.Marites.org](https://docs.Marites.org):
 
 ```yaml
 services:
-  teslamate:
-    image: teslamate/teslamate:latest
+  Marites:
+    image: Marites/Marites:latest
     environment:
       - ENCRYPTION_KEY=your_secret_encryption_key
       # ...
@@ -1272,7 +1272,7 @@ If no `ENCRYPTION_KEY` environment variable is provided when running the databas
 
 - Add ProxyPreserveHost On to the Grafana entries in Apache2 config (#2471 - @DrMichael)
 - Node-RED: Fix typo (#2410 - @baylanger)
-- Update to projects page (TeslaMate-ABRP) (#2518 - @fetzu)
+- Update to projects page (Marites-ABRP) (#2518 - @fetzu)
 - Update HomeAssistant Integration examples for HA 2022.6 (#2704 - @star114)
 - HomeAssistant Integration: enhance km to mi conversion / add timestamp class to charge time (#2735 - @dcod3d)
 - Add FAQ around Docker timestamp logs (#2655 - @cwanja)
@@ -1282,35 +1282,35 @@ If no `ENCRYPTION_KEY` environment variable is provided when running the databas
 
 ### Improvements and Bug Fixes
 
-- Add link on the TeslaMate overview page to the notateslaapp.com release notes ([#2390](https://github.com/adriankumpf/teslamate/pull/2390) by [cwanja](https://github.com/cwanja))
+- Add link on the Marites overview page to the notateslaapp.com release notes ([#2390](https://github.com/adriankumpf/Marites/pull/2390) by [cwanja](https://github.com/cwanja))
 - Fix token refresh for Chinese accounts
 
 #### Dashboards
 
-- Charges: Show link if the charge cost is not set ([#2380](https://github.com/adriankumpf/teslamate/pull/2380) by [carloscuezva](https://github.com/carloscuezva))
-- Efficiency: Add min & max values to the Temperature-Efficiency gauge ([#2395](https://github.com/adriankumpf/teslamate/pull/2395) by [DrMichael](https://github.com/DrMichael))
+- Charges: Show link if the charge cost is not set ([#2380](https://github.com/adriankumpf/Marites/pull/2380) by [carloscuezva](https://github.com/carloscuezva))
+- Efficiency: Add min & max values to the Temperature-Efficiency gauge ([#2395](https://github.com/adriankumpf/Marites/pull/2395) by [DrMichael](https://github.com/DrMichael))
 - Overview / Updates: Fix software version format
 
 #### Translations
 
-- Adding missing Swedish translation ([#2373](https://github.com/adriankumpf/teslamate/pull/2373) by [tobiasehlert](https://github.com/tobiasehlert))
-- Small correction for Spanish translation ([#2379](https://github.com/adriankumpf/teslamate/pull/2379) by [carloscuezva](https://github.com/carloscuezva))
-- Spanish translation refinements ([#2388](https://github.com/adriankumpf/teslamate/pull/2388) by [jmalcaide](https://github.com/jmalcaide))
+- Adding missing Swedish translation ([#2373](https://github.com/adriankumpf/Marites/pull/2373) by [tobiasehlert](https://github.com/tobiasehlert))
+- Small correction for Spanish translation ([#2379](https://github.com/adriankumpf/Marites/pull/2379) by [carloscuezva](https://github.com/carloscuezva))
+- Spanish translation refinements ([#2388](https://github.com/adriankumpf/Marites/pull/2388) by [jmalcaide](https://github.com/jmalcaide))
 
 ## [1.26.0] - 2022-01-25
 
 ### Improvements and Bug Fixes
 
 - Remove support for logins with username/password
-- Show zoom controls when hovering over or tapping the map ([#2184](https://github.com/adriankumpf/teslamate/pull/2184) by [bogosj](https://github.com/bogosj))
+- Show zoom controls when hovering over or tapping the map ([#2184](https://github.com/adriankumpf/Marites/pull/2184) by [bogosj](https://github.com/bogosj))
 - Use new Chinese Tesla API endpoints
-- Fix MFA for Chinese accounts ([#2234](https://github.com/adriankumpf/teslamate/pull/2234) by [howard0su](https://github.com/howard0su))
+- Fix MFA for Chinese accounts ([#2234](https://github.com/adriankumpf/Marites/pull/2234) by [howard0su](https://github.com/howard0su))
 - Fix detection of refreshed Model S
 - Guard against duplicate vehicle API responses
 - Don't suspend logging while a car software update is downloaded
 - Don't warn if the update status completing the of a car software update is still reported as 'downloading'
 - Bump Docker app base image to Debian 11
-  - Raspberry Pi users unfortunately have to upgrade to Raspbian Bullseye or install the backports version `libseccomp2` (see [#2302](https://github.com/adriankumpf/teslamate/issues/2302))
+  - Raspberry Pi users unfortunately have to upgrade to Raspbian Bullseye or install the backports version `libseccomp2` (see [#2302](https://github.com/adriankumpf/Marites/issues/2302))
 
 #### Dashboards
 
@@ -1326,24 +1326,24 @@ If no `ENCRYPTION_KEY` environment variable is provided when running the databas
 
 ##### Other
 
-- Drive Details: Display if the car is preconditioning ([#2281](https://github.com/adriankumpf/teslamate/pull/2281) by [carloscuezva](https://github.com/carloscuezva))
-- Timeline: Add filters for destination ([#2354](https://github.com/adriankumpf/teslamate/pull/2354) by [DrMichael](https://github.com/DrMichael))
+- Drive Details: Display if the car is preconditioning ([#2281](https://github.com/adriankumpf/Marites/pull/2281) by [carloscuezva](https://github.com/carloscuezva))
+- Timeline: Add filters for destination ([#2354](https://github.com/adriankumpf/Marites/pull/2354) by [DrMichael](https://github.com/DrMichael))
 
 #### Translations
 
-- Update Chinese translation ([#2232](https://github.com/adriankumpf/teslamate/pull/2232) by [howard0su](https://github.com/howard0su))
-- Update Chinese translation ([#2236](https://github.com/adriankumpf/teslamate/pull/2236) by [summergeorge](https://github.com/summergeorge))
-- Update French translation ([#2216](https://github.com/adriankumpf/teslamate/pull/2216) by [tydoo](https://github.com/tydoo))
-- Update Spanish translation ([#2148](https://github.com/adriankumpf/teslamate/pull/2148) by [jmalcaide](https://github.com/jmalcaide))
-- Update Italian translation ([#2146](https://github.com/adriankumpf/teslamate/pull/2146) by [ludovi-com](https://github.com/ludovi-com))
+- Update Chinese translation ([#2232](https://github.com/adriankumpf/Marites/pull/2232) by [howard0su](https://github.com/howard0su))
+- Update Chinese translation ([#2236](https://github.com/adriankumpf/Marites/pull/2236) by [summergeorge](https://github.com/summergeorge))
+- Update French translation ([#2216](https://github.com/adriankumpf/Marites/pull/2216) by [tydoo](https://github.com/tydoo))
+- Update Spanish translation ([#2148](https://github.com/adriankumpf/Marites/pull/2148) by [jmalcaide](https://github.com/jmalcaide))
+- Update Italian translation ([#2146](https://github.com/adriankumpf/Marites/pull/2146) by [ludovi-com](https://github.com/ludovi-com))
 
 #### Documentation
 
-- Update FreeBSD docs ([#2226](https://github.com/adriankumpf/teslamate/pull/2226) by [rustikles](https://github.com/rustikles))
-- Update FAQ: Clarified how the consumption values are calculated and what triggers the recalculations ([#2345](https://github.com/adriankumpf/teslamate/pull/2345)) by [cwanja](https://github.com/cwanja)
-- Added [TeslaMate-ABRP](https://github.com/fetzu/teslamate-abrp) to list of projects ([#2314](https://github.com/adriankumpf/teslamate/pull/2314))
-- Fix typo ([#2217](https://github.com/adriankumpf/teslamate/pull/2217) by [Oddadin](https://github.com/Oddadin))
-- Clarify that the pull command needs to be ran from the directory where the docker YML file is located ([#2368](https://github.com/adriankumpf/teslamate/pull/2368) by [cwanja](https://github.com/cwanja))
+- Update FreeBSD docs ([#2226](https://github.com/adriankumpf/Marites/pull/2226) by [rustikles](https://github.com/rustikles))
+- Update FAQ: Clarified how the consumption values are calculated and what triggers the recalculations ([#2345](https://github.com/adriankumpf/Marites/pull/2345)) by [cwanja](https://github.com/cwanja)
+- Added [Marites-ABRP](https://github.com/fetzu/Marites-abrp) to list of projects ([#2314](https://github.com/adriankumpf/Marites/pull/2314))
+- Fix typo ([#2217](https://github.com/adriankumpf/Marites/pull/2217) by [Oddadin](https://github.com/Oddadin))
+- Clarify that the pull command needs to be ran from the directory where the docker YML file is located ([#2368](https://github.com/adriankumpf/Marites/pull/2368) by [cwanja](https://github.com/cwanja))
 
 ## [1.25.2] - 2022-01-12
 
@@ -1352,38 +1352,38 @@ If no `ENCRYPTION_KEY` environment variable is provided when running the databas
 
 ## [1.25.1] - 2022-01-12
 
-Disable anonymous logins to Grafana by default (when using the `teslamate/grafana` Docker image)
+Disable anonymous logins to Grafana by default (when using the `Marites/grafana` Docker image)
 
 - The first time you visit Grafana, you will be asked to log in. Use the default user `admin` with the password `admin`. After successful login, you will be prompted to change the password.
 - To allow anonymous logins set the environment variable of the Grafana image `GF_AUTH_ANONYMOUS_ENABLED` to `true` (use only if your Grafana instance is not exposed to the internet!)
 
-> This change only affects users who followed the [basic Docker installation guide](https://docs.teslamate.org/docs/installation/docker) which, as mentioned in the guide, is intended for home network use only and not for exposure to the internet. Users who followed one of the [advanced installation guides](https://docs.teslamate.org/docs/guides/traefik) are not affected as their Grafana instances always had anonymous logins disabled.
+> This change only affects users who followed the [basic Docker installation guide](https://docs.Marites.org/docs/installation/docker) which, as mentioned in the guide, is intended for home network use only and not for exposure to the internet. Users who followed one of the [advanced installation guides](https://docs.Marites.org/docs/guides/traefik) are not affected as their Grafana instances always had anonymous logins disabled.
 
 ## [1.25.0] - 2021-11-12
 
 ### Improvements and Bug Fixes
 
-- Add Apple mobile web app capable meta tag ([#2128](https://github.com/adriankumpf/teslamate/pull/2128))
+- Add Apple mobile web app capable meta tag ([#2128](https://github.com/adriankumpf/Marites/pull/2128))
 - Add NOT NULL constraint to the charging_processes.start_date column
 - Add workaround for an error that occurred when the OS does not return the current date and time
 - Display marketing names (again). This was necessary due to an API change.
-  - Add Mid-Range Model 3 ([#2057](https://github.com/adriankumpf/teslamate/pull/2057) by [RickyRomero](https://github.com/RickyRomero))
+  - Add Mid-Range Model 3 ([#2057](https://github.com/adriankumpf/Marites/pull/2057) by [RickyRomero](https://github.com/RickyRomero))
 - Show the token sign-up form by default
 - Sign out if the Tesla API repeatedly returns 401 responses
 - Use SSO access tokens instead of Owner API tokens (except for Chinese accounts)
 
 #### Dashboards
 
-- Timeline: bugfixes and improvements ([#2125](https://github.com/adriankumpf/teslamate/pull/2125), [#2092](https://github.com/adriankumpf/teslamate/pull/2092), [#2061](https://github.com/adriankumpf/teslamate/pull/2061) by [DrMichael](https://github.com/DrMichael))
+- Timeline: bugfixes and improvements ([#2125](https://github.com/adriankumpf/Marites/pull/2125), [#2092](https://github.com/adriankumpf/Marites/pull/2092), [#2061](https://github.com/adriankumpf/Marites/pull/2061) by [DrMichael](https://github.com/DrMichael))
 
 #### Translations
 
-- Update French translation ([#2091](https://github.com/adriankumpf/teslamate/pull/2091) by [ranaud80](https://github.com/ranaud80))
+- Update French translation ([#2091](https://github.com/adriankumpf/Marites/pull/2091) by [ranaud80](https://github.com/ranaud80))
 
 #### Documentation
 
-- Add integration Guide for Node-RED, with examples ([#2098](https://github.com/adriankumpf/teslamate/pull/2098) by [pmboothby](https://github.com/pmboothby))
-- Update upgrade guide ([#2043](https://github.com/adriankumpf/teslamate/pull/2043) by [withanhdammit](https://github.com/withanhdammit))
+- Add integration Guide for Node-RED, with examples ([#2098](https://github.com/adriankumpf/Marites/pull/2098) by [pmboothby](https://github.com/pmboothby))
+- Update upgrade guide ([#2043](https://github.com/adriankumpf/Marites/pull/2043) by [withanhdammit](https://github.com/withanhdammit))
 
 ## [1.24.2] - 2021-09-29
 
@@ -1401,52 +1401,52 @@ Disable anonymous logins to Grafana by default (when using the `teslamate/grafan
 - Update error message that is shown if reCAPTCHA is required
 - Update Erlang/OTP version to [prevent possible outages due to DST Root CA expiry on Sep 30th](https://elixirforum.com/t/psa-preventing-outages-due-to-dst-root-ca-expiry-on-sep-30th/42247)
 
-**⚠️ NOTE:** Tesla have tightened the captcha security once again and now require Google reCAPTCHA to generate API tokens. reCAPTCHA is implemented in a way that makes it impossible to bypass for applications like TeslaMate. There are third-party services that offer to fill these captchas (by having humans solve them manually), but they're slow and can be pricey if you're making a large a mount of requests.
+**⚠️ NOTE:** Tesla have tightened the captcha security once again and now require Google reCAPTCHA to generate API tokens. reCAPTCHA is implemented in a way that makes it impossible to bypass for applications like Marites. There are third-party services that offer to fill these captchas (by having humans solve them manually), but they're slow and can be pricey if you're making a large a mount of requests.
 
-So if you are having issues signing in to your Tesla account via TeslaMate, the only remaining **workaround** right now is to sign in using `existing API tokens` (there is a button on the TeslaMate sign-in form). There are multiple apps available to securely generate access tokens yourself, for example:
+So if you are having issues signing in to your Tesla account via Marites, the only remaining **workaround** right now is to sign in using `existing API tokens` (there is a button on the Marites sign-in form). There are multiple apps available to securely generate access tokens yourself, for example:
 
 - [Auth app for Tesla (iOS)](https://apps.apple.com/us/app/auth-app-for-tesla/id1552058613#?platform=iphone)
 - [Tesla Tokens (Android)](https://play.google.com/store/apps/details?id=net.leveugle.teslatokens)
 - [Tesla Auth (macOS, Linux)](https://github.com/adriankumpf/tesla_auth)
 
-Users who are already signed in in do not have to worry about it. TeslaMate will continue to be able to access the Tesla API.
+Users who are already signed in in do not have to worry about it. Marites will continue to be able to access the Tesla API.
 
 ## [1.24.0] - 2021-08-31
 
 ### Improvements and Bug Fixes
 
-- Tesla have once again made changes to the login: TeslaMate can now handle a delayed captcha that first appears after submitting the login form …
+- Tesla have once again made changes to the login: Marites can now handle a delayed captcha that first appears after submitting the login form …
 - Handle Tesla OwnerAPI errors returned by streaming API
-- Lay the groundwork for the ability to customize the displayed order of vehicles ([#1904](https://github.com/adriankumpf/teslamate/pull/1904) by [leewillis77](https://github.com/leewillis77))
+- Lay the groundwork for the ability to customize the displayed order of vehicles ([#1904](https://github.com/adriankumpf/Marites/pull/1904) by [leewillis77](https://github.com/leewillis77))
   - The order can currently be customized by manually updating the `display_priority` column in the `cars` database table
 
 #### Dashboards
 
-- Charging Stats: Use the full range of colors in the heatmap ([#1821](https://github.com/adriankumpf/teslamate/pull/1821) by [dyxyl](https://github.com/dyxyl))
-- Projected Range: Change right y-axis battery level range max from 200% to 100% ([#1840](https://github.com/adriankumpf/teslamate/pull/1840) by [toneus](https://github.com/toneus))
-- Timeline: Fix for missing drives and add links to the Action column ([1818](https://github.com/adriankumpf/teslamate/pull/1818) and [#1872](https://github.com/adriankumpf/teslamate/pull/1872) by [DrMichael](https://github.com/DrMichael))
-- Charge Level: Fix diagram glitch ([#1936](https://github.com/adriankumpf/teslamate/pull/1936) by [DrMichael](https://github.com/DrMichael))
+- Charging Stats: Use the full range of colors in the heatmap ([#1821](https://github.com/adriankumpf/Marites/pull/1821) by [dyxyl](https://github.com/dyxyl))
+- Projected Range: Change right y-axis battery level range max from 200% to 100% ([#1840](https://github.com/adriankumpf/Marites/pull/1840) by [toneus](https://github.com/toneus))
+- Timeline: Fix for missing drives and add links to the Action column ([1818](https://github.com/adriankumpf/Marites/pull/1818) and [#1872](https://github.com/adriankumpf/Marites/pull/1872) by [DrMichael](https://github.com/DrMichael))
+- Charge Level: Fix diagram glitch ([#1936](https://github.com/adriankumpf/Marites/pull/1936) by [DrMichael](https://github.com/DrMichael))
 
 #### Translations
 
-- Add Japanese translation ([#1909](https://github.com/adriankumpf/teslamate/pull/1909) by [kuma](https://github.com/kuma))
+- Add Japanese translation ([#1909](https://github.com/adriankumpf/Marites/pull/1909) by [kuma](https://github.com/kuma))
 
 #### Documentation
 
-- Add a note about RAM needed after having issues, also a small clarification on where to place the .env file in the advanced guide ([#1857](https://github.com/adriankumpf/teslamate/pull/1857) by [billerby](https://github.com/billerby))
-- Add note with custom TM_DB_USER when backing up ([#1931](https://github.com/adriankumpf/teslamate/pull/1931) by [kyleawayan](https://github.com/kyleawayan))
-- Advanced installation with Traefik: Update Grafana rule to limit to TeslaMate host ([#1937](https://github.com/adriankumpf/teslamate/pull/1937) by [benoitm974](https://github.com/benoitm974))
+- Add a note about RAM needed after having issues, also a small clarification on where to place the .env file in the advanced guide ([#1857](https://github.com/adriankumpf/Marites/pull/1857) by [billerby](https://github.com/billerby))
+- Add note with custom TM_DB_USER when backing up ([#1931](https://github.com/adriankumpf/Marites/pull/1931) by [kyleawayan](https://github.com/kyleawayan))
+- Advanced installation with Traefik: Update Grafana rule to limit to Marites host ([#1937](https://github.com/adriankumpf/Marites/pull/1937) by [benoitm974](https://github.com/benoitm974))
 
 ## [1.23.7] - 2021-07-16
 
 ### Improvements and Bug Fixes
 
 - Since Tesla have once again made changes to the login with captcha, this version fixes the problems caused by it
-- Update permissions to the Grafana plugin directory ([#1814](https://github.com/adriankumpf/teslamate/pull/1814) by [letienne](https://github.com/letienne))
+- Update permissions to the Grafana plugin directory ([#1814](https://github.com/adriankumpf/Marites/pull/1814) by [letienne](https://github.com/letienne))
 
 #### Documentation
 
-- Fix heading of the Home Assistant binary_sensor config ([#1756](https://github.com/adriankumpf/teslamate/pull/1756) by [mrzeldaguy](https://github.com/mrzeldaguy))
+- Fix heading of the Home Assistant binary_sensor config ([#1756](https://github.com/adriankumpf/Marites/pull/1756) by [mrzeldaguy](https://github.com/mrzeldaguy))
 
 ## [1.23.6] - 2021-07-08
 
@@ -1471,18 +1471,18 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 #### Dashboards
 
-- Drive Details: Don't round down duration ([#1677](https://github.com/adriankumpf/teslamate/pull/1677) by [Dulanic](https://github.com/Dulanic))
-- Projected Range: Prevent division by zero ([#1678](https://github.com/adriankumpf/teslamate/pull/1678) by [Dulanic](https://github.com/Dulanic))
-- Updates / States / Stastistics: Use local browser time ([#1685](https://github.com/adriankumpf/teslamate/pull/1685) by [Ed-M72](https://github.com/Ed-M72))
-- Charge Level: Simplify database query ([#1693](https://github.com/adriankumpf/teslamate/pull/1693) by [Dulanic](https://github.com/Dulanic))
-- Timeline: Add new category `Missing` and some other adjustments ([#1708](https://github.com/adriankumpf/teslamate/pull/1708) by [DrMichael](https://github.com/DrMichael))
-- Timeline: Fix missing datasources ([#1730](https://github.com/adriankumpf/teslamate/pull/1730) by [nickbock](https://github.com/nickbock))
+- Drive Details: Don't round down duration ([#1677](https://github.com/adriankumpf/Marites/pull/1677) by [Dulanic](https://github.com/Dulanic))
+- Projected Range: Prevent division by zero ([#1678](https://github.com/adriankumpf/Marites/pull/1678) by [Dulanic](https://github.com/Dulanic))
+- Updates / States / Stastistics: Use local browser time ([#1685](https://github.com/adriankumpf/Marites/pull/1685) by [Ed-M72](https://github.com/Ed-M72))
+- Charge Level: Simplify database query ([#1693](https://github.com/adriankumpf/Marites/pull/1693) by [Dulanic](https://github.com/Dulanic))
+- Timeline: Add new category `Missing` and some other adjustments ([#1708](https://github.com/adriankumpf/Marites/pull/1708) by [DrMichael](https://github.com/DrMichael))
+- Timeline: Fix missing datasources ([#1730](https://github.com/adriankumpf/Marites/pull/1730) by [nickbock](https://github.com/nickbock))
 - Bump Grafana to 7.5.8 (Docker image)
 
 #### Documentation
 
-- Fix Home Assistant Lovelace UI and sensors ([#1711](https://github.com/adriankumpf/teslamate/pull/1711) by [JakobLichterfeld](https://github.com/JakobLichterfeld))
-- Add FreeBSD guide ([#1646](https://github.com/adriankumpf/teslamate/pull/1646) and [#1712](https://github.com/adriankumpf/teslamate/pull/1712) by [tuxbox](https://github.com/tuxbox))
+- Fix Home Assistant Lovelace UI and sensors ([#1711](https://github.com/adriankumpf/Marites/pull/1711) by [JakobLichterfeld](https://github.com/JakobLichterfeld))
+- Add FreeBSD guide ([#1646](https://github.com/adriankumpf/Marites/pull/1646) and [#1712](https://github.com/adriankumpf/Marites/pull/1712) by [tuxbox](https://github.com/tuxbox))
 
 ## [1.23.3] - 2021-06-02
 
@@ -1505,7 +1505,7 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 #### Translations
 
-- Update Swedish translations ([#1655](https://github.com/adriankumpf/teslamate/pull/1655) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update Swedish translations ([#1655](https://github.com/adriankumpf/Marites/pull/1655) by [tobiasehlert](https://github.com/tobiasehlert))
 
 ## [1.23.0] - 2021-06-01
 
@@ -1513,36 +1513,36 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 - Support Tesla's new captcha verification
 - Improve naming of addresses (city aliases)
-- Add `power` to published MQTT topics ([#1504](https://github.com/adriankumpf/teslamate/pull/1504) by [mnadvornik](https://github.com/mnadvornik))
+- Add `power` to published MQTT topics ([#1504](https://github.com/adriankumpf/Marites/pull/1504) by [mnadvornik](https://github.com/mnadvornik))
 - The Docker image now ships with Erlang/OTP 24 which comes with a JIT-compiler (enabled on most x86 64-bit platforms)
 - Only publish geofence via MQTT if it has changed
 - Fix calculation of gross consumption while charging
 - Fix service mode detection
-- Fix typo in code_challenge_method ([#1571](https://github.com/adriankumpf/teslamate/pull/1571) by [tuxbox](https://github.com/tuxbox))
-- Make `dashboards.sh` script portable e.g. to BSD ([#1645](https://github.com/adriankumpf/teslamate/pull/1645) by [tuxbox](https://github.com/tuxbox))
+- Fix typo in code_challenge_method ([#1571](https://github.com/adriankumpf/Marites/pull/1571) by [tuxbox](https://github.com/tuxbox))
+- Make `dashboards.sh` script portable e.g. to BSD ([#1645](https://github.com/adriankumpf/Marites/pull/1645) by [tuxbox](https://github.com/tuxbox))
 
 #### Dashboards
 
-- Add a new Timeline dashboard ([#1621](https://github.com/adriankumpf/teslamate/pull/1621) by [DrMichael](https://github.com/DrMichael))
-- Statistics: Fix `pq: time zone "" not recognized` error ([#1470](https://github.com/adriankumpf/teslamate/pull/1470) and [#1559](https://github.com/adriankumpf/teslamate/pull/1559) by [Dulanic](https://github.com/Dulanic))
+- Add a new Timeline dashboard ([#1621](https://github.com/adriankumpf/Marites/pull/1621) by [DrMichael](https://github.com/DrMichael))
+- Statistics: Fix `pq: time zone "" not recognized` error ([#1470](https://github.com/adriankumpf/Marites/pull/1470) and [#1559](https://github.com/adriankumpf/Marites/pull/1559) by [Dulanic](https://github.com/Dulanic))
 
 #### Translations
 
-- Update Swedish translations ([#1461](https://github.com/adriankumpf/teslamate/pull/1461) by [tobiasehlert](https://github.com/tobiasehlert))
-- Update French translations ([#1473](https://github.com/adriankumpf/teslamate/pull/1473) by [ranaud80](https://github.com/ranaud80))
+- Update Swedish translations ([#1461](https://github.com/adriankumpf/Marites/pull/1461) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update French translations ([#1473](https://github.com/adriankumpf/Marites/pull/1473) by [ranaud80](https://github.com/ranaud80))
 - Update German translations
 
 #### Documentation
 
 - Update Mosquitto version used in docker-compose examples
-- Add device classes and binary sensors to documented Home Assistant config ([#1597](https://github.com/adriankumpf/teslamate/pull/1597) by [flacjacket](https://github.com/flacjacket) and [#1634](https://github.com/adriankumpf/teslamate/pull/1634) by [ffeingol](https://github.com/ffeingol))
+- Add device classes and binary sensors to documented Home Assistant config ([#1597](https://github.com/adriankumpf/Marites/pull/1597) by [flacjacket](https://github.com/flacjacket) and [#1634](https://github.com/adriankumpf/Marites/pull/1634) by [ffeingol](https://github.com/ffeingol))
 
 ## [1.22.0] - 2021-03-17
 
 ### Improvements and Bug Fixes
 
 - Add option to sign in with existing API tokens
-- Avoid false `plugged_in` events ([#1423](https://github.com/adriankumpf/teslamate/pull/1423) by [brianmay](https://github.com/brianmay))
+- Avoid false `plugged_in` events ([#1423](https://github.com/adriankumpf/Marites/pull/1423) by [brianmay](https://github.com/brianmay))
 - Handle distinct OSM IDs gracefully when changing the address language
 - Set another user agent for auth requests.
   - ⚠️ _This fixes timeouts when signing in for the time being. Most users who are affected reported using a cloud hosting service. Expect this to break anytime Tesla decides to block this type of traffic coming from these providers._
@@ -1550,18 +1550,18 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 #### Dashboards
 
-- Add battery heater info to Overview / Charging Details and Charge Details dashboards ([#1428](https://github.com/adriankumpf/teslamate/pull/1428) by [ToniA](https://github.com/ToniA))
-- Statistics: Calculate efficiency from charged energy ([#1445](https://github.com/adriankumpf/teslamate/pull/1445) by [ToniA](https://github.com/ToniA))
-- Make Statistics dashboard look the same on both kilometers and miles ([#1439](https://github.com/adriankumpf/teslamate/pull/1439) by [ToniA](https://github.com/ToniA))
+- Add battery heater info to Overview / Charging Details and Charge Details dashboards ([#1428](https://github.com/adriankumpf/Marites/pull/1428) by [ToniA](https://github.com/ToniA))
+- Statistics: Calculate efficiency from charged energy ([#1445](https://github.com/adriankumpf/Marites/pull/1445) by [ToniA](https://github.com/ToniA))
+- Make Statistics dashboard look the same on both kilometers and miles ([#1439](https://github.com/adriankumpf/Marites/pull/1439) by [ToniA](https://github.com/ToniA))
 - Updates: Rename column to "Since Previous Update"
 
 #### Translations
 
-- Update Spanish translation ([#1446](https://github.com/adriankumpf/teslamate/pull/1446) by [alceasan](https://github.com/alceasan))
+- Update Spanish translation ([#1446](https://github.com/adriankumpf/Marites/pull/1446) by [alceasan](https://github.com/alceasan))
 
 #### Documentation
 
-- Explaining the asleep mode with MCU1 and the non-streaming mode ([#1453](https://github.com/adriankumpf/teslamate/pull/1453) by [ToniA](https://github.com/ToniA))
+- Explaining the asleep mode with MCU1 and the non-streaming mode ([#1453](https://github.com/adriankumpf/Marites/pull/1453) by [ToniA](https://github.com/ToniA))
 
 ## [1.21.6] - 2021-03-10
 
@@ -1569,16 +1569,16 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 - Change HTTP headers again to avoid auth requests timing out
 - Fix changing the address language
-- Add health check route ([#1422](https://github.com/adriankumpf/teslamate/pull/1422) by [brianmay](https://github.com/brianmay))
+- Add health check route ([#1422](https://github.com/adriankumpf/Marites/pull/1422) by [brianmay](https://github.com/brianmay))
 
 #### Translations
 
-- Update Korean translation ([#1381](https://github.com/adriankumpf/teslamate/pull/1381) by [dongbum](https://github.com/dongbum))
-- Updated Danish translation ([#1404](https://github.com/adriankumpf/teslamate/pull/1404) by [larskochhansen](https://github.com/larskochhansen))
+- Update Korean translation ([#1381](https://github.com/adriankumpf/Marites/pull/1381) by [dongbum](https://github.com/dongbum))
+- Updated Danish translation ([#1404](https://github.com/adriankumpf/Marites/pull/1404) by [larskochhansen](https://github.com/larskochhansen))
 
 #### Documentation
 
-- Add fixed pricing information to [TeslaMateApi](https://github.com/tobiasehlert/TeslaMateApi) project description ([#1399](https://github.com/adriankumpf/teslamate/pull/1399) by [tobiasehlert](https://github.com/tobiasehlert))
+- Add fixed pricing information to [MaritesApi](https://github.com/tobiasehlert/MaritesApi) project description ([#1399](https://github.com/adriankumpf/Marites/pull/1399) by [tobiasehlert](https://github.com/tobiasehlert))
 
 ## [1.21.5] - 2021-02-21
 
@@ -1589,8 +1589,8 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 #### Dashboards
 
-- Overview: Fix Gross Panel font size ([#1363](https://github.com/adriankumpf/teslamate/pull/1363) by [DrMichael](https://github.com/DrMichael))
-- Charging Stats: Set bucket size on charging heatmap ([#1355](https://github.com/adriankumpf/teslamate/pull/1355) by [leewillis77](https://github.com/leewillis77))
+- Overview: Fix Gross Panel font size ([#1363](https://github.com/adriankumpf/Marites/pull/1363) by [DrMichael](https://github.com/DrMichael))
+- Charging Stats: Set bucket size on charging heatmap ([#1355](https://github.com/adriankumpf/Marites/pull/1355) by [leewillis77](https://github.com/leewillis77))
 - Downgrade Grafana to 7.3.7 because of an incompatibility with the Trackmap plugin
 
 ## [1.21.4] - 2021-02-16
@@ -1604,15 +1604,15 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 #### Dashboards
 
-- Statistics: Show "Starting at" column and fix timezone issue ([#1254](https://github.com/adriankumpf/teslamate/pull/1254) by [DrMichael](https://github.com/DrMichael))
+- Statistics: Show "Starting at" column and fix timezone issue ([#1254](https://github.com/adriankumpf/Marites/pull/1254) by [DrMichael](https://github.com/DrMichael))
 - Charge Level: Fix usable battery level alternating between usable battery level and regular battery level
 - Bump Grafana to v7.4.1
 
 #### Documentation
 
-- Add [TeslaMateApi](https://github.com/tobiasehlert/TeslaMateApi) to the list of projects using TeslaMate ([#1350](https://github.com/adriankumpf/teslamate/pull/1350) by [tobiasehlert](https://github.com/tobiasehlert))
-- Update installation docks ([#1287](https://github.com/adriankumpf/teslamate/pull/1287) by [tobiasehlert](https://github.com/tobiasehlert))
-- Update HomeAssistant documentation ([#1321](https://github.com/adriankumpf/teslamate/pull/1321) by [jschollenberger](https://github.com/jschollenberger))
+- Add [MaritesApi](https://github.com/tobiasehlert/MaritesApi) to the list of projects using Marites ([#1350](https://github.com/adriankumpf/Marites/pull/1350) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update installation docks ([#1287](https://github.com/adriankumpf/Marites/pull/1287) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update HomeAssistant documentation ([#1321](https://github.com/adriankumpf/Marites/pull/1321) by [jschollenberger](https://github.com/jschollenberger))
 
 ## [1.21.3] - 2021-02-06
 
@@ -1624,11 +1624,11 @@ Users who are already signed in in do not have to worry about it. TeslaMate will
 
 > **⚠️ NOTE**: Any previously stored API refresh tokens will no longer function, as Tesla has deprecated the existing authentication endpoint. Existing access tokens will continue to work **until they expire**. Eventually, a full login will be needed to obtain new refresh tokens.
 >
-> **To immediately obtain new tokens after upgrading**, go to the TeslaMate settings page, **sign out via the button** at the bottom of the page and then sign in again.
+> **To immediately obtain new tokens after upgrading**, go to the Marites settings page, **sign out via the button** at the bottom of the page and then sign in again.
 
 Additional:
 
-> **⚠️ NOTE**: This release changes TeslaMate's base Docker image to Debian. If you have any customizations on top of TeslaMate (like healthchecks), they could need updates to work on top of this new image.
+> **⚠️ NOTE**: This release changes Marites's base Docker image to Debian. If you have any customizations on top of Marites (like healthchecks), they could need updates to work on top of this new image.
 
 ### Enhancements
 
@@ -1638,11 +1638,11 @@ Additional:
 
 #### Translations
 
-- Add Turkish Language Support ([#1194](https://github.com/adriankumpf/teslamate/pull/1194) by [neocorp](https://github.com/neocorp))
+- Add Turkish Language Support ([#1194](https://github.com/adriankumpf/Marites/pull/1194) by [neocorp](https://github.com/neocorp))
 
 #### Dashboards
 
-- Display average outside temperature in charges dashboard ([#1213](https://github.com/adriankumpf/teslamate/pull/1213) by [DrMichael](https://github.com/DrMichael))
+- Display average outside temperature in charges dashboard ([#1213](https://github.com/adriankumpf/Marites/pull/1213) by [DrMichael](https://github.com/DrMichael))
 
 ## [1.21.1] - 2021-01-10
 
@@ -1650,25 +1650,25 @@ Additional:
 
 #### Translations
 
-- Add Finnish translation ([#1190](https://github.com/adriankumpf/teslamate/pull/1190) by [puppee](https://github.com/puppee))
+- Add Finnish translation ([#1190](https://github.com/adriankumpf/Marites/pull/1190) by [puppee](https://github.com/puppee))
 
 #### Documentation
 
-- Add some documentation about updating TeslaMate when installed with Docker ([#1170](https://github.com/adriankumpf/teslamate/pull/1170) by [fatbasstard](https://github.com/fatbasstard))
-- Update "Import from tesla-apiscraper" documentation: Give an example how to get the vehicle_id from TeslaMate ([#1174](https://github.com/adriankumpf/teslamate/pull/1174) by [Bdot42](https://github.com/Bdot42))
-- Add link to unofficial Home Assistant addon ([#1188](https://github.com/adriankumpf/teslamate/pull/1188) by [matt-FFFFFF](https://github.com/matt-FFFFFF))
+- Add some documentation about updating Marites when installed with Docker ([#1170](https://github.com/adriankumpf/Marites/pull/1170) by [fatbasstard](https://github.com/fatbasstard))
+- Update "Import from tesla-apiscraper" documentation: Give an example how to get the vehicle_id from Marites ([#1174](https://github.com/adriankumpf/Marites/pull/1174) by [Bdot42](https://github.com/Bdot42))
+- Add link to unofficial Home Assistant addon ([#1188](https://github.com/adriankumpf/Marites/pull/1188) by [matt-FFFFFF](https://github.com/matt-FFFFFF))
 
 #### Other
 
-- Allow to use non-standard MQTT ports (via [MQTT_PORT](https://docs.teslamate.org/docs/configuration/environment_variables))
+- Allow to use non-standard MQTT ports (via [MQTT_PORT](https://docs.Marites.org/docs/configuration/environment_variables))
 - Refactoring: Use built-in Ecto enum type
 - Guard against unexpected MFA errors
 
 ### Bug Fixes
 
-- Update drive duration query to avoid displaying different times for drives (Details vs Overview) ([#1191](https://github.com/adriankumpf/teslamate/pull/1191) by [fatbasstard](https://github.com/fatbasstard))
-- Fix font colors for light theme (Updates dashboard) ([#1169](https://github.com/adriankumpf/teslamate/pull/1169) by [fatbasstard](https://github.com/fatbasstard))
-- Fix typo (Statistics dashboard) ([#1185](https://github.com/adriankumpf/teslamate/pull/1185) by [rogiervandergeer](https://github.com/rogiervandergeer))
+- Update drive duration query to avoid displaying different times for drives (Details vs Overview) ([#1191](https://github.com/adriankumpf/Marites/pull/1191) by [fatbasstard](https://github.com/fatbasstard))
+- Fix font colors for light theme (Updates dashboard) ([#1169](https://github.com/adriankumpf/Marites/pull/1169) by [fatbasstard](https://github.com/fatbasstard))
+- Fix typo (Statistics dashboard) ([#1185](https://github.com/adriankumpf/Marites/pull/1185) by [rogiervandergeer](https://github.com/rogiervandergeer))
 
 ## [1.21.0] - 2021-01-02
 
@@ -1676,24 +1676,24 @@ Additional:
 
 #### Dashboards
 
-- Drive Details: Add button to download a drive as GPX file ([#993](https://github.com/adriankumpf/teslamate/pull/993) by [ayonix](https://github.com/ayonix))
-- New dashboard for reporting to Dutch tax ([#998](https://github.com/adriankumpf/teslamate/pull/998) and [#1051](https://github.com/adriankumpf/teslamate/pull/1051) by [roadrash2108](https://github.com/roadrash2108))
+- Drive Details: Add button to download a drive as GPX file ([#993](https://github.com/adriankumpf/Marites/pull/993) by [ayonix](https://github.com/ayonix))
+- New dashboard for reporting to Dutch tax ([#998](https://github.com/adriankumpf/Marites/pull/998) and [#1051](https://github.com/adriankumpf/Marites/pull/1051) by [roadrash2108](https://github.com/roadrash2108))
 - Locations: Add panel to see when an address was last visited
-- Charges/Drives: Add more filtering capabilities ([#1016](https://github.com/adriankumpf/teslamate/pull/1016) by [Kosta-Github](https://github.com/Kosta-Github))
-- Overview: Fix unit of measurement for charge energy added ([#1061](https://github.com/adriankumpf/teslamate/pull/1061) by [landler](https://github.com/landler))
-- Charge Level: Add green bars (20/80%) to match "Charge Delta" graph ([#1059](https://github.com/adriankumpf/teslamate/pull/1059) by [roadrash2108](https://github.com/roadrash2108))
-- Charging-Stats/Trip: Change colors of AC/DC ([#1058](https://github.com/adriankumpf/teslamate/pull/1058) by [roadrash2108](https://github.com/roadrash2108))
-- Statistics: Resolve issue with month groupings ([#1082](https://github.com/adriankumpf/teslamate/pull/1082) by [leewillis77](https://github.com/leewillis77))
-- Updates: Apply number of charges and average rated range to the correct update ([#1147](https://github.com/adriankumpf/teslamate/pull/1147) by [tlj](https://github.com/tlj))
+- Charges/Drives: Add more filtering capabilities ([#1016](https://github.com/adriankumpf/Marites/pull/1016) by [Kosta-Github](https://github.com/Kosta-Github))
+- Overview: Fix unit of measurement for charge energy added ([#1061](https://github.com/adriankumpf/Marites/pull/1061) by [landler](https://github.com/landler))
+- Charge Level: Add green bars (20/80%) to match "Charge Delta" graph ([#1059](https://github.com/adriankumpf/Marites/pull/1059) by [roadrash2108](https://github.com/roadrash2108))
+- Charging-Stats/Trip: Change colors of AC/DC ([#1058](https://github.com/adriankumpf/Marites/pull/1058) by [roadrash2108](https://github.com/roadrash2108))
+- Statistics: Resolve issue with month groupings ([#1082](https://github.com/adriankumpf/Marites/pull/1082) by [leewillis77](https://github.com/leewillis77))
+- Updates: Apply number of charges and average rated range to the correct update ([#1147](https://github.com/adriankumpf/Marites/pull/1147) by [tlj](https://github.com/tlj))
 
 #### Other
 
 - Add support for Tesla’s new authentication process (two-factor authentication)
 - Optimize TeslaFi CSV file import: reduced memory usage and increased performance
-- Require [Elixir v1.11](https://docs.teslamate.org/docs/installation/debian#requirements)
-- Allow to connect to Postgres via IPv6 (via [DATABASE_IPV6](https://docs.teslamate.org/docs/configuration/environment_variables))
-- Allow to connect to MQTT broker via IPv6 (via [MQTT_IPV6](https://docs.teslamate.org/docs/configuration/environment_variables))
-- Improve detection of whether the vehicle is plugged in during cold weather (+ fix [#1154](https://github.com/adriankumpf/teslamate/pull/1154) by [virtualm2000](https://github.com/virtualm2000))
+- Require [Elixir v1.11](https://docs.Marites.org/docs/installation/debian#requirements)
+- Allow to connect to Postgres via IPv6 (via [DATABASE_IPV6](https://docs.Marites.org/docs/configuration/environment_variables))
+- Allow to connect to MQTT broker via IPv6 (via [MQTT_IPV6](https://docs.Marites.org/docs/configuration/environment_variables))
+- Improve detection of whether the vehicle is plugged in during cold weather (+ fix [#1154](https://github.com/adriankumpf/Marites/pull/1154) by [virtualm2000](https://github.com/virtualm2000))
 - Use connection pooling for SRTM downloads
 - Optimize Docker layer caching to speed up image build times
 - Battery level tooltip: Prevent division by zero error if car is totally down to 0%
@@ -1701,18 +1701,18 @@ Additional:
 
 #### Translations
 
-- Add Italian translation ([#1095](https://github.com/adriankumpf/teslamate/pull/1095) and [#1096](https://github.com/adriankumpf/teslamate/pull/1096) by [HavanaMan](https://github.com/HavanaMan))
+- Add Italian translation ([#1095](https://github.com/adriankumpf/Marites/pull/1095) and [#1096](https://github.com/adriankumpf/Marites/pull/1096) by [HavanaMan](https://github.com/HavanaMan))
 
 #### Documentation
 
-- Fix version info on development guide & minor spelling fix ([#994](https://github.com/adriankumpf/teslamate/pull/994) by [techgaun](https://github.com/techgaun))
-- Update backup_restore.md ([#1027](https://github.com/adriankumpf/teslamate/pull/1027) by [pihomeserver](https://github.com/pihomeserver))
-- Improve garage door automation example ([#1039](https://github.com/adriankumpf/teslamate/pull/1039) by [andrewfoster](https://github.com/andrewfoster))
-- Update traefik guide to use a single public hostname instead of two ([#1101](https://github.com/adriankumpf/teslamate/pull/1101) by [pmboothby](https://github.com/pmboothby))
-- Projects using TeslaMate:
-  - [TeslaMateAgile](https://github.com/MattJeanes/TeslaMateAgile): mention Tibber support ([#1097](https://github.com/adriankumpf/teslamate/pull/1097) by [tobiasehlert](https://github.com/tobiasehlert))
-  - Add [TeslaMate_Telegram_Bot](https://github.com/JakobLichterfeld/TeslaMate_Telegram_Bot) ([#1122](https://github.com/adriankumpf/teslamate/pull/1122) by [JakobLichterfeld](https://github.com/JakobLichterfeld))
-- Update installation instructions for Apache ([#1124](https://github.com/adriankumpf/teslamate/pull/1124) by [juankymoral](https://github.com/juankymoral))
+- Fix version info on development guide & minor spelling fix ([#994](https://github.com/adriankumpf/Marites/pull/994) by [techgaun](https://github.com/techgaun))
+- Update backup_restore.md ([#1027](https://github.com/adriankumpf/Marites/pull/1027) by [pihomeserver](https://github.com/pihomeserver))
+- Improve garage door automation example ([#1039](https://github.com/adriankumpf/Marites/pull/1039) by [andrewfoster](https://github.com/andrewfoster))
+- Update traefik guide to use a single public hostname instead of two ([#1101](https://github.com/adriankumpf/Marites/pull/1101) by [pmboothby](https://github.com/pmboothby))
+- Projects using Marites:
+  - [MaritesAgile](https://github.com/MattJeanes/MaritesAgile): mention Tibber support ([#1097](https://github.com/adriankumpf/Marites/pull/1097) by [tobiasehlert](https://github.com/tobiasehlert))
+  - Add [Marites_Telegram_Bot](https://github.com/JakobLichterfeld/Marites_Telegram_Bot) ([#1122](https://github.com/adriankumpf/Marites/pull/1122) by [JakobLichterfeld](https://github.com/JakobLichterfeld))
+- Update installation instructions for Apache ([#1124](https://github.com/adriankumpf/Marites/pull/1124) by [juankymoral](https://github.com/juankymoral))
 
 ## [1.20.1] - 2020-10-24
 
@@ -1720,30 +1720,30 @@ Additional:
 
 #### Dashboards
 
-- Charge Level: Always show 0% and 100% when state of charge is shown in a diagram ([#980](https://github.com/adriankumpf/teslamate/pull/980) by [mbertheau](https://github.com/mbertheau))
-- Charging Stats: Titles/labels now match pie-charts ([#998](https://github.com/adriankumpf/teslamate/pull/998) by [roadrash2108](https://github.com/roadrash2108))
+- Charge Level: Always show 0% and 100% when state of charge is shown in a diagram ([#980](https://github.com/adriankumpf/Marites/pull/980) by [mbertheau](https://github.com/mbertheau))
+- Charging Stats: Titles/labels now match pie-charts ([#998](https://github.com/adriankumpf/Marites/pull/998) by [roadrash2108](https://github.com/roadrash2108))
 - Drive Details: Increase width of odometer panel
 - Efficiency: Set a fixed max value and use LCD gauge
-- Overview: Fix overlapping timestamps in discrete map ([#995](https://github.com/adriankumpf/teslamate/pull/995) by [pmboothby](https://github.com/pmboothby))
+- Overview: Fix overlapping timestamps in discrete map ([#995](https://github.com/adriankumpf/Marites/pull/995) by [pmboothby](https://github.com/pmboothby))
 - Fix overlapping timestamps in trip and states dashboard
-- Statistics: Add links to other dashboards ([#973](https://github.com/adriankumpf/teslamate/pull/973) by [DrMichael](https://github.com/DrMichael))
+- Statistics: Add links to other dashboards ([#973](https://github.com/adriankumpf/Marites/pull/973) by [DrMichael](https://github.com/DrMichael))
 
 #### Translations
 
-- Update Norwegian translation ([#996](https://github.com/adriankumpf/teslamate/pull/996) and [#1007](https://github.com/adriankumpf/teslamate/pull/1007) by [spacecosmos](https://github.com/spacecosmos))
-- Update Swedish translation ([#1029](https://github.com/adriankumpf/teslamate/pull/1029) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update Norwegian translation ([#996](https://github.com/adriankumpf/Marites/pull/996) and [#1007](https://github.com/adriankumpf/Marites/pull/1007) by [spacecosmos](https://github.com/spacecosmos))
+- Update Swedish translation ([#1029](https://github.com/adriankumpf/Marites/pull/1029) by [tobiasehlert](https://github.com/tobiasehlert))
 
 #### Other
 
-- Display update version in the homescreen update tooltip ([#976](https://github.com/adriankumpf/teslamate/pull/976) by [ayonix](https://github.com/ayonix))
-- Customize Grafana home screen logo ([#1004](https://github.com/adriankumpf/teslamate/pull/1004) by [gimmespam](https://github.com/gimmespam))
+- Display update version in the homescreen update tooltip ([#976](https://github.com/adriankumpf/Marites/pull/976) by [ayonix](https://github.com/ayonix))
+- Customize Grafana home screen logo ([#1004](https://github.com/adriankumpf/Marites/pull/1004) by [gimmespam](https://github.com/gimmespam))
 - Bump Grafana to 7.2.1
 
 ### Bug Fixes
 
-- Fix tooltips in car overview being hidden by .card ([#975](https://github.com/adriankumpf/teslamate/pull/975) by [ayonix](https://github.com/ayonix))
+- Fix tooltips in car overview being hidden by .card ([#975](https://github.com/adriankumpf/Marites/pull/975) by [ayonix](https://github.com/ayonix))
 - Make Statistics dashboard compatible with older versions of Postgres
-- Open Statistics dashboard with browser time zone when coming from the TeslaMate UI
+- Open Statistics dashboard with browser time zone when coming from the Marites UI
 
 ## [1.20.0] - 2020-10-04
 
@@ -1751,28 +1751,28 @@ Additional:
 
 #### Dashboards
 
-- Update consumption unit to Watt-hour to match in-car unit ([#717](https://github.com/adriankumpf/teslamate/pull/717) by [mattw01](https://github.com/mattw01))
+- Update consumption unit to Watt-hour to match in-car unit ([#717](https://github.com/adriankumpf/Marites/pull/717) by [mattw01](https://github.com/mattw01))
 - Update dashboards to use the new components from Grafana 7
 - Charges: Show very short charging sessions
-- Charges: Add filter for voltage ([#857](https://github.com/adriankumpf/teslamate/pull/857) by [Dulanic](https://github.com/Dulanic))
-- Charging Details: Show kWh even if still charging ([#744](https://github.com/adriankumpf/teslamate/pull/744) by [Dulanic](https://github.com/Dulanic))
-- Charging Stats: Visualize % of sum instead of max kWh in charging heat map ([#680](https://github.com/adriankumpf/teslamate/pull/680) by [Dulanic](https://github.com/Dulanic))
+- Charges: Add filter for voltage ([#857](https://github.com/adriankumpf/Marites/pull/857) by [Dulanic](https://github.com/Dulanic))
+- Charging Details: Show kWh even if still charging ([#744](https://github.com/adriankumpf/Marites/pull/744) by [Dulanic](https://github.com/Dulanic))
+- Charging Stats: Visualize % of sum instead of max kWh in charging heat map ([#680](https://github.com/adriankumpf/Marites/pull/680) by [Dulanic](https://github.com/Dulanic))
 - Charging Stats: Show cost per 100 km/mi (Charging Stats)
-- Drives: Update possible values for the "cold" column to be consistent ([#702](https://github.com/adriankumpf/teslamate/pull/702) by [Dulanic](https://github.com/Dulanic))
+- Drives: Update possible values for the "cold" column to be consistent ([#702](https://github.com/adriankumpf/Marites/pull/702) by [Dulanic](https://github.com/Dulanic))
 - Drive Details: Show drive efficiency
-- Mileage: Optimize query to get odometer ([#804](https://github.com/adriankumpf/teslamate/pull/804) by [Dulanic](https://github.com/Dulanic))
-- Overview: Add 'total energy added' to chart ([#690](https://github.com/adriankumpf/teslamate/pull/690) by [Dulanic](https://github.com/Dulanic))
+- Mileage: Optimize query to get odometer ([#804](https://github.com/adriankumpf/Marites/pull/804) by [Dulanic](https://github.com/Dulanic))
+- Overview: Add 'total energy added' to chart ([#690](https://github.com/adriankumpf/Marites/pull/690) by [Dulanic](https://github.com/Dulanic))
 - Overview: Hide stale temperatures
 - Overview: Show most recent driver temp setting while driving
-- Overview: Add efficiency ([#970](https://github.com/adriankumpf/teslamate/pull/970) by [DrMichael](https://github.com/DrMichael))
-- States: Display all states names ([#755](https://github.com/adriankumpf/teslamate/pull/755) by [DrMichael](https://github.com/DrMichael))
-- Updates: Add links to release notes ([#797](https://github.com/adriankumpf/teslamate/pull/797) and [#823](https://github.com/adriankumpf/teslamate/pull/823) by [pmboothby](https://github.com/pmboothby))
-- Updates: Show average range and number of chargers per software version to identify if an update had a bigger than expected impact on range ([#731](https://github.com/adriankumpf/teslamate/pull/731) and [#762](https://github.com/adriankumpf/teslamate/pull/762) by [Dulanic](https://github.com/Dulanic))
-- Updates: Fix up the version display when it only has a week value and no point release ([#925](https://github.com/adriankumpf/teslamate/pull/925) by [pyjamasam](https://github.com/pyjamasam))
-- Vampire Drain: Utilize charges as additional anchor points ([#769](https://github.com/adriankumpf/teslamate/pull/769) by [tacotran](https://github.com/tacotran))
-- Add new Statistics dashboard ([#965](https://github.com/adriankumpf/teslamate/pull/965) by [DrMichael](https://github.com/DrMichael))
-- Add the "shared crosshair" setting to some of the dashboards ([#932](https://github.com/adriankumpf/teslamate/pull/932) and [#962](https://github.com/adriankumpf/teslamate/pull/936) by [Kosta-Github](https://github.com/Kosta-Github))
-- "Customize" Grafana logo ([#890](https://github.com/adriankumpf/teslamate/pull/890) by [https://github.com/fatbasstard](https://github.com/fatbasstard))
+- Overview: Add efficiency ([#970](https://github.com/adriankumpf/Marites/pull/970) by [DrMichael](https://github.com/DrMichael))
+- States: Display all states names ([#755](https://github.com/adriankumpf/Marites/pull/755) by [DrMichael](https://github.com/DrMichael))
+- Updates: Add links to release notes ([#797](https://github.com/adriankumpf/Marites/pull/797) and [#823](https://github.com/adriankumpf/Marites/pull/823) by [pmboothby](https://github.com/pmboothby))
+- Updates: Show average range and number of chargers per software version to identify if an update had a bigger than expected impact on range ([#731](https://github.com/adriankumpf/Marites/pull/731) and [#762](https://github.com/adriankumpf/Marites/pull/762) by [Dulanic](https://github.com/Dulanic))
+- Updates: Fix up the version display when it only has a week value and no point release ([#925](https://github.com/adriankumpf/Marites/pull/925) by [pyjamasam](https://github.com/pyjamasam))
+- Vampire Drain: Utilize charges as additional anchor points ([#769](https://github.com/adriankumpf/Marites/pull/769) by [tacotran](https://github.com/tacotran))
+- Add new Statistics dashboard ([#965](https://github.com/adriankumpf/Marites/pull/965) by [DrMichael](https://github.com/DrMichael))
+- Add the "shared crosshair" setting to some of the dashboards ([#932](https://github.com/adriankumpf/Marites/pull/932) and [#962](https://github.com/adriankumpf/Marites/pull/936) by [Kosta-Github](https://github.com/Kosta-Github))
+- "Customize" Grafana logo ([#890](https://github.com/adriankumpf/Marites/pull/890) by [https://github.com/fatbasstard](https://github.com/fatbasstard))
 
 ##### Note
 
@@ -1780,18 +1780,18 @@ Additional:
 
 #### Translations
 
-- Update Chinese (Simplified) translation ([#747](https://github.com/adriankumpf/teslamate/pull/747) by [edward4hgl](https://github.com/edward4hgl))
-- Update French translation ([#693](https://github.com/adriankumpf/teslamate/pull/693) by [tomS3210](https://github.com/tomS3210))
-- Tweak Dutch translation ([#880](https://github.com/adriankumpf/teslamate/pull/880) and[#881](https://github.com/adriankumpf/teslamate/pull/881) by [https://github.com/fatbasstard](https://github.com/fatbasstard))
+- Update Chinese (Simplified) translation ([#747](https://github.com/adriankumpf/Marites/pull/747) by [edward4hgl](https://github.com/edward4hgl))
+- Update French translation ([#693](https://github.com/adriankumpf/Marites/pull/693) by [tomS3210](https://github.com/tomS3210))
+- Tweak Dutch translation ([#880](https://github.com/adriankumpf/Marites/pull/880) and[#881](https://github.com/adriankumpf/Marites/pull/881) by [https://github.com/fatbasstard](https://github.com/fatbasstard))
 
 #### Documentation
 
-- Update HomeAssistant documentation ([#705](https://github.com/adriankumpf/teslamate/pull/705) by [ngardiner](https://github.com/ngardiner))
-- TeslaFi Import: Clarify steps 3 and 4 about emptying the import folder ([#703](https://github.com/adriankumpf/teslamate/pull/703) by [ramonsmits](https://github.com/ramonsmits))
-- Update Upgrade documentation ([#790](https://github.com/adriankumpf/teslamate/pull/790) by [roadrash2108](https://github.com/roadrash2108))
-- Add a page that lists projects that use TeslaMate: [docs.teslamate.org/docs/projects](https://docs.teslamate.org/docs/projects)
-- An note about moving the backup file ([#813](https://github.com/adriankumpf/teslamate/pull/813) by [traviscollins](https://github.com/traviscollins))
-- Add `-T` flag to backup command ([#851](https://github.com/adriankumpf/teslamate/pull/851) by [acemtp](https://github.com/acemtp))
+- Update HomeAssistant documentation ([#705](https://github.com/adriankumpf/Marites/pull/705) by [ngardiner](https://github.com/ngardiner))
+- TeslaFi Import: Clarify steps 3 and 4 about emptying the import folder ([#703](https://github.com/adriankumpf/Marites/pull/703) by [ramonsmits](https://github.com/ramonsmits))
+- Update Upgrade documentation ([#790](https://github.com/adriankumpf/Marites/pull/790) by [roadrash2108](https://github.com/roadrash2108))
+- Add a page that lists projects that use Marites: [docs.Marites.org/docs/projects](https://docs.Marites.org/docs/projects)
+- An note about moving the backup file ([#813](https://github.com/adriankumpf/Marites/pull/813) by [traviscollins](https://github.com/traviscollins))
+- Add `-T` flag to backup command ([#851](https://github.com/adriankumpf/Marites/pull/851) by [acemtp](https://github.com/acemtp))
 
 #### Other
 
@@ -1805,15 +1805,15 @@ Additional:
 - Tweak streaming timeouts and create a new connection after too many disconnects
 - Change default sleep requirements to not require the car to be locked
 - Use GitHub Actions to build docker images and publish them to DockerHub
-- For those who want to help **testing the latest development version**: the docker images with the `edge` tag (`teslamate/teslamate:edge` and `teslamate/grafana:edge`) are for you.
-- Allow negative cost_per_unit for geofences ([#968](https://github.com/adriankumpf/teslamate/pull/968) by [ayonix](https://github.com/ayonix))
+- For those who want to help **testing the latest development version**: the docker images with the `edge` tag (`Marites/Marites:edge` and `Marites/grafana:edge`) are for you.
+- Allow negative cost_per_unit for geofences ([#968](https://github.com/adriankumpf/Marites/pull/968) by [ayonix](https://github.com/ayonix))
 - Speed up parsing of CSV files (data import)
 
 ### Bug Fixes
 
-- Vampire Drain: Fix duplicate values with multiple cars ([#726](https://github.com/adriankumpf/teslamate/pull/726) by [Dulanic](https://github.com/Dulanic))
-- Tooling: Ensure dashboards are restored into the same folder as they currently belong to ([#712](https://github.com/adriankumpf/teslamate/pull/712) by [sumnerboy12](https://github.com/sumnerboy12))
-- Battery Level & Range: fix wrongly displayed values for multiple cars ([#843](https://github.com/adriankumpf/teslamate/issues/843) by [lemmerk](https://github.com/lemmerk))
+- Vampire Drain: Fix duplicate values with multiple cars ([#726](https://github.com/adriankumpf/Marites/pull/726) by [Dulanic](https://github.com/Dulanic))
+- Tooling: Ensure dashboards are restored into the same folder as they currently belong to ([#712](https://github.com/adriankumpf/Marites/pull/712) by [sumnerboy12](https://github.com/sumnerboy12))
+- Battery Level & Range: fix wrongly displayed values for multiple cars ([#843](https://github.com/adriankumpf/Marites/issues/843) by [lemmerk](https://github.com/lemmerk))
 - Fix handling of locations that cannot be geocoded
 - Show in progress charging sessions
 - Handle API errors during initialization
@@ -1828,15 +1828,15 @@ Additional:
 
 #### Translations
 
-- Improve Chinese (Traditional) translation accuracy ([#650](https://github.com/adriankumpf/teslamate/pull/650) by [occultsound](https://github.com/occultsound))
-- Improve Chinese (Simplified) translation accuracy ([#649](https://github.com/adriankumpf/teslamate/pull/649) by [edward4hgl](https://github.com/edward4hgl))
-- Improve Korean translation ([#663](https://github.com/adriankumpf/teslamate/pull/663) by [dongbum](https://github.com/dongbum))
+- Improve Chinese (Traditional) translation accuracy ([#650](https://github.com/adriankumpf/Marites/pull/650) by [occultsound](https://github.com/occultsound))
+- Improve Chinese (Simplified) translation accuracy ([#649](https://github.com/adriankumpf/Marites/pull/649) by [edward4hgl](https://github.com/edward4hgl))
+- Improve Korean translation ([#663](https://github.com/adriankumpf/Marites/pull/663) by [dongbum](https://github.com/dongbum))
 
 #### Dashboards
 
-- Overview: Update battery gauge thresholds ([#651](https://github.com/adriankumpf/teslamate/pull/651) by [wooter](https://github.com/wooter))
-- Drives: Add column header for reduced range ([#662](https://github.com/adriankumpf/teslamate/pull/662) by [Dulanic](https://github.com/Dulanic))
-- Charging Stats: Show map with frequently used chargers ([#666](https://github.com/adriankumpf/teslamate/pull/666) by [Dulanic](https://github.com/Dulanic))
+- Overview: Update battery gauge thresholds ([#651](https://github.com/adriankumpf/Marites/pull/651) by [wooter](https://github.com/wooter))
+- Drives: Add column header for reduced range ([#662](https://github.com/adriankumpf/Marites/pull/662) by [Dulanic](https://github.com/Dulanic))
+- Charging Stats: Show map with frequently used chargers ([#666](https://github.com/adriankumpf/Marites/pull/666) by [Dulanic](https://github.com/Dulanic))
   - _Manual install: requires Grafana plugin **grafana-map-panel**_
 
     ```bash
@@ -1845,7 +1845,7 @@ Additional:
 
 #### Other
 
-- Add option `HTTP_BINDING_ADDRESS` to control the bound IP address ([#665](https://github.com/adriankumpf/teslamate/pull/665) by [dyxyl](https://github.com/dyxyl))
+- Add option `HTTP_BINDING_ADDRESS` to control the bound IP address ([#665](https://github.com/adriankumpf/Marites/pull/665) by [dyxyl](https://github.com/dyxyl))
 - Docker image: Pre-install Grafana plugins
 - Drop unused indexes
 
@@ -1854,7 +1854,7 @@ Additional:
 - Fix an issue that could cause a missed firmware update not to be logged retroactively
 - Fix an issue where the vehicle process could crash when logging was suspended manually
 - Improve error message for an invalid tokens table
-- Fix `min. distance per drive` on Efficiency dashboard to filter correctly in miles ([#672](https://github.com/adriankumpf/teslamate/pull/672) by [Dulanic](https://github.com/Dulanic))
+- Fix `min. distance per drive` on Efficiency dashboard to filter correctly in miles ([#672](https://github.com/adriankumpf/Marites/pull/672) by [Dulanic](https://github.com/Dulanic))
 
 ## [1.19.2] - 2020-04-26
 
@@ -1862,19 +1862,19 @@ Additional:
 
 #### Translations
 
-- Add Chinese (Simplified) translation ([#625](https://github.com/adriankumpf/teslamate/pull/625) by [edward4hgl](https://github.com/edward4hgl))
-- Add Chinese (Traditional) translation ([#633](https://github.com/adriankumpf/teslamate/pull/633) by [occultsound](https://github.com/occultsound))
-- Fix typo in French translation ([#638](https://github.com/adriankumpf/teslamate/pull/638) by [tobiasehlert](https://github.com/tobiasehlert))
-- Add Dutch translation ([#647](https://github.com/adriankumpf/teslamate/pull/647) by [wooter](https://github.com/wooter))
+- Add Chinese (Simplified) translation ([#625](https://github.com/adriankumpf/Marites/pull/625) by [edward4hgl](https://github.com/edward4hgl))
+- Add Chinese (Traditional) translation ([#633](https://github.com/adriankumpf/Marites/pull/633) by [occultsound](https://github.com/occultsound))
+- Fix typo in French translation ([#638](https://github.com/adriankumpf/Marites/pull/638) by [tobiasehlert](https://github.com/tobiasehlert))
+- Add Dutch translation ([#647](https://github.com/adriankumpf/Marites/pull/647) by [wooter](https://github.com/wooter))
 
 #### Dashboards
 
-- Updates: Show update duration and time since last update ([#632](https://github.com/adriankumpf/teslamate/pull/632) by [Dulanic](https://github.com/Dulanic))
-- Charging Stats: Show kWh at non-decimal level and MWh at the 3 decimal point level ([#642](https://github.com/adriankumpf/teslamate/pull/642) and [#646](https://github.com/adriankumpf/teslamate/pull/646) by [Dulanic](https://github.com/Dulanic))
+- Updates: Show update duration and time since last update ([#632](https://github.com/adriankumpf/Marites/pull/632) by [Dulanic](https://github.com/Dulanic))
+- Charging Stats: Show kWh at non-decimal level and MWh at the 3 decimal point level ([#642](https://github.com/adriankumpf/Marites/pull/642) and [#646](https://github.com/adriankumpf/Marites/pull/646) by [Dulanic](https://github.com/Dulanic))
 
 ### Bug Fixes
 
-- Do not publish NULL or incorrect values to MQTT topics if TeslaMate is restarted while the car is asleep
+- Do not publish NULL or incorrect values to MQTT topics if Marites is restarted while the car is asleep
 
 ## [1.19.1] - 2020-04-20
 
@@ -1882,12 +1882,12 @@ Additional:
 
 #### Translations
 
-- Add Korean translation ([#614](https://github.com/adriankumpf/teslamate/pull/614) by [dongbum](https://github.com/dongbum))
+- Add Korean translation ([#614](https://github.com/adriankumpf/Marites/pull/614) by [dongbum](https://github.com/dongbum))
 
 ### Bug Fixes
 
 - Fix an issue where the map tiles would disappear when editing a geofence
-- Fix a few things in the docs ([#611](https://github.com/adriankumpf/teslamate/pull/611) by [tobiasehlert](https://github.com/tobiasehlert))
+- Fix a few things in the docs ([#611](https://github.com/adriankumpf/Marites/pull/611) by [tobiasehlert](https://github.com/tobiasehlert))
 
 ## [1.19.0] - 2020-04-19
 
@@ -1895,31 +1895,31 @@ Additional:
 
 #### Streaming API
 
-As the first and only Tesla logging app out there, TeslaMate now use the Tesla streaming API! This brings the following improvements:
+As the first and only Tesla logging app out there, Marites now use the Tesla streaming API! This brings the following improvements:
 
 - **High precision drive data**. Rather than active polling, the streaming API allows for passive consumption of a high frequency data stream with the most important drive data (position, heading, speed, power, elevation etc.).
-- **Actual elevation above sea level**. Up until now TeslaMate used satellite terrain data to get the elevation. Driving through tunnels or across a bridges therefore resulted in inaccurate recordings. This is no longer the case!
+- **Actual elevation above sea level**. Up until now Marites used satellite terrain data to get the elevation. Driving through tunnels or across a bridges therefore resulted in inaccurate recordings. This is no longer the case!
 - **Bluetooth hints are no longer needed!** Using the streaming API does not prevent the vehicle from falling asleep, thus enabling continuous monitoring. This allows the car to fall asleep more quickly (no more idle timer) and we don't miss up to 21 minutes of driving because of halted polling.
 
 **Many thanks to everyone who participated in testing this release and contributed improvements!**
 
 #### Translations
 
-- Add Danish translation ([#584](https://github.com/adriankumpf/teslamate/pull/584) by [MartinNielsen](https://github.com/MartinNielsen))
-- Update Norwegian translation ([#544](https://github.com/adriankumpf/teslamate/pull/544) and [#591](https://github.com/adriankumpf/teslamate/pull/591) by [spacecosmos](https://github.com/spacecosmos))
-- Update Swedish translation ([#522](https://github.com/adriankumpf/teslamate/pull/522) by [tobiasehlert](https://github.com/tobiasehlert))
-- Update French translation ([#598](https://github.com/adriankumpf/teslamate/pull/598) by [tomS3210](https://github.com/tomS3210) and [MaxG88](https://github.com/MaxG88))
-- Updated Labels to Title Case ([#578](https://github.com/adriankumpf/teslamate/pull/578) by [jmiverson](https://github.com/jmiverson))
+- Add Danish translation ([#584](https://github.com/adriankumpf/Marites/pull/584) by [MartinNielsen](https://github.com/MartinNielsen))
+- Update Norwegian translation ([#544](https://github.com/adriankumpf/Marites/pull/544) and [#591](https://github.com/adriankumpf/Marites/pull/591) by [spacecosmos](https://github.com/spacecosmos))
+- Update Swedish translation ([#522](https://github.com/adriankumpf/Marites/pull/522) by [tobiasehlert](https://github.com/tobiasehlert))
+- Update French translation ([#598](https://github.com/adriankumpf/Marites/pull/598) by [tomS3210](https://github.com/tomS3210) and [MaxG88](https://github.com/MaxG88))
+- Updated Labels to Title Case ([#578](https://github.com/adriankumpf/Marites/pull/578) by [jmiverson](https://github.com/jmiverson))
 
 #### Other enhancements
 
-- Send credentials with manifest request ([#555](https://github.com/adriankumpf/teslamate/pull/555) by [MaxG88](https://github.com/MaxG88))
+- Send credentials with manifest request ([#555](https://github.com/adriankumpf/Marites/pull/555) by [MaxG88](https://github.com/MaxG88))
 - Add option to change the language of the web interface
 - Reduce docker image size
 - Display an arrow instead of a generic marker to indicate in which direction the vehicle is heading
 - Show spinner before the map is initialized
 - Wait until the doors/trunk/frunk are closed before attempting to fall asleep
-- Inform if a new TeslaMate update is available
+- Inform if a new Marites update is available
 - Add icons to navbar items
 - Add 'About' section to the settings page
 - Publish only those values via MQTT that have actually changed
@@ -1927,24 +1927,24 @@ As the first and only Tesla logging app out there, TeslaMate now use the Tesla s
 
 #### New MQTT Topics
 
-- `teslamate/cars/$car_id/elevation`
-- `teslamate/cars/$car_id/trunk_open`
-- `teslamate/cars/$car_id/frunk_open`
+- `Marites/cars/$car_id/elevation`
+- `Marites/cars/$car_id/trunk_open`
+- `Marites/cars/$car_id/frunk_open`
 
 #### Documentation
 
-The docs were revised (once again). You can find them at **[docs.teslamate.org](https://docs.teslamate.org)**.
+The docs were revised (once again). You can find them at **[docs.Marites.org](https://docs.Marites.org)**.
 
-- Add portainer guide to the documentation ([#581](https://github.com/adriankumpf/teslamate/pull/581) by [DrMichael](https://github.com/DrMichael))
-- Improve Apache2 guide ([#570](https://github.com/adriankumpf/teslamate/pull/570) by [DrMichael](https://github.com/DrMichael))
-- Bump traefik to v2.2 ([#603](https://github.com/adriankumpf/teslamate/pull/603) by [oittaa](https://github.com/oittaoittaaa))
+- Add portainer guide to the documentation ([#581](https://github.com/adriankumpf/Marites/pull/581) by [DrMichael](https://github.com/DrMichael))
+- Improve Apache2 guide ([#570](https://github.com/adriankumpf/Marites/pull/570) by [DrMichael](https://github.com/DrMichael))
+- Bump traefik to v2.2 ([#603](https://github.com/adriankumpf/Marites/pull/603) by [oittaa](https://github.com/oittaoittaaa))
 
 ### Bug Fixes
 
-- Display vampire drain range loss per hour in the correct units ([#543](https://github.com/adriankumpf/teslamate/pull/543) by [ograff](https://github.com/ograff)).
-- Trip dashboard: Add title to the drives table to allow sorting ([#592](https://github.com/adriankumpf/teslamate/pull/592) by [MaxG88](https://github.com/MaxG88))
-- Add `tini` as the init process for the TeslaMate Docker container to avoid zombie processes ([#606](https://github.com/adriankumpf/teslamate/pull/606) by [dbussink](https://github.com/dbussink))
-- Sort "Drives" table properly by drive date ([#595](https://github.com/adriankumpf/teslamate/pull/595) by [Dulanic](https://github.com/Dulanic))
+- Display vampire drain range loss per hour in the correct units ([#543](https://github.com/adriankumpf/Marites/pull/543) by [ograff](https://github.com/ograff)).
+- Trip dashboard: Add title to the drives table to allow sorting ([#592](https://github.com/adriankumpf/Marites/pull/592) by [MaxG88](https://github.com/MaxG88))
+- Add `tini` as the init process for the Marites Docker container to avoid zombie processes ([#606](https://github.com/adriankumpf/Marites/pull/606) by [dbussink](https://github.com/dbussink))
+- Sort "Drives" table properly by drive date ([#595](https://github.com/adriankumpf/Marites/pull/595) by [Dulanic](https://github.com/Dulanic))
 - Fix flashing modal on the geofence page
 - Publish an MQTT message when the health check succeeds again
 - Handle various invalid API responses that could previously cause problems
@@ -1971,17 +1971,17 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 ### Bug Fixes
 
-- Fix settings dropdown and Swedish translation ([#525](https://github.com/adriankumpf/teslamate/pull/525) by [tobiasehlert](https://github.com/tobiasehlert))
+- Fix settings dropdown and Swedish translation ([#525](https://github.com/adriankumpf/Marites/pull/525) by [tobiasehlert](https://github.com/tobiasehlert))
 
 ## [1.18.0] - 2020-03-21
 
 ### Enhancements
 
-- Add Swedish translation ([#485](https://github.com/adriankumpf/teslamate/pull/485) and [#522](https://github.com/adriankumpf/teslamate/pull/522) by [tobiasehlert](https://github.com/tobiasehlert))
-- Add Norwegian translation ([#500](https://github.com/adriankumpf/teslamate/pull/500) by [spacecosmos](https://github.com/spacecosmos))
-- Add Spanish translation ([#519](https://github.com/adriankumpf/teslamate/pull/519) by [alceasan](https://github.com/alceasan))
-- Overview: Add states panel ([#520](https://github.com/adriankumpf/teslamate/pull/520) by [DrMichael](https://github.com/DrMichael))
-- Immediately display the current car software version after restarting TeslaMate
+- Add Swedish translation ([#485](https://github.com/adriankumpf/Marites/pull/485) and [#522](https://github.com/adriankumpf/Marites/pull/522) by [tobiasehlert](https://github.com/tobiasehlert))
+- Add Norwegian translation ([#500](https://github.com/adriankumpf/Marites/pull/500) by [spacecosmos](https://github.com/spacecosmos))
+- Add Spanish translation ([#519](https://github.com/adriankumpf/Marites/pull/519) by [alceasan](https://github.com/alceasan))
+- Overview: Add states panel ([#520](https://github.com/adriankumpf/Marites/pull/520) by [DrMichael](https://github.com/DrMichael))
+- Immediately display the current car software version after restarting Marites
 - Add mileage to the summary page
 - Add option to calculate charging costs retroactively
 - Allow to enter total cost or cost per KWh used
@@ -1992,17 +1992,17 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 #### New MQTT Topics
 
-- `teslamate/cars/$car_id/doors_open`
-- `teslamate/cars/$car_id/model`
-- `teslamate/cars/$car_id/trim_badging`
-- `teslamate/cars/$car_id/exterior_color`
-- `teslamate/cars/$car_id/wheel_type`
-- `teslamate/cars/$car_id/spoiler_type`
+- `Marites/cars/$car_id/doors_open`
+- `Marites/cars/$car_id/model`
+- `Marites/cars/$car_id/trim_badging`
+- `Marites/cars/$car_id/exterior_color`
+- `Marites/cars/$car_id/wheel_type`
+- `Marites/cars/$car_id/spoiler_type`
 
 ### Bug Fixes
 
-- Drive Stats: Show stats in desired units ([#484](https://github.com/adriankumpf/teslamate/pull/484) by [pichalite](https://github.com/pichalite))
-- Drive Details: Fix odometer units ([#487](https://github.com/adriankumpf/teslamate/pull/487) by [pichalite](https://github.com/pichalite))
+- Drive Stats: Show stats in desired units ([#484](https://github.com/adriankumpf/Marites/pull/484) by [pichalite](https://github.com/pichalite))
+- Drive Details: Fix odometer units ([#487](https://github.com/adriankumpf/Marites/pull/487) by [pichalite](https://github.com/pichalite))
 - Update address formatting to avoid showing obscure names instead of towns/cities
 - Charge Details: Hide empty series
 - Suppress `Cldr.NoMatchingLocale` warnings
@@ -2021,14 +2021,14 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 ### Enhancements
 
-[olexs](https://github.com/olexs) has developed a toolkit to export data from the [tesla-apiscraper](https://github.com/lephisto/tesla-apiscraper) InfluxDB backend and convert it to a CSV format that can be imported using the [TeslaFi Import](https://teslamate.readthedocs.io/en/latest/import/teslafi.html). Check it out if you want to migrate data to TeslaMate: [**Import from tesla-apiscraper (BETA)**](https://teslamate.readthedocs.io/en/latest/import/tesla_apiscraper.html)
+[olexs](https://github.com/olexs) has developed a toolkit to export data from the [tesla-apiscraper](https://github.com/lephisto/tesla-apiscraper) InfluxDB backend and convert it to a CSV format that can be imported using the [TeslaFi Import](https://Marites.readthedocs.io/en/latest/import/teslafi.html). Check it out if you want to migrate data to Marites: [**Import from tesla-apiscraper (BETA)**](https://Marites.readthedocs.io/en/latest/import/tesla_apiscraper.html)
 
 - Simplify geofence editing: The radius can now be changed interactively.
 - Allow geofences to overlap: If multiple geofences cover a position, the geofence whose centre is closest is selected.
-- Increase charge cost scale / kWh ([#440](https://github.com/adriankumpf/teslamate/pull/440) by [baylanger](https://github.com/baylanger))
+- Increase charge cost scale / kWh ([#440](https://github.com/adriankumpf/Marites/pull/440) by [baylanger](https://github.com/baylanger))
 - Charge cost view: Show zoom controls
 - TeslaFi Import: Preselect the timezone
-- Add configuration option [`DATABASE_SSL`](https://teslamate.readthedocs.io/en/latest/configuration/environment_variables.html)
+- Add configuration option [`DATABASE_SSL`](https://Marites.readthedocs.io/en/latest/configuration/environment_variables.html)
 - Use 'rated' as default preferred range
 - Collapse 'Dashboards' dropdown on mobile
 
@@ -2038,17 +2038,17 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 - _All:_ Link to the web interface and other dashboards
 - _Overview:_ Speed up database queries
 - _Charges:_ Add geofence filter
-- _Charge Details:_ Add cost overview ([#460](https://github.com/adriankumpf/teslamate/pull/460) by [Niek](https://github.com/Niek))
+- _Charge Details:_ Add cost overview ([#460](https://github.com/adriankumpf/Marites/pull/460) by [Niek](https://github.com/Niek))
 - _Drive Details:_ Add usable battery level graph
 
 #### New MQTT Topics
 
-- `teslamate/cars/$car_id/geofence`: The name of the geofence at the current position
+- `Marites/cars/$car_id/geofence`: The name of the geofence at the current position
 
 #### Documentation
 
-- Add docs for tesla-apiscraper import ([#454](https://github.com/adriankumpf/teslamate/pull/454) by [olexs](https://github.com/olexs))
-- Update Backup & Restore docs ([#438](https://github.com/adriankumpf/teslamate/pull/438) by [AlwindB](https://github.com/AlwindB))
+- Add docs for tesla-apiscraper import ([#454](https://github.com/adriankumpf/Marites/pull/454) by [olexs](https://github.com/olexs))
+- Update Backup & Restore docs ([#438](https://github.com/adriankumpf/Marites/pull/438) by [AlwindB](https://github.com/AlwindB))
 - Revamp manual install docs
 
 ### Bug Fixes
@@ -2059,10 +2059,10 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 ### Enhancements
 
-- [Import from TeslaFi (BETA)](https://teslamate.readthedocs.io/en/latest/import/teslafi.html)
+- [Import from TeslaFi (BETA)](https://Marites.readthedocs.io/en/latest/import/teslafi.html)
 - Calculate charge cost based on location and kWh
 - Automatically set charge cost to zero if free supercharging is enabled (configurable on the settings page)
-- Add French translation ([#397](https://github.com/adriankumpf/teslamate/pull/397) by [tomS3210](https://github.com/tomS3210))
+- Add French translation ([#397](https://github.com/adriankumpf/Marites/pull/397) by [tomS3210](https://github.com/tomS3210))
 - Improve language detection
 - Show odometer on 'Drive Details' dashboard
 - Bump Grafana to 6.6.1
@@ -2070,14 +2070,14 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 #### Documentation
 
-- New FAQ entry for adding API tokens directly into the database instead of using username/password ([#412](https://github.com/adriankumpf/teslamate/pull/412) by [wishbone1138](https://github.com/wishbone1138))
-- Improve standalone install documentation ([#416](https://github.com/adriankumpf/teslamate/pull/416) by [Niek](https://github.com/Niek))
-- Improve iOS Shortcuts guide ([#405](https://github.com/adriankumpf/teslamate/pull/405) by [DP19](https://github.com/DP19))
+- New FAQ entry for adding API tokens directly into the database instead of using username/password ([#412](https://github.com/adriankumpf/Marites/pull/412) by [wishbone1138](https://github.com/wishbone1138))
+- Improve standalone install documentation ([#416](https://github.com/adriankumpf/Marites/pull/416) by [Niek](https://github.com/Niek))
+- Improve iOS Shortcuts guide ([#405](https://github.com/adriankumpf/Marites/pull/405) by [DP19](https://github.com/DP19))
 
 ### Bug Fixes
 
-- Re-add charge annotations to the 'Projected Range' dashboard ([#393](https://github.com/adriankumpf/teslamate/pull/393) by [ctraber](https://github.com/ctraber))
-- Correct typos in projected-range.json ([#395](https://github.com/adriankumpf/teslamate/pull/395) by [shagberg](https://github.com/shagberg))
+- Re-add charge annotations to the 'Projected Range' dashboard ([#393](https://github.com/adriankumpf/Marites/pull/393) by [ctraber](https://github.com/ctraber))
+- Correct typos in projected-range.json ([#395](https://github.com/adriankumpf/Marites/pull/395) by [shagberg](https://github.com/shagberg))
 - Increase height of the pie charts panels
 - Address an issue where a drive would not be properly completed if the vehicle was suddenly reported as asleep after being offline for a while
 - Fix energy used in 'Drive Details'
@@ -2098,7 +2098,7 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 ### Enhancements
 
 - Add charge cost interface
-- Display usable SOC and show snowflake icon on summary page ([#338](https://github.com/adriankumpf/teslamate/pull/338) by [ctraber](https://github.com/ctraber))
+- Display usable SOC and show snowflake icon on summary page ([#338](https://github.com/adriankumpf/Marites/pull/338) by [ctraber](https://github.com/ctraber))
 - Log missed software updates
 - Add tooltip with the estimated range at 100%
 - Remove software version commit hash
@@ -2112,12 +2112,12 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 #### New MQTT Topics
 
-- `teslamate/cars/$car_id/usable_battery_level`
+- `Marites/cars/$car_id/usable_battery_level`
 
 #### Dashboards
 
-- Projected Range: Use `usable_battery_level` to calculate the projected range and add more panels ([#338](https://github.com/adriankumpf/teslamate/pull/338), [#367](https://github.com/adriankumpf/teslamate/pull/367) by [ctraber](https://github.com/ctraber))
-- Add `tesla` tag ([#369](https://github.com/adriankumpf/teslamate/pull/369) by [TechForze](https://github.com/TechForze))
+- Projected Range: Use `usable_battery_level` to calculate the projected range and add more panels ([#338](https://github.com/adriankumpf/Marites/pull/338), [#367](https://github.com/adriankumpf/Marites/pull/367) by [ctraber](https://github.com/ctraber))
+- Add `tesla` tag ([#369](https://github.com/adriankumpf/Marites/pull/369) by [TechForze](https://github.com/TechForze))
 - Vampire Drain: show SOC difference and ❄ (reduced range)
 - Charging Stats: Show share of AC/DC charging
 - Charging Stats: Show top charging stations by cost
@@ -2129,9 +2129,9 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 #### Documentation
 
-- Add docs for an advanced Docker install with Apache2 ([#361](https://github.com/adriankumpf/teslamate/pull/361) by [DrMichael](https://github.com/DrMichael))
-- Add docs for backup and restore ([#361](https://github.com/adriankumpf/teslamate/pull/361) by [DrMichael](https://github.com/DrMichael))
-- Update the macrodroid docs ([#359](https://github.com/adriankumpf/teslamate/pull/359) by [markusdd](https://github.com/markusdd))
+- Add docs for an advanced Docker install with Apache2 ([#361](https://github.com/adriankumpf/Marites/pull/361) by [DrMichael](https://github.com/DrMichael))
+- Add docs for backup and restore ([#361](https://github.com/adriankumpf/Marites/pull/361) by [DrMichael](https://github.com/DrMichael))
+- Update the macrodroid docs ([#359](https://github.com/adriankumpf/Marites/pull/359) by [markusdd](https://github.com/markusdd))
 - Add docs for manually fixing data
 - Add docs for updating Postgres
 
@@ -2175,7 +2175,7 @@ The docs were revised (once again). You can find them at **[docs.teslamate.org](
 
 #### Documentation
 
-[@gundalow](https://github.com/gundalow) has revamped the docs ([#292](https://github.com/adriankumpf/teslamate/pull/292), [#314](https://github.com/adriankumpf/teslamate/pull/314)). The new documentation is available here: [teslamate.readthedocs.io](https://teslamate.readthedocs.io)
+[@gundalow](https://github.com/gundalow) has revamped the docs ([#292](https://github.com/adriankumpf/Marites/pull/292), [#314](https://github.com/adriankumpf/Marites/pull/314)). The new documentation is available here: [Marites.readthedocs.io](https://Marites.readthedocs.io)
 
 #### Automatic phase correction
 
@@ -2200,8 +2200,8 @@ Background: some vehicles incorrectly report 2 instead of 1 or 3 phases when cha
 
 ### Enhancements
 
-- Enable the time range control in the "Charging Stats" dashboard ([#278](https://github.com/adriankumpf/teslamate/pull/278) by [@nnoally](https://github.com/nnoally))
-- Various docs improvements ([#285](https://github.com/adriankumpf/teslamate/pull/285) by [@gundalow](https://github.com/gundalow))
+- Enable the time range control in the "Charging Stats" dashboard ([#278](https://github.com/adriankumpf/Marites/pull/278) by [@nnoally](https://github.com/nnoally))
+- Various docs improvements ([#285](https://github.com/adriankumpf/Marites/pull/285) by [@gundalow](https://github.com/gundalow))
 
 ### Bug Fixes
 
@@ -2214,8 +2214,8 @@ Background: some vehicles incorrectly report 2 instead of 1 or 3 phases when cha
 
 Add a database column that will allow tracking charge costs:
 
-- Merge 20191117042320_add_cost_field_to_charges.exs (Charge Cost field) ([#258](https://github.com/adriankumpf/teslamate/pull/258) by [@ngardiner](https://github.com/ngardiner))
-- Grafana Dashboard Integration for Charge Cost ([#273](https://github.com/adriankumpf/teslamate/pull/273) by [@ngardiner](https://github.com/ngardiner))
+- Merge 20191117042320_add_cost_field_to_charges.exs (Charge Cost field) ([#258](https://github.com/adriankumpf/Marites/pull/258) by [@ngardiner](https://github.com/ngardiner))
+- Grafana Dashboard Integration for Charge Cost ([#273](https://github.com/adriankumpf/Marites/pull/273) by [@ngardiner](https://github.com/ngardiner))
 
 Note: There is no charging cost interface either manual or automatic at this point but there will be in the future.
 
@@ -2230,7 +2230,7 @@ Note: There is no charging cost interface either manual or automatic at this poi
 
 - Display link "Dashboards" inside the navigation bar (it becomes visible after clicking an address in one of the Grafana dashboards. Alternatively the Grafana URL can be added manually on the settings page)
 - Enable or disable the sleep mode depending on the location. For example, the car can be allowed to sleep at home or work, but nowhere else.
-- Extend Charge Stats Dashboard with discharge stats, a charge delta graph and a charge heatmap ([#270](https://github.com/adriankumpf/teslamate/pull/270) by [@marcogabriel](https://github.com/marcogabriel))
+- Extend Charge Stats Dashboard with discharge stats, a charge delta graph and a charge heatmap ([#270](https://github.com/adriankumpf/Marites/pull/270) by [@marcogabriel](https://github.com/marcogabriel))
 
 ### Enhancements
 
@@ -2238,7 +2238,7 @@ Note: There is no charging cost interface either manual or automatic at this poi
 - Reduce default "Time to try sleeping" to 12 minutes for newer vehicles
 - The "States" dashboard now includes software updates
 - Automatically repair trips and charges with missing addresses (e.g. because OpenStreetMap was temporarily unavailable)
-- Update thresholds of the battery level gauge ([#256](https://github.com/adriankumpf/teslamate/pull/256) by [@marcogabriel](https://github.com/marcogabriel))
+- Update thresholds of the battery level gauge ([#256](https://github.com/adriankumpf/Marites/pull/256) by [@marcogabriel](https://github.com/marcogabriel))
 
 ### Bug Fixes
 
@@ -2261,22 +2261,22 @@ Note: There is no charging cost interface either manual or automatic at this poi
 
 ### New MQTT Topics
 
-- `teslamate/cars/$car_id/heading`
+- `Marites/cars/$car_id/heading`
 
 ### Bug Fixes
 
-- Consistent language for label of charging events ([#299](https://github.com/adriankumpf/teslamate/pull/229))
+- Consistent language for label of charging events ([#299](https://github.com/adriankumpf/Marites/pull/229))
 - Cap charging efficiency to 100%
 
 ## [1.12.0] - 2019-10-28
 
-We finally have **documentation**! Many thanks to [@ngardiner](https://github.com/ngardiner), who gave the impulse and did most of the work and also to [@krezac](https://github.com/krezac), who contributed a guide to creating iOS Shortcuts for TeslaMate!
+We finally have **documentation**! Many thanks to [@ngardiner](https://github.com/ngardiner), who gave the impulse and did most of the work and also to [@krezac](https://github.com/krezac), who contributed a guide to creating iOS Shortcuts for Marites!
 
 ### New Features
 
 #### Vehicle Efficiency
 
-Previous versions of TeslaMate shipped with hard-coded efficiency values for the various Tesla models. These efficiency values are needed to calculate trip consumptions, because the Tesla API does not provide them directly.
+Previous versions of Marites shipped with hard-coded efficiency values for the various Tesla models. These efficiency values are needed to calculate trip consumptions, because the Tesla API does not provide them directly.
 
 The hard-coded values were _probably_ pretty accurate, but it was impossible to ensure the correctness of all of them. In addition, the new Model S and X "Raven" could not be reliably identified because the Tesla API returns wrong option codes for both.
 
@@ -2284,7 +2284,7 @@ This version eliminates the need to use these hard-coded values and instead calc
 
 #### Charge energy used
 
-In addition to the kWh added to the battery during the charge TeslaMate now calculates the actual energy used by the charger, which in most cases is higher than the energy added to the battery.
+In addition to the kWh added to the battery during the charge Marites now calculates the actual energy used by the charger, which in most cases is higher than the energy added to the battery.
 
 Consider this feature somewhat experimental. Theoretically, however, it should be pretty accurate as long as the vehicle has a stable internet connection while charging (other paid Tesla loggers use the same calculation method).
 
@@ -2292,10 +2292,10 @@ Currently, a firmware bug in some vehicles may cause the wrong number of phases 
 
 #### New MQTT Topics
 
-- `teslamate/cars/$car_id/update_available`
-- `teslamate/cars/$car_id/is_climate_on`
-- `teslamate/cars/$car_id/is_preconditioning`
-- `teslamate/cars/$car_id/is_user_present`
+- `Marites/cars/$car_id/update_available`
+- `Marites/cars/$car_id/is_climate_on`
+- `Marites/cars/$car_id/is_preconditioning`
+- `Marites/cars/$car_id/is_user_present`
 
 ### Enhancements
 
@@ -2303,7 +2303,7 @@ Currently, a firmware bug in some vehicles may cause the wrong number of phases 
 - Various UI Tweaks
 - Grafana: show the precise duration of a trip in a tooltip
 - Serve gzipped assets
-- Disable origin check by default to simplify the installation of TeslaMate. (⚠️ For publicly exposed TeslaMate instances it is advisable to re-enable the check by adding the environment variable `CHECK_ORIGIN=true`.)
+- Disable origin check by default to simplify the installation of Marites. (⚠️ For publicly exposed Marites instances it is advisable to re-enable the check by adding the environment variable `CHECK_ORIGIN=true`.)
 
 ### Bug Fixes
 
@@ -2323,7 +2323,7 @@ Currently, a firmware bug in some vehicles may cause the wrong number of phases 
 ### New Features
 
 - Add overview dashboard (by DBemis;
-  [#196](https://github.com/adriankumpf/teslamate/pull/196))
+  [#196](https://github.com/adriankumpf/Marites/pull/196))
 - Make :check_origin option configurable via environment variable
   `CHECK_ORIGIN`
 - Open GitHub release page when clicking the version tag in the navbar
@@ -2331,7 +2331,7 @@ Currently, a firmware bug in some vehicles may cause the wrong number of phases 
 
 ### New MQTT topics
 
-- `teslamate/cars/$car_id/version`: Current software version
+- `Marites/cars/$car_id/version`: Current software version
 
 ### Enhancements
 
@@ -2367,24 +2367,24 @@ Currently, a firmware bug in some vehicles may cause the wrong number of phases 
   a trip
 
   **Note:** For this feature to work Grafana needs to know the base URL of the
-  TeslaMate web interface. To automatically set the base URL open the web
+  Marites web interface. To automatically set the base URL open the web
   interface once after upgrading to this version. Manually changing the base
   URL is possible via the settings page.
 
 #### New MQTT topics
 
-- `teslamate/cars/$car_id/healthy`: Reports the health status of the logger
-- `teslamate/cars/$car_id/windows_open`
-- `teslamate/cars/$car_id/shift_state`
-- `teslamate/cars/$car_id/latitude`
-- `teslamate/cars/$car_id/longitude`
-- `teslamate/cars/$car_id/odometer`
-- `teslamate/cars/$car_id/charge_port_door_open`
-- `teslamate/cars/$car_id/charger_actual_current`
-- `teslamate/cars/$car_id/charger_phases`
-- `teslamate/cars/$car_id/charger_power`
-- `teslamate/cars/$car_id/charger_voltage`
-- `teslamate/cars/$car_id/time_to_full_charge`
+- `Marites/cars/$car_id/healthy`: Reports the health status of the logger
+- `Marites/cars/$car_id/windows_open`
+- `Marites/cars/$car_id/shift_state`
+- `Marites/cars/$car_id/latitude`
+- `Marites/cars/$car_id/longitude`
+- `Marites/cars/$car_id/odometer`
+- `Marites/cars/$car_id/charge_port_door_open`
+- `Marites/cars/$car_id/charger_actual_current`
+- `Marites/cars/$car_id/charger_phases`
+- `Marites/cars/$car_id/charger_power`
+- `Marites/cars/$car_id/charger_voltage`
+- `Marites/cars/$car_id/time_to_full_charge`
 
 ### Bug Fixes
 
@@ -2403,8 +2403,8 @@ _Users of the default `docker-compose.yml` can skip this part._
 To run the migrations successfully, the database user has to have
 superuser rights (temporarily):
 
-- To add superuser rights: `ALTER USER teslamate WITH SUPERUSER;`
-- To remove superuser rights: `ALTER USER teslamate WITH NOSUPERUSER;`
+- To add superuser rights: `ALTER USER Marites WITH SUPERUSER;`
+- To remove superuser rights: `ALTER USER Marites WITH NOSUPERUSER;`
 
 ## [1.9.1] - 2019-09-24
 
@@ -2421,27 +2421,27 @@ superuser rights (temporarily):
 - Add a satellite/hybrid layer to the geo-fence map
 - Use elevation data with 1 arc second (~30m) accuracy everywhere not just in
   the US
-- Add support for MQTT SSL ([#140](https://github.com/adriankumpf/teslamate/pull/140))
+- Add support for MQTT SSL ([#140](https://github.com/adriankumpf/Marites/pull/140))
 - Add "Charged" annotation to the degradation dashboard
 - Add preferred range setting: you can now choose between "ideal" and "rated"
   range to use as the basis for efficiency and other metrics
 
 ### Changed
 
-- Require a data source named "TeslaMate":
+- Require a data source named "Marites":
 
-  If you don't run the `teslamate/grafana` docker container the Grafana data
-  source has to have the name "TeslaMate". Prior to this change the default
+  If you don't run the `Marites/grafana` docker container the Grafana data
+  source has to have the name "Marites". Prior to this change the default
   data source was used.
 
-- Renamed the MQTT topic `teslamate/cars/$car_id/battery_range_km` to
-  `teslamate/cars/$car_id/rated_battery_range_km`.
+- Renamed the MQTT topic `Marites/cars/$car_id/battery_range_km` to
+  `Marites/cars/$car_id/rated_battery_range_km`.
 
 ### Fixed
 
 - Prevent suspending when an update is in progress
 - Fix charge counter when using with multi vehicles
-  ([#175](https://github.com/adriankumpf/teslamate/pull/175))
+  ([#175](https://github.com/adriankumpf/Marites/pull/175))
 
 ### Removed
 
@@ -2524,7 +2524,7 @@ superuser rights (temporarily):
 #### Web UI
 
 - Add favicons
-- Fetch last known values from database after (re)starting TeslaMate
+- Fetch last known values from database after (re)starting Marites
 - Show duration of current state
 - Show estimated range
 - Hide stale temperature data
@@ -2586,10 +2586,10 @@ superuser rights (temporarily):
 
 ## 1.4
 
-### 1. New custom grafana image: `teslamate/grafana`
+### 1. New custom grafana image: `Marites/grafana`
 
 Starting with this release there is a customized Grafana docker image
-(`teslamate/grafana`) that auto provisions the datasource and dashboards which
+(`Marites/grafana`) that auto provisions the datasource and dashboards which
 makes upgrading a breeze! I strongly recommend to use it instead of manually
 re-importing dashboards.
 
@@ -2599,16 +2599,16 @@ Just replace the `grafana` service in your `docker-compose.yml`:
   # ...
 
   grafana:
-    image: teslamate/grafana:latest
+    image: Marites/grafana:latest
     environment:
-      - DATABASE_USER=teslamate
+      - DATABASE_USER=Marites
       - DATABASE_PASS=secret
-      - DATABASE_NAME=teslamate
+      - DATABASE_NAME=Marites
       - DATABASE_HOST=db
     ports:
       - 3000:3000
     volumes:
-      - teslamate-grafana-data:/var/lib/grafana
+      - Marites-grafana-data:/var/lib/grafana
 
   # ...
 ```
@@ -2618,7 +2618,7 @@ And add a new volume at the bottom of the file:
 ```YAML
 volumes:
     # ...
-    teslamate-grafana-data:
+    Marites-grafana-data:
     # ...
 ```
 
@@ -2632,7 +2632,7 @@ in grafana and on the status screen just tick the checkbox it shows!
 ### 3. Deprecation of TESLA_USERNAME and TESLA_PASSWORD
 
 With this release API tokens are stored in the database. After starting
-TeslaMate v1.4 once, you can safely remove both environment variables.
+Marites v1.4 once, you can safely remove both environment variables.
 
 New users need to sign in via the web interface.
 
@@ -2646,9 +2646,9 @@ New users need to sign in via the web interface.
 - MQTT: add new topics
 
   ```text
-  teslamate/cars/$car_id/plugged_in
-  teslamate/cars/$car_id/scheduled_charging_start_time
-  teslamate/cars/$car_id/charge_limit_soc
+  Marites/cars/$car_id/plugged_in
+  Marites/cars/$car_id/scheduled_charging_start_time
+  Marites/cars/$car_id/charge_limit_soc
   ```
 
 ### Fixed
@@ -2660,7 +2660,7 @@ New users need to sign in via the web interface.
 - Use local time in debug logs:
 
   Add a `TZ` variable with your local timezone name to the environment of the
-  `teslamate` container. Otherwise timestamps use UTC.
+  `Marites` container. Otherwise timestamps use UTC.
 
 - Charging History: hide entries with 0kWh charge energy added
 - Charging History: include current `car-id` in links to `Charging` dashboard
@@ -2686,7 +2686,7 @@ New users need to sign in via the web interface.
 
 #### Added
 
-- Introduce custom teslamate/grafana Docker image
+- Introduce custom Marites/grafana Docker image
 - Fetch unit variables from database
 
 #### Fixed
@@ -2700,7 +2700,7 @@ New users need to sign in via the web interface.
 - The German dashboard translations have been removed. It was too time
   consuming to keep everything up to date.
 
-### TeslaMate
+### Marites
 
 #### Added
 
@@ -2724,7 +2724,7 @@ New users need to sign in via the web interface.
 - Fix / inverse efficiency calculation: if distance traveled is less than the
   ideal rated distance the efficiency will now be lower than 100% and vice-versa.
 
-  **Important: re-import the Grafana Dashboards (`en_efficiency` & `en_trips`) after restarting TeslaMate**
+  **Important: re-import the Grafana Dashboards (`en_efficiency` & `en_trips`) after restarting Marites**
 
 ## [1.2.0] - 2019-07-29
 
@@ -2733,7 +2733,7 @@ New users need to sign in via the web interface.
 - Add psql conversion helper functions (**via database migration**)
 - Report imperial metrics
 
-  **Important: please re-import the Grafana Dashboards after restarting TeslaMate**
+  **Important: please re-import the Grafana Dashboards after restarting Marites**
 
 ### Fixed
 
@@ -2779,102 +2779,102 @@ New users need to sign in via the web interface.
 
 ## [1.0.0] - 2019-07-25
 
-[unreleased]: https://github.com/teslamate-org/teslamate/compare/v3.0.0...HEAD
-[3.0.0]: https://github.com/teslamate-org/teslamate/compare/v2.2.0...v3.0.0
-[2.2.0]: https://github.com/teslamate-org/teslamate/compare/v2.1.1...v2.2.0
-[2.1.1]: https://github.com/teslamate-org/teslamate/compare/v2.1.0...v2.1.1
-[2.1.0]: https://github.com/teslamate-org/teslamate/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/teslamate-org/teslamate/compare/v1.33.0...v2.0.0
-[1.33.0]: https://github.com/teslamate-org/teslamate/compare/v1.32.0...v1.33.0
-[1.32.0]: https://github.com/teslamate-org/teslamate/compare/v1.31.1...v1.32.0
-[1.31.1]: https://github.com/teslamate-org/teslamate/compare/v1.31.0...v1.31.1
-[1.31.0]: https://github.com/teslamate-org/teslamate/compare/v1.30.1...v1.31.0
-[1.30.1]: https://github.com/teslamate-org/teslamate/compare/v1.30.0...v1.30.1
-[1.30.0]: https://github.com/teslamate-org/teslamate/compare/v1.29.2...v1.30.0
-[1.29.2]: https://github.com/teslamate-org/teslamate/compare/v1.29.1...v1.29.2
-[1.29.1]: https://github.com/teslamate-org/teslamate/compare/v1.29.0...v1.29.1
-[1.29.0]: https://github.com/teslamate-org/teslamate/compare/v1.28.5...v1.29.0
-[1.28.5]: https://github.com/teslamate-org/teslamate/compare/v1.28.4...v1.28.5
-[1.28.4]: https://github.com/teslamate-org/teslamate/compare/v1.28.3...v1.28.4
-[1.28.3]: https://github.com/teslamate-org/teslamate/compare/v1.28.2...v1.28.3
-[1.28.2]: https://github.com/teslamate-org/teslamate/compare/v1.28.1...v1.28.2
-[1.28.1]: https://github.com/teslamate-org/teslamate/compare/v1.28.0...v1.28.1
-[1.28.0]: https://github.com/teslamate-org/teslamate/compare/v1.27.4...v1.28.0
-[1.27.4]: https://github.com/adriankumpf/teslamate/compare/v1.27.3...v1.27.4
-[1.27.3]: https://github.com/adriankumpf/teslamate/compare/v1.27.2...v1.27.3
-[1.27.2]: https://github.com/adriankumpf/teslamate/compare/v1.27.1...v1.27.2
-[1.27.1]: https://github.com/adriankumpf/teslamate/compare/v1.27.0...v1.27.1
-[1.27.0]: https://github.com/adriankumpf/teslamate/compare/v1.26.1...v1.27.0
-[1.26.1]: https://github.com/adriankumpf/teslamate/compare/v1.26.0...v1.26.1
-[1.26.0]: https://github.com/adriankumpf/teslamate/compare/v1.25.2...v1.26.0
-[1.25.2]: https://github.com/adriankumpf/teslamate/compare/v1.25.1...v1.25.2
-[1.25.1]: https://github.com/adriankumpf/teslamate/compare/v1.25.0...v1.25.1
-[1.25.0]: https://github.com/adriankumpf/teslamate/compare/v1.24.2...v1.25.0
-[1.24.2]: https://github.com/adriankumpf/teslamate/compare/v1.24.1...v1.24.2
-[1.24.1]: https://github.com/adriankumpf/teslamate/compare/v1.24.0...v1.24.1
-[1.24.0]: https://github.com/adriankumpf/teslamate/compare/v1.23.7...v1.24.0
-[1.23.7]: https://github.com/adriankumpf/teslamate/compare/v1.23.6...v1.23.7
-[1.23.6]: https://github.com/adriankumpf/teslamate/compare/v1.23.5...v1.23.6
-[1.23.5]: https://github.com/adriankumpf/teslamate/compare/v1.23.4...v1.23.5
-[1.23.4]: https://github.com/adriankumpf/teslamate/compare/v1.23.3...v1.23.4
-[1.23.3]: https://github.com/adriankumpf/teslamate/compare/v1.23.2...v1.23.3
-[1.23.2]: https://github.com/adriankumpf/teslamate/compare/v1.23.1...v1.23.2
-[1.23.1]: https://github.com/adriankumpf/teslamate/compare/v1.23.0...v1.23.1
-[1.23.0]: https://github.com/adriankumpf/teslamate/compare/v1.22.0...v1.23.0
-[1.22.0]: https://github.com/adriankumpf/teslamate/compare/v1.21.6...v1.22.0
-[1.21.6]: https://github.com/adriankumpf/teslamate/compare/v1.21.5...v1.21.6
-[1.21.5]: https://github.com/adriankumpf/teslamate/compare/v1.21.4...v1.21.5
-[1.21.4]: https://github.com/adriankumpf/teslamate/compare/v1.21.3...v1.21.4
-[1.21.3]: https://github.com/adriankumpf/teslamate/compare/v1.21.2...v1.21.3
-[1.21.2]: https://github.com/adriankumpf/teslamate/compare/v1.21.1...v1.21.2
-[1.21.1]: https://github.com/adriankumpf/teslamate/compare/v1.21.0...v1.21.1
-[1.21.0]: https://github.com/adriankumpf/teslamate/compare/v1.20.1...v1.21.0
-[1.20.1]: https://github.com/adriankumpf/teslamate/compare/v1.20.0...v1.20.1
-[1.20.0]: https://github.com/adriankumpf/teslamate/compare/v1.19.4...v1.20.0
-[1.19.4]: https://github.com/adriankumpf/teslamate/compare/v1.19.3...v1.19.4
-[1.19.3]: https://github.com/adriankumpf/teslamate/compare/v1.19.2...v1.19.3
-[1.19.2]: https://github.com/adriankumpf/teslamate/compare/v1.19.1...v1.19.2
-[1.19.1]: https://github.com/adriankumpf/teslamate/compare/v1.19.0...v1.19.1
-[1.19.0]: https://github.com/adriankumpf/teslamate/compare/v1.18.2...v1.19.0
-[1.18.2]: https://github.com/adriankumpf/teslamate/compare/v1.18.1...v1.18.2
-[1.18.1]: https://github.com/adriankumpf/teslamate/compare/v1.18.0...v1.18.1
-[1.18.0]: https://github.com/adriankumpf/teslamate/compare/v1.17.1...v1.18.0
-[1.17.1]: https://github.com/adriankumpf/teslamate/compare/v1.17.0...v1.17.1
-[1.17.0]: https://github.com/adriankumpf/teslamate/compare/v1.16.0...v1.17.0
-[1.16.0]: https://github.com/adriankumpf/teslamate/compare/v1.15.1...v1.16.0
-[1.15.1]: https://github.com/adriankumpf/teslamate/compare/v1.15.0...v1.15.1
-[1.15.0]: https://github.com/adriankumpf/teslamate/compare/v1.14.3...v1.15.0
-[1.14.3]: https://github.com/adriankumpf/teslamate/compare/v1.14.2...v1.14.3
-[1.14.2]: https://github.com/adriankumpf/teslamate/compare/v1.14.1...v1.14.2
-[1.14.1]: https://github.com/adriankumpf/teslamate/compare/v1.14.0...v1.14.1
-[1.14.0]: https://github.com/adriankumpf/teslamate/compare/v1.13.2...v1.14.0
-[1.13.2]: https://github.com/adriankumpf/teslamate/compare/v1.13.1...v1.13.2
-[1.13.1]: https://github.com/adriankumpf/teslamate/compare/v1.13.0...v1.13.1
-[1.13.0]: https://github.com/adriankumpf/teslamate/compare/v1.12.2...v1.13.0
-[1.12.2]: https://github.com/adriankumpf/teslamate/compare/v1.12.1...v1.12.2
-[1.12.1]: https://github.com/adriankumpf/teslamate/compare/v1.12.0...v1.12.1
-[1.12.0]: https://github.com/adriankumpf/teslamate/compare/v1.11.1...v1.12.0
-[1.11.1]: https://github.com/adriankumpf/teslamate/compare/v1.11.0...v1.11.1
-[1.11.0]: https://github.com/adriankumpf/teslamate/compare/v1.10.0...v1.11.0
-[1.10.0]: https://github.com/adriankumpf/teslamate/compare/v1.9.1...v1.10.0
-[1.9.1]: https://github.com/adriankumpf/teslamate/compare/v1.9.0...v1.9.1
-[1.9.0]: https://github.com/adriankumpf/teslamate/compare/v1.8.0...v1.9.0
-[1.8.0]: https://github.com/adriankumpf/teslamate/compare/v1.7.0...v1.8.0
-[1.7.0]: https://github.com/adriankumpf/teslamate/compare/v1.6.2...v1.7.0
-[1.6.2]: https://github.com/adriankumpf/teslamate/compare/v1.6.1...v1.6.2
-[1.6.1]: https://github.com/adriankumpf/teslamate/compare/v1.6.0...v1.6.1
-[1.6.0]: https://github.com/adriankumpf/teslamate/compare/v1.5.3...v1.6.0
-[1.5.3]: https://github.com/adriankumpf/teslamate/compare/v1.5.2...v1.5.3
-[1.5.2]: https://github.com/adriankumpf/teslamate/compare/v1.5.1...v1.5.2
-[1.5.1]: https://github.com/adriankumpf/teslamate/compare/v1.5.0...v1.5.1
-[1.5.0]: https://github.com/adriankumpf/teslamate/compare/v1.4.3...v1.5.0
-[1.4.3]: https://github.com/adriankumpf/teslamate/compare/v1.4.2...v1.4.3
-[1.4.2]: https://github.com/adriankumpf/teslamate/compare/v1.4.1...v1.4.2
-[1.4.1]: https://github.com/adriankumpf/teslamate/compare/v1.4.0...v1.4.1
-[1.4.0]: https://github.com/adriankumpf/teslamate/compare/v1.3.0...v1.4.0
-[1.3.0]: https://github.com/adriankumpf/teslamate/compare/v1.2.0...v1.3.0
-[1.2.0]: https://github.com/adriankumpf/teslamate/compare/v1.1.1...v1.2.0
-[1.1.1]: https://github.com/adriankumpf/teslamate/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/adriankumpf/teslamate/compare/v1.0.1...v1.1.0
-[1.0.1]: https://github.com/adriankumpf/teslamate/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/adriankumpf/teslamate/compare/3d95859...v1.0.0
+[unreleased]: https://github.com/Marites-org/Marites/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/Marites-org/Marites/compare/v2.2.0...v3.0.0
+[2.2.0]: https://github.com/Marites-org/Marites/compare/v2.1.1...v2.2.0
+[2.1.1]: https://github.com/Marites-org/Marites/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/Marites-org/Marites/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/Marites-org/Marites/compare/v1.33.0...v2.0.0
+[1.33.0]: https://github.com/Marites-org/Marites/compare/v1.32.0...v1.33.0
+[1.32.0]: https://github.com/Marites-org/Marites/compare/v1.31.1...v1.32.0
+[1.31.1]: https://github.com/Marites-org/Marites/compare/v1.31.0...v1.31.1
+[1.31.0]: https://github.com/Marites-org/Marites/compare/v1.30.1...v1.31.0
+[1.30.1]: https://github.com/Marites-org/Marites/compare/v1.30.0...v1.30.1
+[1.30.0]: https://github.com/Marites-org/Marites/compare/v1.29.2...v1.30.0
+[1.29.2]: https://github.com/Marites-org/Marites/compare/v1.29.1...v1.29.2
+[1.29.1]: https://github.com/Marites-org/Marites/compare/v1.29.0...v1.29.1
+[1.29.0]: https://github.com/Marites-org/Marites/compare/v1.28.5...v1.29.0
+[1.28.5]: https://github.com/Marites-org/Marites/compare/v1.28.4...v1.28.5
+[1.28.4]: https://github.com/Marites-org/Marites/compare/v1.28.3...v1.28.4
+[1.28.3]: https://github.com/Marites-org/Marites/compare/v1.28.2...v1.28.3
+[1.28.2]: https://github.com/Marites-org/Marites/compare/v1.28.1...v1.28.2
+[1.28.1]: https://github.com/Marites-org/Marites/compare/v1.28.0...v1.28.1
+[1.28.0]: https://github.com/Marites-org/Marites/compare/v1.27.4...v1.28.0
+[1.27.4]: https://github.com/adriankumpf/Marites/compare/v1.27.3...v1.27.4
+[1.27.3]: https://github.com/adriankumpf/Marites/compare/v1.27.2...v1.27.3
+[1.27.2]: https://github.com/adriankumpf/Marites/compare/v1.27.1...v1.27.2
+[1.27.1]: https://github.com/adriankumpf/Marites/compare/v1.27.0...v1.27.1
+[1.27.0]: https://github.com/adriankumpf/Marites/compare/v1.26.1...v1.27.0
+[1.26.1]: https://github.com/adriankumpf/Marites/compare/v1.26.0...v1.26.1
+[1.26.0]: https://github.com/adriankumpf/Marites/compare/v1.25.2...v1.26.0
+[1.25.2]: https://github.com/adriankumpf/Marites/compare/v1.25.1...v1.25.2
+[1.25.1]: https://github.com/adriankumpf/Marites/compare/v1.25.0...v1.25.1
+[1.25.0]: https://github.com/adriankumpf/Marites/compare/v1.24.2...v1.25.0
+[1.24.2]: https://github.com/adriankumpf/Marites/compare/v1.24.1...v1.24.2
+[1.24.1]: https://github.com/adriankumpf/Marites/compare/v1.24.0...v1.24.1
+[1.24.0]: https://github.com/adriankumpf/Marites/compare/v1.23.7...v1.24.0
+[1.23.7]: https://github.com/adriankumpf/Marites/compare/v1.23.6...v1.23.7
+[1.23.6]: https://github.com/adriankumpf/Marites/compare/v1.23.5...v1.23.6
+[1.23.5]: https://github.com/adriankumpf/Marites/compare/v1.23.4...v1.23.5
+[1.23.4]: https://github.com/adriankumpf/Marites/compare/v1.23.3...v1.23.4
+[1.23.3]: https://github.com/adriankumpf/Marites/compare/v1.23.2...v1.23.3
+[1.23.2]: https://github.com/adriankumpf/Marites/compare/v1.23.1...v1.23.2
+[1.23.1]: https://github.com/adriankumpf/Marites/compare/v1.23.0...v1.23.1
+[1.23.0]: https://github.com/adriankumpf/Marites/compare/v1.22.0...v1.23.0
+[1.22.0]: https://github.com/adriankumpf/Marites/compare/v1.21.6...v1.22.0
+[1.21.6]: https://github.com/adriankumpf/Marites/compare/v1.21.5...v1.21.6
+[1.21.5]: https://github.com/adriankumpf/Marites/compare/v1.21.4...v1.21.5
+[1.21.4]: https://github.com/adriankumpf/Marites/compare/v1.21.3...v1.21.4
+[1.21.3]: https://github.com/adriankumpf/Marites/compare/v1.21.2...v1.21.3
+[1.21.2]: https://github.com/adriankumpf/Marites/compare/v1.21.1...v1.21.2
+[1.21.1]: https://github.com/adriankumpf/Marites/compare/v1.21.0...v1.21.1
+[1.21.0]: https://github.com/adriankumpf/Marites/compare/v1.20.1...v1.21.0
+[1.20.1]: https://github.com/adriankumpf/Marites/compare/v1.20.0...v1.20.1
+[1.20.0]: https://github.com/adriankumpf/Marites/compare/v1.19.4...v1.20.0
+[1.19.4]: https://github.com/adriankumpf/Marites/compare/v1.19.3...v1.19.4
+[1.19.3]: https://github.com/adriankumpf/Marites/compare/v1.19.2...v1.19.3
+[1.19.2]: https://github.com/adriankumpf/Marites/compare/v1.19.1...v1.19.2
+[1.19.1]: https://github.com/adriankumpf/Marites/compare/v1.19.0...v1.19.1
+[1.19.0]: https://github.com/adriankumpf/Marites/compare/v1.18.2...v1.19.0
+[1.18.2]: https://github.com/adriankumpf/Marites/compare/v1.18.1...v1.18.2
+[1.18.1]: https://github.com/adriankumpf/Marites/compare/v1.18.0...v1.18.1
+[1.18.0]: https://github.com/adriankumpf/Marites/compare/v1.17.1...v1.18.0
+[1.17.1]: https://github.com/adriankumpf/Marites/compare/v1.17.0...v1.17.1
+[1.17.0]: https://github.com/adriankumpf/Marites/compare/v1.16.0...v1.17.0
+[1.16.0]: https://github.com/adriankumpf/Marites/compare/v1.15.1...v1.16.0
+[1.15.1]: https://github.com/adriankumpf/Marites/compare/v1.15.0...v1.15.1
+[1.15.0]: https://github.com/adriankumpf/Marites/compare/v1.14.3...v1.15.0
+[1.14.3]: https://github.com/adriankumpf/Marites/compare/v1.14.2...v1.14.3
+[1.14.2]: https://github.com/adriankumpf/Marites/compare/v1.14.1...v1.14.2
+[1.14.1]: https://github.com/adriankumpf/Marites/compare/v1.14.0...v1.14.1
+[1.14.0]: https://github.com/adriankumpf/Marites/compare/v1.13.2...v1.14.0
+[1.13.2]: https://github.com/adriankumpf/Marites/compare/v1.13.1...v1.13.2
+[1.13.1]: https://github.com/adriankumpf/Marites/compare/v1.13.0...v1.13.1
+[1.13.0]: https://github.com/adriankumpf/Marites/compare/v1.12.2...v1.13.0
+[1.12.2]: https://github.com/adriankumpf/Marites/compare/v1.12.1...v1.12.2
+[1.12.1]: https://github.com/adriankumpf/Marites/compare/v1.12.0...v1.12.1
+[1.12.0]: https://github.com/adriankumpf/Marites/compare/v1.11.1...v1.12.0
+[1.11.1]: https://github.com/adriankumpf/Marites/compare/v1.11.0...v1.11.1
+[1.11.0]: https://github.com/adriankumpf/Marites/compare/v1.10.0...v1.11.0
+[1.10.0]: https://github.com/adriankumpf/Marites/compare/v1.9.1...v1.10.0
+[1.9.1]: https://github.com/adriankumpf/Marites/compare/v1.9.0...v1.9.1
+[1.9.0]: https://github.com/adriankumpf/Marites/compare/v1.8.0...v1.9.0
+[1.8.0]: https://github.com/adriankumpf/Marites/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/adriankumpf/Marites/compare/v1.6.2...v1.7.0
+[1.6.2]: https://github.com/adriankumpf/Marites/compare/v1.6.1...v1.6.2
+[1.6.1]: https://github.com/adriankumpf/Marites/compare/v1.6.0...v1.6.1
+[1.6.0]: https://github.com/adriankumpf/Marites/compare/v1.5.3...v1.6.0
+[1.5.3]: https://github.com/adriankumpf/Marites/compare/v1.5.2...v1.5.3
+[1.5.2]: https://github.com/adriankumpf/Marites/compare/v1.5.1...v1.5.2
+[1.5.1]: https://github.com/adriankumpf/Marites/compare/v1.5.0...v1.5.1
+[1.5.0]: https://github.com/adriankumpf/Marites/compare/v1.4.3...v1.5.0
+[1.4.3]: https://github.com/adriankumpf/Marites/compare/v1.4.2...v1.4.3
+[1.4.2]: https://github.com/adriankumpf/Marites/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/adriankumpf/Marites/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/adriankumpf/Marites/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/adriankumpf/Marites/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/adriankumpf/Marites/compare/v1.1.1...v1.2.0
+[1.1.1]: https://github.com/adriankumpf/Marites/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/adriankumpf/Marites/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/adriankumpf/Marites/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/adriankumpf/Marites/compare/3d95859...v1.0.0

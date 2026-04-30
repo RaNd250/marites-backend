@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreatePrivateSchema do
+defmodule Marites.Repo.Migrations.CreatePrivateSchema do
   use Ecto.Migration
 
   def up do

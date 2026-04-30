@@ -1,9 +1,9 @@
-defmodule TeslaMate.MixProject do
+defmodule Marites.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :teslamate,
+      app: :marites,
       version: version(),
       elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -32,7 +32,7 @@ defmodule TeslaMate.MixProject do
 
   def application do
     [
-      mod: {TeslaMate.Application, []},
+      mod: {Marites.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -106,7 +106,7 @@ defmodule TeslaMate.MixProject do
 
   defp releases do
     [
-      teslamate: [
+      Marites: [
         include_executables_for: [:unix],
         applications: [runtime_tools: :permanent]
       ]

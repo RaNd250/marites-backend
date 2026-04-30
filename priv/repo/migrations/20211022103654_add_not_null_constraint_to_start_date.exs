@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddNotNullConstraintToStartDate do
+defmodule Marites.Repo.Migrations.AddNotNullConstraintToStartDate do
   use Ecto.Migration
 
   def up do

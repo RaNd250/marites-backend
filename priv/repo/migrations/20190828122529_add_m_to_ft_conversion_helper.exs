@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddMToFtConversionHelper do
+defmodule Marites.Repo.Migrations.AddMToFtConversionHelper do
   use Ecto.Migration
 
   def up do

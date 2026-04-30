@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddUniqueIndexOnVins do
+defmodule Marites.Repo.Migrations.AddUniqueIndexOnVins do
   use Ecto.Migration
 
   def change do

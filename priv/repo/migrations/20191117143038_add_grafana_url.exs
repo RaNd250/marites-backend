@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddGrafanaUrl do
+defmodule Marites.Repo.Migrations.AddGrafanaUrl do
   use Ecto.Migration
 
   def change do

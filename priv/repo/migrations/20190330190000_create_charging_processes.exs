@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateChargingProcesses do
+defmodule Marites.Repo.Migrations.CreateChargingProcesses do
   use Ecto.Migration
 
   def change do

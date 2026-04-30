@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateStates do
+defmodule Marites.Repo.Migrations.CreateStates do
   use Ecto.Migration
 
   def change do

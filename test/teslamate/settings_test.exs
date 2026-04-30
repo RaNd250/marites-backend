@@ -1,8 +1,8 @@
-defmodule TeslaMate.SettingsTest do
-  use TeslaMate.DataCase, async: false
+defmodule Marites.SettingsTest do
+  use Marites.DataCase, async: false
 
-  alias TeslaMate.Settings.{GlobalSettings, CarSettings}
-  alias TeslaMate.{Settings, Log}
+  alias Marites.Settings.{GlobalSettings, CarSettings}
+  alias Marites.{Settings, Log}
 
   import TestHelper, only: [decimal: 1]
 
@@ -208,8 +208,8 @@ defmodule TeslaMate.SettingsTest do
   end
 
   describe "language" do
-    alias TeslaMate.Locations.Address
-    alias TeslaMate.Locations
+    alias Marites.Locations.Address
+    alias Marites.Locations
 
     test "refreshes all addresses when changfing the language" do
       settings = Settings.get_global_settings!()
@@ -300,8 +300,8 @@ defmodule TeslaMate.SettingsTest do
   end
 
   describe "efficiencies" do
-    alias TeslaMate.Log.{Car, ChargingProcess, Position}
-    alias TeslaMate.Log
+    alias Marites.Log.{Car, ChargingProcess, Position}
+    alias Marites.Log
 
     test "triggers a recalculaten of efficiencies if the preferred range changes" do
       %Car{efficiency: nil} = car = car_fixture(%{efficiency: nil})

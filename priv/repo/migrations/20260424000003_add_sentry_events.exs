@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddSentryEvents do
+defmodule Marites.Repo.Migrations.AddSentryEvents do
   use Ecto.Migration
 
   def change do

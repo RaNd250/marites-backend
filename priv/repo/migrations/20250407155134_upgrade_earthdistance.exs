@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.UpgradeEarthdistance do
+defmodule Marites.Repo.Migrations.UpgradeEarthdistance do
   use Ecto.Migration
 
   def change do

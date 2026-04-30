@@ -3,7 +3,7 @@ title: Manual install - FreeBSD (no support)
 sidebar_label: Manual - FreeBSD (no support)
 ---
 
-This document provides the necessary steps for installation of TeslaMate in a FreeBSD jail. The **recommended and most straightforward installation approach is through the use of [Docker](../docker.md)**, however this walkthrough provides the necessary steps for manual installation in a FreeBSD 13.0 environment.
+This document provides the necessary steps for installation of Marites in a FreeBSD jail. The **recommended and most straightforward installation approach is through the use of [Docker](../docker.md)**, however this walkthrough provides the necessary steps for manual installation in a FreeBSD 13.0 environment.
 It assumes that pre-requisites are met and only basic instructions are provided and should also work in FreeBSD before 13.0.
 
 ## Requirements
@@ -99,29 +99,29 @@ pkg install npm-node22
 
 </details>
 
-## Clone TeslaMate git repository
+## Clone Marites git repository
 
-The following command will clone the source files for the TeslaMate project. This should be run in an appropriate directory within which you would like to install TeslaMate. You should also record this path and provide them to the startup scripts proposed at the end of this guide.
+The following command will clone the source files for the Marites project. This should be run in an appropriate directory within which you would like to install Marites. You should also record this path and provide them to the startup scripts proposed at the end of this guide.
 
 ```bash
 cd /usr/local/src
 
-git clone https://github.com/teslamate-org/teslamate.git
-cd teslamate
+git clone https://github.com/Marites-org/Marites.git
+cd Marites
 
 git checkout $(git describe --tags `git rev-list --tags --max-count=1`) # Checkout the latest stable version
 ```
 
 ## Create PostgreSQL database
 
-The following commands will create a database called `teslamate` on the PostgreSQL database server, and a user called `teslamate`. When creating the `teslamate` user, you will be prompted to enter a password for the user interactively. This password should be recorded and provided as an environment variable in the startup script at the end of this guide. Use 'su - postgres' if unable to enter psql console from current user.
+The following commands will create a database called `Marites` on the PostgreSQL database server, and a user called `Marites`. When creating the `Marites` user, you will be prompted to enter a password for the user interactively. This password should be recorded and provided as an environment variable in the startup script at the end of this guide. Use 'su - postgres' if unable to enter psql console from current user.
 
 ```console
 psql
-postgres=# create database teslamate;
-postgres=# create user teslamate with encrypted password 'your_secure_password_here';
-postgres=# grant all privileges on database teslamate to teslamate;
-postgres=# ALTER USER teslamate WITH SUPERUSER;
+postgres=# create database Marites;
+postgres=# create user Marites with encrypted password 'your_secure_password_here';
+postgres=# grant all privileges on database Marites to Marites;
+postgres=# ALTER USER Marites WITH SUPERUSER;
 postgres=# \q
 ```
 
@@ -139,59 +139,59 @@ export MIX_ENV=prod
 mix do phx.digest, release --overwrite
 ```
 
-## Starting TeslaMate at boot time
+## Starting Marites at boot time
 
-### Create FreeBSD service definition _/usr/local/etc/rc.d/teslamate_
+### Create FreeBSD service definition _/usr/local/etc/rc.d/Marites_
 
 ```console
 #!/bin/sh
-# PROVIDE: teslamate
+# PROVIDE: Marites
 # REQUIRE: DAEMON
-# KEYWORD: teslamate,tesla
+# KEYWORD: Marites,tesla
 
 . /etc/rc.subr
 
-name=teslamate
-rcvar=teslamate_enable
+name=Marites
+rcvar=Marites_enable
 
 load_rc_config $name
 
-user=teslamate
-group=teslamate
+user=Marites
+group=Marites
 
 #
 # DO NOT CHANGE THESE DEFAULT VALUES HERE
 # SET THEM IN THE /etc/rc.conf FILE
 #
-teslamate_enable=${teslamate_enable-"NO"}
-pidfile=${teslamate_pidfile-"/var/run/${name}.pid"}
+Marites_enable=${Marites_enable-"NO"}
+pidfile=${Marites_pidfile-"/var/run/${name}.pid"}
 
-teslamate_enable_mqtt=${teslamate_enable_mqtt-"FALSE"}
-teslamate_db_port=${teslamate_db_port-"5432"}
+Marites_enable_mqtt=${Marites_enable_mqtt-"FALSE"}
+Marites_db_port=${Marites_db_port-"5432"}
 
 HTTP_BINDING_ADDRESS="0.0.0.0"; export HTTP_BINDING_ADDRESS
-HOME="/usr/local/src/teslamate"; export HOME
-PORT=${teslamate_port-"4000"}; export PORT
-TZ=${teslamate_timezone-"Europe/Berlin"}; export TZ
-LANG=${teslamate_locale-"en_US.UTF-8"}; export LANG
-LC_CTYPE=${teslamate_locale-"en_US.UTF-8"}; export LC_TYPE
-DATABASE_NAME=${teslamate_db-"teslamate"}; export DATABASE_NAME
-DATABASE_HOST=${teslamate_db_host-"localhost"}; export DATABASE_HOST
-DATABASE_USER=${teslamate_db_user-"teslamate"}; export DATABASE_USER
-DATABASE_PASS=${teslamate_db_pass}; export DATABASE_PASS
-ENCRYPTION_KEY=${teslamate_encryption_key}; export ENCRYPTION_KEY
-DISABLE_MQTT=${teslamate_mqtt_enable-"FALSE"}; export DISABLE_MQTT
-MQTT_HOST=${teslamate_mqtt_host-"localhost"}; export MQTT_HOST
+HOME="/usr/local/src/Marites"; export HOME
+PORT=${Marites_port-"4000"}; export PORT
+TZ=${Marites_timezone-"Europe/Berlin"}; export TZ
+LANG=${Marites_locale-"en_US.UTF-8"}; export LANG
+LC_CTYPE=${Marites_locale-"en_US.UTF-8"}; export LC_TYPE
+DATABASE_NAME=${Marites_db-"Marites"}; export DATABASE_NAME
+DATABASE_HOST=${Marites_db_host-"localhost"}; export DATABASE_HOST
+DATABASE_USER=${Marites_db_user-"Marites"}; export DATABASE_USER
+DATABASE_PASS=${Marites_db_pass}; export DATABASE_PASS
+ENCRYPTION_KEY=${Marites_encryption_key}; export ENCRYPTION_KEY
+DISABLE_MQTT=${Marites_mqtt_enable-"FALSE"}; export DISABLE_MQTT
+MQTT_HOST=${Marites_mqtt_host-"localhost"}; export MQTT_HOST
 # Uncomment if you need these
-#MQTT_USERNAME=${teslamate_mqtt_user-"teslamate"}; export MQTT_USERNAME
-#MQTT_PASSWORD=${teslamate_mqtt_pass-"mqttpassword"}; export MQTT_PASSWORD
-VIRTUAL_HOST=${teslamate_virtual_host-"teslamate.example.com"}; export VIRTUAL_HOST
+#MQTT_USERNAME=${Marites_mqtt_user-"Marites"}; export MQTT_USERNAME
+#MQTT_PASSWORD=${Marites_mqtt_pass-"mqttpassword"}; export MQTT_PASSWORD
+VIRTUAL_HOST=${Marites_virtual_host-"Marites.example.com"}; export VIRTUAL_HOST
 
-COMMAND=${teslamate_command-"${HOME}/_build/prod/rel/teslamate/bin/teslamate"}
+COMMAND=${Marites_command-"${HOME}/_build/prod/rel/Marites/bin/Marites"}
 
-teslamate_start()
+Marites_start()
 {
-  ${COMMAND} eval "TeslaMate.Release.migrate"
+  ${COMMAND} eval "Marites.Release.migrate"
   ${COMMAND} daemon
 }
 
@@ -205,40 +205,40 @@ run_rc_command "$1"
 ### Update _/etc/rc.conf_
 
 ```bash
-echo teslamate_enable="YES" >> /etc/rc.conf
-echo teslamate_db_host="localhost"  >> /etc/rc.conf
-echo teslamate_db_port="5432"  >> /etc/rc.conf
-echo teslamate_db_pass="<super secret>" >> /etc/rc.conf
-echo teslamate_encryption_key="<super secret encryption key>" >> /etc/rc.conf
-echo teslamate_disable_mqtt="true" >> /etc/rc.conf
-echo teslamate_timezone="<TZ Database>" >> /etc/rc.conf #i.e. Europe/Berlin, America/Los_Angeles
+echo Marites_enable="YES" >> /etc/rc.conf
+echo Marites_db_host="localhost"  >> /etc/rc.conf
+echo Marites_db_port="5432"  >> /etc/rc.conf
+echo Marites_db_pass="<super secret>" >> /etc/rc.conf
+echo Marites_encryption_key="<super secret encryption key>" >> /etc/rc.conf
+echo Marites_disable_mqtt="true" >> /etc/rc.conf
+echo Marites_timezone="<TZ Database>" >> /etc/rc.conf #i.e. Europe/Berlin, America/Los_Angeles
 ```
 
 ### Start service
 
 ```bash
-chmod +x /usr/local/etc/rc.d/teslamate
-service teslamate start
+chmod +x /usr/local/etc/rc.d/Marites
+service Marites start
 ```
 
 ## Import Grafana Dashboards
 
 1. Visit [localhost:3000](http://localhost:3000) and log in (don't forget to start the service: service grafana start). The default credentials are: `admin:admin`.
 
-2. Create a data source with the name "TeslaMate":
+2. Create a data source with the name "Marites":
 
    ```grafana
    Type: PostgreSQL
    Default: YES
-   Name: TeslaMate
+   Name: Marites
    Host: localhost
-   Database: teslamate
-   User: teslamate  Password: your_secure_password_here
+   Database: Marites
+   User: Marites  Password: your_secure_password_here
    SSL-Mode: disable
    Version: 10
    ```
 
-3. [Manually import](https://grafana.com/docs/reference/export_import/#importing-a-dashboard) the dashboard [files](https://github.com/teslamate-org/teslamate/tree/main/grafana/dashboards) or use the `dashboards.sh` script. First create a "Service Account" called `TeslaMate` under Grafana's Administration > User and access menu. Then create an API token for this service account (in place of `<mytoken>` below) and run the script:
+3. [Manually import](https://grafana.com/docs/reference/export_import/#importing-a-dashboard) the dashboard [files](https://github.com/Marites-org/Marites/tree/main/grafana/dashboards) or use the `dashboards.sh` script. First create a "Service Account" called `Marites` under Grafana's Administration > User and access menu. Then create an API token for this service account (in place of `<mytoken>` below) and run the script:
 
    ```bash
    $ env GRAFANA_API_TOKEN=<mytoken> ./grafana/dashboards.sh restore
@@ -248,8 +248,8 @@ service teslamate start
    DASHBOARDS_DIRECTORY:   ./grafana/dashboards
    GRAFANA_ORG_NAMESPACE:  default
 
-   RESTORED locations.json into Grafana folder 'TeslaMate' ...
-   RESTORED drive-stats.json into Grafana folder 'TeslaMate' ...
+   RESTORED locations.json into Grafana folder 'Marites' ...
+   RESTORED drive-stats.json into Grafana folder 'Marites' ...
    ...
    ```
 

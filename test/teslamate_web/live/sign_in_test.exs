@@ -1,5 +1,5 @@
-defmodule TeslaMateWeb.SignInLiveTest do
-  use TeslaMateWeb.ConnCase
+defmodule MaritesWeb.SignInLiveTest do
+  use MaritesWeb.ConnCase
 
   defp start_api(name) do
     api_name = :"api_#{name}"
@@ -22,7 +22,7 @@ defmodule TeslaMateWeb.SignInLiveTest do
     render_submit(view, :sign_in, %{})
 
     assert_receive {ApiMock,
-                    {:sign_in, %TeslaMate.Auth.Tokens{access: "$access", refresh: "$refresh"}}}
+                    {:sign_in, %Marites.Auth.Tokens{access: "$access", refresh: "$refresh"}}}
 
     assert_redirect(view, "/", 1000)
   end

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CarSettings do
+defmodule Marites.Repo.Migrations.CarSettings do
   use Ecto.Migration
 
   defmodule Settings do
@@ -59,7 +59,7 @@ defmodule TeslaMate.Repo.Migrations.CarSettings do
     end
   end
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   def up do
     create table(:car_settings) do

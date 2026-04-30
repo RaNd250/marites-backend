@@ -13,13 +13,13 @@ defmodule CustomExpressions do
   end
 end
 
-defmodule TeslaMate.Repo.Migrations.CalculateChargeEnergyUsed do
+defmodule Marites.Repo.Migrations.CalculateChargeEnergyUsed do
   use Ecto.Migration
 
   import Ecto.Query
   import CustomExpressions
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   defmodule ChargingProcess do
     use Ecto.Schema
@@ -40,7 +40,7 @@ defmodule TeslaMate.Repo.Migrations.CalculateChargeEnergyUsed do
   defmodule Charge do
     use Ecto.Schema
 
-    alias TeslaMate.Log.ChargingProcess
+    alias Marites.Log.ChargingProcess
 
     schema "charges" do
       field(:date, :utc_datetime_usec)

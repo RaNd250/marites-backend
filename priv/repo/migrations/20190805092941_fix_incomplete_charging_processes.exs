@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.FixIncompleteChargingProcesses do
+defmodule Marites.Repo.Migrations.FixIncompleteChargingProcesses do
   use Ecto.Migration
 
   def up do

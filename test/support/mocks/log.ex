@@ -4,8 +4,8 @@ defmodule LogMock do
   defstruct [:pid, :last_update]
   alias __MODULE__, as: State
 
-  alias TeslaMate.Log.{Drive, ChargingProcess, Update, Car, Position}
-  alias TeslaMate.Log
+  alias Marites.Log.{Drive, ChargingProcess, Update, Car, Position}
+  alias Marites.Log
 
   # API
 

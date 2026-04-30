@@ -1,8 +1,8 @@
-defmodule TeslaMate.LogCarTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.LogCarTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Log.Car
-  alias TeslaMate.{Log, Repo}
+  alias Marites.Log.Car
+  alias Marites.{Log, Repo}
 
   @valid_attrs %{
     efficiency: 0.153,
@@ -63,7 +63,7 @@ defmodule TeslaMate.LogCarTest do
   end
 
   test "create_or_update_car/1 with valid data creates a car" do
-    alias TeslaMate.Settings.CarSettings
+    alias Marites.Settings.CarSettings
 
     assert {:ok, %Car{} = car} =
              %Car{eid: @valid_attrs.eid, vid: @valid_attrs.vid, settings: %CarSettings{}}

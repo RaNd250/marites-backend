@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DatabaseEfficiencyImprovements do
+defmodule Marites.Repo.Migrations.DatabaseEfficiencyImprovements do
   use Ecto.Migration
 
   def change do

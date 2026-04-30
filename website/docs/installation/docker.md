@@ -3,16 +3,16 @@ title: Docker install
 sidebar_label: Docker
 ---
 
-This document provides the necessary steps for installation of TeslaMate on any system that runs Docker. You run NixOS? We got you covered, see [NixOS install](nixos.md).
+This document provides the necessary steps for installation of Marites on any system that runs Docker. You run NixOS? We got you covered, see [NixOS install](nixos.md).
 
-This setup is recommended only if you are running TeslaMate **on your home network**, as otherwise your Tesla API tokens might be at risk.
-If you intend to access TeslaMate from the Internet, the recommended way is to use a secure connection (such as a VPN, Cloudflare Tunnel, Tailscale, Zero Tier and a reverse proxy for portless access) for secured access to your TeslaMate instance outside your home network.
-Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) with appropriate hardening to secure your TeslaMate instance before expose it to the internet, check out the [advanced guides with Traefik](../advanced_guides/traefik.md) for an example how to use Traefik with TeslaMate. Or you can use the [advanced guides with Apache](../advanced_guides/apache.md) to set up TeslaMate with Apache2, TLS and HTTP Basic Auth.
+This setup is recommended only if you are running Marites **on your home network**, as otherwise your Tesla API tokens might be at risk.
+If you intend to access Marites from the Internet, the recommended way is to use a secure connection (such as a VPN, Cloudflare Tunnel, Tailscale, Zero Tier and a reverse proxy for portless access) for secured access to your Marites instance outside your home network.
+Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) with appropriate hardening to secure your Marites instance before expose it to the internet, check out the [advanced guides with Traefik](../advanced_guides/traefik.md) for an example how to use Traefik with Marites. Or you can use the [advanced guides with Apache](../advanced_guides/apache.md) to set up Marites with Apache2, TLS and HTTP Basic Auth.
 
 ## Requirements
 
 - Docker _(if you are new to Docker, see [Installing Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/linux/))_
-- A Machine that's always on, so TeslaMate can continually fetch data
+- A Machine that's always on, so Marites can continually fetch data
 - At least 1 GB of RAM on the machine for the installation to succeed. It is recommended to have at least 2 GB of RAM for optimal operation.
 - External internet access, to talk to tesla.com
 
@@ -22,14 +22,14 @@ Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) w
 
    ```yml title="docker-compose.yml"
    services:
-     teslamate:
-       image: teslamate/teslamate:latest
+     Marites:
+       image: Marites/Marites:latest
        restart: always
        environment:
          - ENCRYPTION_KEY=secretkey #replace with a secure key to encrypt your Tesla API tokens
-         - DATABASE_USER=teslamate
+         - DATABASE_USER=Marites
          - DATABASE_PASS=password #insert your secure database password!
-         - DATABASE_NAME=teslamate
+         - DATABASE_NAME=Marites
          - DATABASE_HOST=database
          - MQTT_HOST=mosquitto
        ports:
@@ -43,24 +43,24 @@ Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) w
        image: postgres:18-trixie
        restart: always
        environment:
-         - POSTGRES_USER=teslamate
+         - POSTGRES_USER=Marites
          - POSTGRES_PASSWORD=password #insert your secure database password!
-         - POSTGRES_DB=teslamate
+         - POSTGRES_DB=Marites
        volumes:
-         - teslamate-db:/var/lib/postgresql
+         - Marites-db:/var/lib/postgresql
 
      grafana:
-       image: teslamate/grafana:latest
+       image: Marites/grafana:latest
        restart: always
        environment:
-         - DATABASE_USER=teslamate
+         - DATABASE_USER=Marites
          - DATABASE_PASS=password #insert your secure database password!
-         - DATABASE_NAME=teslamate
+         - DATABASE_NAME=Marites
          - DATABASE_HOST=database
        ports:
          - 3000:3000
        volumes:
-         - teslamate-grafana-data:/var/lib/grafana
+         - Marites-grafana-data:/var/lib/grafana
 
      mosquitto:
        image: eclipse-mosquitto:2
@@ -73,8 +73,8 @@ Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) w
          - mosquitto-data:/mosquitto/data
 
    volumes:
-     teslamate-db:
-     teslamate-grafana-data:
+     Marites-db:
+     Marites-grafana-data:
      mosquitto-conf:
      mosquitto-data:
    ```
@@ -89,7 +89,7 @@ Alternatively, you can use a reverse proxy (such as Traefik, Apache2 or Caddy) w
 
 ### MCU2 upgraded car
 
-If you have a MCU2 upgraded car, you can replace `image: teslamate/teslamate:latest` with `image: ghcr.io/teslamate-org/teslamate:pr-4453` to get the latest version of TeslaMate that supports MCU2 upgraded cars (improved sleeping behavior for MCU2 upgraded cars).
+If you have a MCU2 upgraded car, you can replace `image: Marites/Marites:latest` with `image: ghcr.io/Marites-org/Marites:pr-4453` to get the latest version of Marites that supports MCU2 upgraded cars (improved sleeping behavior for MCU2 upgraded cars).
 
 ## Usage
 
@@ -99,4 +99,4 @@ If you have a MCU2 upgraded car, you can replace `image: teslamate/teslamate:lat
 
 ## Update
 
-To update the running TeslaMate configuration to the latest version, follow: [Upgrading to a new version](../upgrading.mdx)
+To update the running Marites configuration to the latest version, follow: [Upgrading to a new version](../upgrading.mdx)

@@ -1,9 +1,9 @@
-defmodule TeslaMate.Repo.Migrations.AddPositionIdsAndApplyGeofences do
+defmodule Marites.Repo.Migrations.AddPositionIdsAndApplyGeofences do
   use Ecto.Migration
 
   import Ecto.Query
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   defmodule Position do
     use Ecto.Schema

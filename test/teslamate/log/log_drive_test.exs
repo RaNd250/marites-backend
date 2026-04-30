@@ -1,8 +1,8 @@
-defmodule TeslaMate.LogDriveTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.LogDriveTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Log.{Car, Position, Drive}
-  alias TeslaMate.Log
+  alias Marites.Log.{Car, Position, Drive}
+  alias Marites.Log
 
   @valid_attrs %{date: DateTime.utc_now(), latitude: 0.0, longitude: 0.0}
 
@@ -211,8 +211,8 @@ defmodule TeslaMate.LogDriveTest do
   end
 
   describe "geo-fencing" do
-    alias TeslaMate.Locations.GeoFence
-    alias TeslaMate.Locations
+    alias Marites.Locations.GeoFence
+    alias Marites.Locations
 
     def geofence_fixture(attrs \\ %{}) do
       {:ok, geofence} =

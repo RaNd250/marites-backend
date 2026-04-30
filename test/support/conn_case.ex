@@ -1,4 +1,4 @@
-defmodule TeslaMateWeb.ConnCase do
+defmodule MaritesWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,21 +20,21 @@ defmodule TeslaMateWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import TeslaMateWeb.ConnCase
+      import MaritesWeb.ConnCase
 
-      alias TeslaMateWeb.Router.Helpers, as: Routes
+      alias MaritesWeb.Router.Helpers, as: Routes
       import Phoenix.LiveViewTest
 
       # The default endpoint for testing
-      @endpoint TeslaMateWeb.Endpoint
+      @endpoint MaritesWeb.Endpoint
 
-      use TeslaMateWeb, :verified_routes
+      use MaritesWeb, :verified_routes
     end
   end
 
   setup tags do
     try do
-      pid = Ecto.Adapters.SQL.Sandbox.start_owner!(TeslaMate.Repo, shared: not tags[:async])
+      pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Marites.Repo, shared: not tags[:async])
       on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
     rescue
       e in [MatchError] ->
@@ -45,7 +45,7 @@ defmodule TeslaMateWeb.ConnCase do
     end
 
     # Start the Endpoint manually since tests run with '--no-start'
-    {:ok, _pid} = start_supervised(TeslaMateWeb.Endpoint)
+    {:ok, _pid} = start_supervised(MaritesWeb.Endpoint)
 
     conn =
       Phoenix.ConnTest.build_conn()

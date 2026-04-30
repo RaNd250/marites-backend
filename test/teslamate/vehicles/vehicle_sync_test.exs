@@ -1,11 +1,11 @@
-defmodule TeslaMate.Vehicles.VehicleSyncTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.VehicleSyncTest do
+  use Marites.VehicleCase, async: false
 
   describe "Summary" do
-    alias TeslaMate.Vehicles.Vehicle.Summary
-    alias TeslaMate.Mqtt.PubSub.VehicleSubscriber
-    alias TeslaMate.Log.Car
-    alias TeslaMate.Log
+    alias Marites.Vehicles.Vehicle.Summary
+    alias Marites.Mqtt.PubSub.VehicleSubscriber
+    alias Marites.Log.Car
+    alias Marites.Log
 
     defp start_subscriber(name, %Car{id: car_id}) do
       publisher_name = :"mqtt_publisher_#{name}"
@@ -144,17 +144,17 @@ defmodule TeslaMate.Vehicles.VehicleSyncTest do
             trim_badging: "P100D",
             usable_battery_level: 64
           ] do
-        topic = "teslamate/cars/#{car.id}/#{key}"
+        topic = "Marites/cars/#{car.id}/#{key}"
         data = to_string(val)
         retain = key not in [:healthy]
         assert_receive {MqttPublisherMock, {:publish, ^topic, ^data, [retain: ^retain, qos: 1]}}
       end
 
       # Handle the healthy message that's published separately with retain: true
-      topic = "teslamate/cars/#{car.id}/healthy"
+      topic = "Marites/cars/#{car.id}/healthy"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "", [retain: true, qos: 1]}}
 
-      topic = "teslamate/cars/#{car.id}/location"
+      topic = "Marites/cars/#{car.id}/location"
       assert_receive {MqttPublisherMock, {:publish, ^topic, data, [retain: true, qos: 1]}}
 
       assert Jason.decode!(data) == %{
@@ -168,7 +168,7 @@ defmodule TeslaMate.Vehicles.VehicleSyncTest do
             :active_route_longitude,
             :active_route_latitude
           ] do
-        topic = "teslamate/cars/#{car.id}/#{key}"
+        topic = "Marites/cars/#{car.id}/#{key}"
         assert_receive {MqttPublisherMock, {:publish, ^topic, "nil", [retain: true, qos: 1]}}
       end
 
@@ -176,7 +176,7 @@ defmodule TeslaMate.Vehicles.VehicleSyncTest do
       for key <- [
             :active_route
           ] do
-        topic = "teslamate/cars/#{car.id}/#{key}"
+        topic = "Marites/cars/#{car.id}/#{key}"
         assert_receive {MqttPublisherMock, {:publish, ^topic, data, [retain: true, qos: 1]}}
         assert Jason.decode!(data) == %{"error" => "No active route available"}
       end

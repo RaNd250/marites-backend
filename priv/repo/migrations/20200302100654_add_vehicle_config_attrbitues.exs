@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddVehicleConfigAttrbitues do
+defmodule Marites.Repo.Migrations.AddVehicleConfigAttrbitues do
   use Ecto.Migration
 
   def change do

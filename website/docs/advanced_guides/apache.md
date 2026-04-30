@@ -2,11 +2,11 @@
 title: Advanced install with Apache2, TLS, HTTP Basic Auth
 ---
 
-In case you wish to make TeslaMate publicly available on the Internet, it is strongly recommended to secure the web interface and allow access to Grafana only with a password. This guide provides **an example** _[docker-compose.yml](#docker-composeyml)_ which differs from the simple installation in the following aspects:
+In case you wish to make Marites publicly available on the Internet, it is strongly recommended to secure the web interface and allow access to Grafana only with a password. This guide provides **an example** _[docker-compose.yml](#docker-composeyml)_ which differs from the simple installation in the following aspects:
 
-- Both publicly accessible services, TeslaMate and Grafana, sit behind a reverse proxy (Apache2) which terminates HTTPS traffic
-- Ports 3000 (Grafana) and 4000 (TeslaMate) are only exposed locally
-- The TeslaMate service is protected by HTTP Basic Authentication
+- Both publicly accessible services, Marites and Grafana, sit behind a reverse proxy (Apache2) which terminates HTTPS traffic
+- Ports 3000 (Grafana) and 4000 (Marites) are only exposed locally
+- The Marites service is protected by HTTP Basic Authentication
 - Custom configuration was moved into a separate `.env` file
 - Grafana is configured to require a login
 
@@ -18,8 +18,8 @@ In case you wish to make TeslaMate publicly available on the Internet, it is str
   - `mod_proxy_wstunnel`
   - `mod_rewrite`
   - `mod_ssl`
-- Two FQDN, for example `teslamate.example.com` and `grafana.example.com`
-- An existing SSL certificate including the two above in `/etc/letsencrypt/live/teslamate.<your domain>`
+- Two FQDN, for example `Marites.example.com` and `grafana.example.com`
+- An existing SSL certificate including the two above in `/etc/letsencrypt/live/Marites.<your domain>`
 
 ## Instructions
 
@@ -29,8 +29,8 @@ Create the following files:
 
 ```yml title="docker-compose.yml"
 services:
-  teslamate:
-    image: teslamate/teslamate:latest
+  Marites:
+    image: Marites/Marites:latest
     restart: always
     environment:
       - ENCRYPTION_KEY=${TM_ENCRYPTION_KEY}
@@ -57,10 +57,10 @@ services:
       - POSTGRES_PASSWORD=${TM_DB_PASS}
       - POSTGRES_DB=${TM_DB_NAME}
     volumes:
-      - teslamate-db:/var/lib/postgresql
+      - Marites-db:/var/lib/postgresql
 
   grafana:
-    image: teslamate/grafana:latest
+    image: Marites/grafana:latest
     restart: always
     environment:
       - DATABASE_USER=${TM_DB_USER}
@@ -76,7 +76,7 @@ services:
     ports:
       - 127.0.0.1:3000:3000
     volumes:
-      - teslamate-grafana-data:/var/lib/grafana
+      - Marites-grafana-data:/var/lib/grafana
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -89,8 +89,8 @@ services:
       - mosquitto-data:/mosquitto/data
 
 volumes:
-  teslamate-db:
-  teslamate-grafana-data:
+  Marites-db:
+  Marites-grafana-data:
   mosquitto-conf:
   mosquitto-data:
 ```
@@ -101,37 +101,37 @@ This file should reside in the same folder as the docker-compose.yml file.
 
 ```plaintext title=".env"
 TM_ENCRYPTION_KEY= #your secure key to encrypt your Tesla API tokens
-TM_DB_USER=teslamate
+TM_DB_USER=Marites
 TM_DB_PASS= #your secure password!
-TM_DB_NAME=teslamate
+TM_DB_NAME=Marites
 
 GRAFANA_USER=admin
 GRAFANA_PW=admin
 
 FQDN_GRAFANA=grafana.example.com
-FQDN_TM=teslamate.example.com
+FQDN_TM=Marites.example.com
 
 TM_TZ=Europe/Berlin
 
 LETSENCRYPT_EMAIL=yourperson@example.com
 ```
 
-### teslamate.conf
+### Marites.conf
 
-This file contains the definition of the virtual hosts `teslamate.example.com` and `grafana.example.com`. It has to be enabled via `a2ensite teslamate`.
+This file contains the definition of the virtual hosts `Marites.example.com` and `grafana.example.com`. It has to be enabled via `a2ensite Marites`.
 
-This assumes, that you have the SSL certificate files residing in `/etc/letsencrypt/live/teslamate.example.com`. If it is somewhere else, you need to adapt the file accordingly.
+This assumes, that you have the SSL certificate files residing in `/etc/letsencrypt/live/Marites.example.com`. If it is somewhere else, you need to adapt the file accordingly.
 
-```apacheconf title="/etc/apache2/sites-available/teslamate.conf"
+```apacheconf title="/etc/apache2/sites-available/Marites.conf"
 Define MYDOMAIN example.com
-Define LOG access.teslamate.log
+Define LOG access.Marites.log
 
 <VirtualHost *:80>
     ProxyPreserveHost On
-    ServerName teslamate.${MYDOMAIN}
+    ServerName Marites.${MYDOMAIN}
     CustomLog /var/log/apache2/${LOG} combined
     RewriteEngine on
-    RewriteCond %{SERVER_NAME} =teslamate.${MYDOMAIN}
+    RewriteCond %{SERVER_NAME} =Marites.${MYDOMAIN}
     RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 </VirtualHost>
 
@@ -147,7 +147,7 @@ Define LOG access.teslamate.log
 <IfModule mod_ssl.c>
     <VirtualHost *:443>
         ProxyPreserveHost On
-        ServerName teslamate.${MYDOMAIN}
+        ServerName Marites.${MYDOMAIN}
         ProxyPass /live/websocket ws://127.0.0.1:4000/live/websocket
         ProxyPassReverse /live/websocket ws://127.0.0.1:4000/live/websocket
         ProxyPass / http://127.0.0.1:4000/
@@ -164,8 +164,8 @@ Define LOG access.teslamate.log
                 Require valid-user
             </RequireAny>
         </Proxy>
-        SSLCertificateFile /etc/letsencrypt/live/teslamate.${MYDOMAIN}/fullchain.pem
-        SSLCertificateKeyFile /etc/letsencrypt/live/teslamate.${MYDOMAIN}/privkey.pem
+        SSLCertificateFile /etc/letsencrypt/live/Marites.${MYDOMAIN}/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/Marites.${MYDOMAIN}/privkey.pem
         Include /etc/letsencrypt/options-ssl-apache.conf
     </VirtualHost>
 </IfModule>
@@ -186,18 +186,18 @@ Define LOG access.teslamate.log
 
 ### .htpasswd
 
-This file contains a user and password for accessing TeslaMate (Basic-auth), note this is NOT your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. with [htaccesstools](http://www.htaccesstools.com/htpasswd-generator/)). Use BCrypt encryption mode.
+This file contains a user and password for accessing Marites (Basic-auth), note this is NOT your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. with [htaccesstools](http://www.htaccesstools.com/htpasswd-generator/)). Use BCrypt encryption mode.
 
 **Example:**
 
 ```apacheconf title="/etc/apache2/.htpasswd"
-teslamate:$2y$10$f7PB3UF3PNzqMIXZmf1dIefOkrv/15Xt6Xw3pzc6mkS/B5qoWBdAG
+Marites:$2y$10$f7PB3UF3PNzqMIXZmf1dIefOkrv/15Xt6Xw3pzc6mkS/B5qoWBdAG
 ```
 
 ## Usage
 
 Start the stack with `docker compose up` run in the same directory, where the docker-compose.yml resides.
 
-1. Open the web interface [teslamate.example.com](https://teslamate.example.com)
+1. Open the web interface [Marites.example.com](https://Marites.example.com)
 2. Sign in with your Tesla account
 3. The Grafana dashboards are available at [grafana.example.com](https://grafana.example.com).

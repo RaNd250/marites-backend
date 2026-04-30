@@ -3,7 +3,7 @@ title: Manual install - Debian (no support)
 sidebar_label: Manual - Debian (no support)
 ---
 
-This document provides the necessary steps for installation of TeslaMate on a vanilla Debian or Ubuntu system. The **recommended and most straightforward installation approach is through the use of [Docker](../docker.md)**, however this walkthrough provides the necessary steps for manual installation in an aptitude (Debian/Ubuntu) environment.
+This document provides the necessary steps for installation of Marites on a vanilla Debian or Ubuntu system. The **recommended and most straightforward installation approach is through the use of [Docker](../docker.md)**, however this walkthrough provides the necessary steps for manual installation in an aptitude (Debian/Ubuntu) environment.
 
 ## Requirements
 
@@ -69,7 +69,7 @@ sudo systemctl enable grafana-server.service # to start Grafana at boot time
 
 Source: [grafana.com/docs/installation](https://grafana.com/docs/grafana/latest/installation/)
 
-[Import the Grafana dashboards](#import-grafana-dashboards) after [cloning the TeslaMate git repository](#clone-teslamate-git-repository).
+[Import the Grafana dashboards](#import-grafana-dashboards) after [cloning the Marites git repository](#clone-Marites-git-repository).
 
 </details>
 
@@ -104,29 +104,29 @@ sudo apt install nodejs npm
 
 </details>
 
-## Clone TeslaMate git repository
+## Clone Marites git repository
 
-The following command will clone the source files for the TeslaMate project. This should be run in an appropriate directory within which you would like to install TeslaMate. You should also record this path and provide them to the startup scripts proposed at the end of this guide.
+The following command will clone the source files for the Marites project. This should be run in an appropriate directory within which you would like to install Marites. You should also record this path and provide them to the startup scripts proposed at the end of this guide.
 
 ```bash
 cd /usr/src
 
-git clone https://github.com/teslamate-org/teslamate.git
-cd teslamate
+git clone https://github.com/Marites-org/Marites.git
+cd Marites
 
 git checkout $(git describe --tags `git rev-list --tags --max-count=1`) # Checkout the latest stable version
 ```
 
 ## Create PostgreSQL database
 
-The following commands will create a database called `teslamate` on the PostgreSQL database server, and a user called `teslamate`. When creating the `teslamate` user, you will be prompted to enter a password for the user interactively. This password should be recorded and provided as an environment variable in the startup script at the end of this guide.
+The following commands will create a database called `Marites` on the PostgreSQL database server, and a user called `Marites`. When creating the `Marites` user, you will be prompted to enter a password for the user interactively. This password should be recorded and provided as an environment variable in the startup script at the end of this guide.
 
 ```console
 sudo -u postgres psql
-postgres=# create database teslamate;
-postgres=# create user teslamate with encrypted password 'your_secure_password_here';
-postgres=# grant all privileges on database teslamate to teslamate;
-postgres=# ALTER USER teslamate WITH SUPERUSER;
+postgres=# create database Marites;
+postgres=# create user Marites with encrypted password 'your_secure_password_here';
+postgres=# grant all privileges on database Marites to Marites;
+postgres=# ALTER USER Marites WITH SUPERUSER;
 postgres=# \q
 ```
 
@@ -145,14 +145,14 @@ MIX_ENV=prod mix do phx.digest, release --overwrite
 
 ### Set your system locale
 
-You may need to set your system locale. If you get an error when running the TeslaMate service which indicates that you don't have a UTF-8 capable system locale set, run the following commands to set the locale on your system:
+You may need to set your system locale. If you get an error when running the Marites service which indicates that you don't have a UTF-8 capable system locale set, run the following commands to set the locale on your system:
 
 ```bash
 sudo locale-gen en_US.UTF-8
 sudo localectl set-locale LANG=en_US.UTF-8
 ```
 
-## Starting TeslaMate at boot time
+## Starting Marites at boot time
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -165,11 +165,11 @@ values={[
 ]}>
 <TabItem value="systemd">
 
-Create a systemd service at `/etc/systemd/system/teslamate.service`:
+Create a systemd service at `/etc/systemd/system/Marites.service`:
 
 ```ini
 [Unit]
-Description=TeslaMate
+Description=Marites
 After=network.target
 After=postgresql.service
 
@@ -181,23 +181,23 @@ Type=simple
 Restart=on-failure
 RestartSec=5
 
-Environment="HOME=/usr/src/teslamate"
+Environment="HOME=/usr/src/Marites"
 Environment="LANG=en_US.UTF-8"
 Environment="LC_CTYPE=en_US.UTF-8"
 Environment="TZ=Europe/Berlin"
 Environment="PORT=4000"
 Environment="ENCRYPTION_KEY=your_secure_encryption_key_here"
-Environment="DATABASE_USER=teslamate"
+Environment="DATABASE_USER=Marites"
 Environment="DATABASE_PASS=#your secure password!
-Environment="DATABASE_NAME=teslamate"
+Environment="DATABASE_NAME=Marites"
 Environment="DATABASE_HOST=127.0.0.1"
 Environment="MQTT_HOST=127.0.0.1"
 
-WorkingDirectory=/usr/src/teslamate
+WorkingDirectory=/usr/src/Marites
 
-ExecStartPre=/usr/src/teslamate/_build/prod/rel/teslamate/bin/teslamate eval "TeslaMate.Release.migrate"
-ExecStart=/usr/src/teslamate/_build/prod/rel/teslamate/bin/teslamate start
-ExecStop=/usr/src/teslamate/_build/prod/rel/teslamate/bin/teslamate stop
+ExecStartPre=/usr/src/Marites/_build/prod/rel/Marites/bin/Marites eval "Marites.Release.migrate"
+ExecStart=/usr/src/Marites/_build/prod/rel/Marites/bin/Marites start
+ExecStop=/usr/src/Marites/_build/prod/rel/Marites/bin/Marites stop
 
 [Install]
 WantedBy=multi-user.target
@@ -209,59 +209,59 @@ WantedBy=multi-user.target
 Start the service:
 
 ```bash
-sudo systemctl start teslamate
+sudo systemctl start Marites
 ```
 
 And automatically get it to start on boot:
 
 ```bash
-sudo systemctl enable teslamate
+sudo systemctl enable Marites
 ```
 
 </TabItem>
 <TabItem value="screen">
 
-Create the following file: `/usr/local/bin/teslamate-start.sh`
+Create the following file: `/usr/local/bin/Marites-start.sh`
 
 You should at least substitute the following details:
 
 - `MQTT_HOST` should be the IP address of your MQTT broker. If you do not have one installed, the MQTT functionality can be disabled with 'DISABLE_MQTT=true'.
 - `TZ` should be your local timezone. Work out your timezone name using the [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in the linked Wikipedia page.
-- `TESLAMATEPATH` should be the path that you ran the `git clone` within.
+- `MaritesPATH` should be the path that you ran the `git clone` within.
 
 ```bash
 export ENCRYPTION_KEY="your_secure_encryption_key_here"
-export DATABASE_USER="teslamate"
+export DATABASE_USER="Marites"
 export DATABASE_PASS="your_secure_password_here"
 export DATABASE_HOST="127.0.0.1"
-export DATABASE_NAME="teslamate"
+export DATABASE_NAME="Marites"
 export MQTT_HOST="127.0.0.1"
-export MQTT_USERNAME="teslamate"
-export MQTT_PASSWORD="teslamate"
+export MQTT_USERNAME="Marites"
+export MQTT_PASSWORD="Marites"
 export MQTT_TLS="false"
 export TZ="Europe/Berlin"
-export TESLAMATEPATH=/usr/src/teslamate
+export MaritesPATH=/usr/src/Marites
 
-$TESLAMATEPATH/_build/prod/rel/teslamate/bin/teslamate start
+$MaritesPATH/_build/prod/rel/Marites/bin/Marites start
 ```
 
-The following command needs to be run once during the installation process in order to create the database schema for the TeslaMate installation:
+The following command needs to be run once during the installation process in order to create the database schema for the Marites installation:
 
 ```bash
 export ENCRYPTION_KEY="your_secure_encryption_key_here"
-export DATABASE_USER="teslamate"
+export DATABASE_USER="Marites"
 export DATABASE_PASS="your_secure_password_here"
 export DATABASE_HOST="127.0.0.1"
-export DATABASE_NAME="teslamate"
-_build/prod/rel/teslamate/bin/teslamate eval "TeslaMate.Release.migrate"
+export DATABASE_NAME="Marites"
+_build/prod/rel/Marites/bin/Marites eval "Marites.Release.migrate"
 ```
 
-Add the following to /etc/rc.local, to start a screen session at boot time and run the TeslaMate server within a screen session. This lets you interactively connect to the session if needed.
+Add the following to /etc/rc.local, to start a screen session at boot time and run the Marites server within a screen session. This lets you interactively connect to the session if needed.
 
 ```bash
-# Start TeslaMate
-cd /usr/src/teslamate
-screen -S teslamate -L -dm bash -c "cd /usr/src/teslamate; ./start.sh; exec sh"
+# Start Marites
+cd /usr/src/Marites
+screen -S Marites -L -dm bash -c "cd /usr/src/Marites; ./start.sh; exec sh"
 ```
 
 </TabItem>
@@ -271,15 +271,15 @@ screen -S teslamate -L -dm bash -c "cd /usr/src/teslamate; ./start.sh; exec sh"
 
 1. Visit [localhost:3000](http://localhost:3000) and log in. The default credentials are: `admin:admin`.
 
-2. Create a data source with the name "TeslaMate":
+2. Create a data source with the name "Marites":
 
    ```grafana
    Type: PostgreSQL
    Default: YES
-   Name: TeslaMate
+   Name: Marites
    Host: localhost
-   Database: teslamate
-   User: teslamate  Password: your_secure_password_here
+   Database: Marites
+   User: Marites  Password: your_secure_password_here
    SSL-Mode: disable
    Version: 10
    ```
@@ -290,7 +290,7 @@ screen -S teslamate -L -dm bash -c "cd /usr/src/teslamate; ./start.sh; exec sh"
    sudo apt install jq
    ```
 
-4. [Manually import](https://grafana.com/docs/reference/export_import/#importing-a-dashboard) the dashboard [files](https://github.com/teslamate-org/teslamate/tree/main/grafana/dashboards) or use the `dashboards.sh` script. First create a "Service Account" called `TeslaMate` under Grafana's Administration > User and access menu. Then create an API token for this service account (in place of `<mytoken>` below) and run the script:
+4. [Manually import](https://grafana.com/docs/reference/export_import/#importing-a-dashboard) the dashboard [files](https://github.com/Marites-org/Marites/tree/main/grafana/dashboards) or use the `dashboards.sh` script. First create a "Service Account" called `Marites` under Grafana's Administration > User and access menu. Then create an API token for this service account (in place of `<mytoken>` below) and run the script:
 
    ```bash
    $ env GRAFANA_API_TOKEN=<mytoken> ./grafana/dashboards.sh restore
@@ -300,8 +300,8 @@ screen -S teslamate -L -dm bash -c "cd /usr/src/teslamate; ./start.sh; exec sh"
    DASHBOARDS_DIRECTORY:   ./grafana/dashboards
    GRAFANA_ORG_NAMESPACE:  default
 
-   RESTORED locations.json into Grafana folder 'TeslaMate' ...
-   RESTORED drive-stats.json into Grafana folder 'TeslaMate' ...
+   RESTORED locations.json into Grafana folder 'Marites' ...
+   RESTORED drive-stats.json into Grafana folder 'Marites' ...
    ...
    ```
 

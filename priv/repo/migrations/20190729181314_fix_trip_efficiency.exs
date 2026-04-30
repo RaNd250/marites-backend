@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.FixTripEfficiency do
+defmodule Marites.Repo.Migrations.FixTripEfficiency do
   use Ecto.Migration
 
   import Ecto.Query
@@ -8,7 +8,7 @@ defmodule TeslaMate.Repo.Migrations.FixTripEfficiency do
       update: [set: [efficiency: 1 / t.efficiency]],
       where: not is_nil(t.efficiency)
     )
-    |> TeslaMate.Repo.update_all([])
+    |> Marites.Repo.update_all([])
   end
 
   def down do
@@ -16,6 +16,6 @@ defmodule TeslaMate.Repo.Migrations.FixTripEfficiency do
       update: [set: [efficiency: 1 / t.efficiency]],
       where: not is_nil(t.efficiency)
     )
-    |> TeslaMate.Repo.update_all([])
+    |> Marites.Repo.update_all([])
   end
 end

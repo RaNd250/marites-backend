@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddEstTotalChargeEnergy do
+defmodule Marites.Repo.Migrations.AddEstTotalChargeEnergy do
   use Ecto.Migration
 
   def change do

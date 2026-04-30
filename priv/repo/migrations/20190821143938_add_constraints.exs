@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddConstraints do
+defmodule Marites.Repo.Migrations.AddConstraints do
   use Ecto.Migration
 
   def change do

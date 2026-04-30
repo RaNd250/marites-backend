@@ -1,8 +1,8 @@
-defmodule TeslaMate.LogStateTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.LogStateTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Log.{State, Car}
-  alias TeslaMate.Log
+  alias Marites.Log.{State, Car}
+  alias Marites.Log
 
   def car_fixture(attrs \\ %{}) do
     {:ok, car} =

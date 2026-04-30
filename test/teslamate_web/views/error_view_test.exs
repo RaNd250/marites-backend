@@ -1,14 +1,14 @@
-defmodule TeslaMateWeb.ErrorViewTest do
-  use TeslaMateWeb.ConnCase, async: true
+defmodule MaritesWeb.ErrorViewTest do
+  use MaritesWeb.ConnCase, async: true
 
   # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View
 
   test "renders 404.html" do
-    assert render_to_string(TeslaMateWeb.ErrorView, "404.html", []) == "Not Found"
+    assert render_to_string(MaritesWeb.ErrorView, "404.html", []) == "Not Found"
   end
 
   test "renders 500.html" do
-    assert render_to_string(TeslaMateWeb.ErrorView, "500.html", []) == "Internal Server Error"
+    assert render_to_string(MaritesWeb.ErrorView, "500.html", []) == "Internal Server Error"
   end
 end

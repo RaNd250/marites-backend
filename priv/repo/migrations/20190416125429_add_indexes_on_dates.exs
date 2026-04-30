@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddIndexesOnDates do
+defmodule Marites.Repo.Migrations.AddIndexesOnDates do
   use Ecto.Migration
 
   def change do

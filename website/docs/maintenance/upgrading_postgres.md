@@ -4,7 +4,7 @@ sidebar_label: Upgrading PostgreSQL
 ---
 
 1. Create a [backup](backup_restore.mdx)
-2. Stop all TeslaMate containers
+2. Stop all Marites containers
 
    ```bash
    docker compose down
@@ -13,7 +13,7 @@ sidebar_label: Upgrading PostgreSQL
 3. Delete the database volume. **Be careful**, this will delete all your previously recorded data! Make sure that your backup can be restored before you start.
 
    ```bash
-   docker volume rm "$(basename "$PWD")_teslamate-db"
+   docker volume rm "$(basename "$PWD")_Marites-db"
    ```
 
 4. Change the postgres version and ensure your volume mount is [configured correctly](https://hub.docker.com/_/postgres#pgdata) in docker-compose.yml and start the container
@@ -23,7 +23,7 @@ sidebar_label: Upgrading PostgreSQL
      image: postgres:18-trixie
      ...
      volumes:
-       - teslamate-db:/var/lib/postgresql
+       - Marites-db:/var/lib/postgresql
    ```
 
    ```bash

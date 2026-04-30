@@ -10,12 +10,12 @@ defmodule TeslaApi.Auth do
   def redirect_uri, do: @redirect_uri
 
   @default_headers [
-    {"user-agent", "TeslaMate/#{Mix.Project.config()[:version]}"},
+    {"user-agent", "Marites/#{Mix.Project.config()[:version]}"},
     {"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"},
     {"Accept-Language", "en-US,de-DE;q=0.5"}
   ]
 
-  adapter Tesla.Adapter.Finch, name: TeslaMate.HTTP, receive_timeout: 60_000
+  adapter Tesla.Adapter.Finch, name: Marites.HTTP, receive_timeout: 60_000
 
   plug TeslaApi.Middleware.FollowRedirects, except: [@redirect_uri]
   plug Tesla.Middleware.BaseUrl, System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")

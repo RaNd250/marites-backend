@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddCompositeIndexWithPredicateToPositions do
+defmodule Marites.Repo.Migrations.AddCompositeIndexWithPredicateToPositions do
   use Ecto.Migration
 
   def change do

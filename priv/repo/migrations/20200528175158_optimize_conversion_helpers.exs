@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.OptimizeConversionHelpers do
+defmodule Marites.Repo.Migrations.OptimizeConversionHelpers do
   use Ecto.Migration
 
   def change do

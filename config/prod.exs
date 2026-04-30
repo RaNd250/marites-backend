@@ -1,10 +1,10 @@
 import Config
 
-config :teslamate, TeslaMateWeb.Endpoint,
+config :Marites, MaritesWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   root: ".",
   server: true,
-  version: Application.spec(:teslamate, :vsn)
+  version: Application.spec(:Marites, :vsn)
 
 config :logger,
   level: :info

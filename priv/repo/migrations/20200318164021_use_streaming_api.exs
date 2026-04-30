@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.UseStreamingApi do
+defmodule Marites.Repo.Migrations.UseStreamingApi do
   use Ecto.Migration
 
   def change do

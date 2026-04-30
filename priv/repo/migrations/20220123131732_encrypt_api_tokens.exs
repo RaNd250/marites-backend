@@ -1,10 +1,10 @@
-defmodule TeslaMate.Repo.Migrations.EncryptApiTokens do
+defmodule Marites.Repo.Migrations.EncryptApiTokens do
   use Ecto.Migration
 
-  Code.ensure_loaded!(TeslaMate.Vault)
+  Code.ensure_loaded!(Marites.Vault)
 
   defmodule Encrypted.Binary do
-    use Cloak.Ecto.Binary, vault: TeslaMate.Vault
+    use Cloak.Ecto.Binary, vault: Marites.Vault
   end
 
   defmodule Tokens do
@@ -37,9 +37,9 @@ defmodule TeslaMate.Repo.Migrations.EncryptApiTokens do
     end
 
     defp setup_vault(key) do
-      Cloak.Vault.save_config(TeslaMate.Vault.Config,
+      Cloak.Vault.save_config(Marites.Vault.Config,
         ciphers: [
-          default: TeslaMate.Vault.default_cipher(:crypto.hash(:sha256, key))
+          default: Marites.Vault.default_cipher(:crypto.hash(:sha256, key))
         ]
       )
     end
@@ -67,7 +67,7 @@ defmodule TeslaMate.Repo.Migrations.EncryptApiTokens do
     end
   end
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   def change do
     alter table(:tokens) do

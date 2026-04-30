@@ -1,7 +1,7 @@
-defmodule TeslaMateWeb.SettingsLiveTest do
-  use TeslaMateWeb.ConnCase
+defmodule MaritesWeb.SettingsLiveTest do
+  use MaritesWeb.ConnCase
 
-  alias TeslaMate.{Settings, Locations, Repo}
+  alias Marites.{Settings, Locations, Repo}
 
   import TestHelper, only: [decimal: 1]
 
@@ -255,7 +255,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
   end
 
   describe "car settings" do
-    alias TeslaMate.{Log, Settings}
+    alias Marites.{Log, Settings}
 
     defp car_fixture(attrs) do
       attrs =
@@ -514,7 +514,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
   end
 
   describe "updates" do
-    alias TeslaMate.Updater
+    alias Marites.Updater
 
     import Mock
 
@@ -533,7 +533,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
         assert {:ok, _view, html} = live(conn, "/settings")
         html = Floki.parse_document!(html)
 
-        assert "#{Application.spec(:teslamate, :vsn)} (Update available: 1.1.3)" ==
+        assert "#{Application.spec(:Marites, :vsn)} (Update available: 1.1.3)" ==
                  html
                  |> Floki.find(".about tr:first-child td")
                  |> Floki.text()
@@ -541,7 +541,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
 
         assert [
                  {"a",
-                  [_, {"href", "https://github.com/teslamate-org/teslamate/releases"}, _, _, _],
+                  [_, {"href", "https://github.com/Marites-org/Marites/releases"}, _, _, _],
                   [_, {_, _, ["Update available: 1.1.3"]}]}
                ] = Floki.find(html, ".footer a")
       end
@@ -552,7 +552,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
     import Mock
 
     test "tba", %{conn: conn} do
-      with_mocks [{TeslaMate.Api, [], signed_in?: fn -> true end, sign_out: fn -> :ok end}] do
+      with_mocks [{Marites.Api, [], signed_in?: fn -> true end, sign_out: fn -> :ok end}] do
         assert {:ok, view, _html} = live(conn, "/settings")
 
         view
@@ -561,7 +561,7 @@ defmodule TeslaMateWeb.SettingsLiveTest do
 
         assert_redirect(view, "/")
 
-        assert_called(TeslaMate.Api.sign_out())
+        assert_called(Marites.Api.sign_out())
       end
     end
   end

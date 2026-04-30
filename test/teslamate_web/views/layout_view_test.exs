@@ -1,3 +1,3 @@
-defmodule TeslaMateWeb.LayoutViewTest do
-  use TeslaMateWeb.ConnCase, async: true
+defmodule MaritesWeb.LayoutViewTest do
+  use MaritesWeb.ConnCase, async: true
 end

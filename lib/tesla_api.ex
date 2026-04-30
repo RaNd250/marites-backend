@@ -3,10 +3,10 @@ defmodule TeslaApi do
 
   @version Mix.Project.config()[:version]
 
-  adapter Tesla.Adapter.Finch, name: TeslaMate.HTTP, receive_timeout: 35_000
+  adapter Tesla.Adapter.Finch, name: Marites.HTTP, receive_timeout: 35_000
 
   plug Tesla.Middleware.BaseUrl, "https://owner-api.teslamotors.com"
-  plug Tesla.Middleware.Headers, [{"user-agent", "TeslaMate/#{@version}"}]
+  plug Tesla.Middleware.Headers, [{"user-agent", "Marites/#{@version}"}]
   plug Tesla.Middleware.JSON
   plug TeslaApi.Middleware.TokenAuth
   plug Tesla.Middleware.Logger, debug: true, log_level: &log_level/1

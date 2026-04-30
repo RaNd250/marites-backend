@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.RenameSocFields do
+defmodule Marites.Repo.Migrations.RenameSocFields do
   use Ecto.Migration
 
   def change do

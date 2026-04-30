@@ -1,8 +1,8 @@
-defmodule TeslaMate.LocationsAddressesTest do
-  use TeslaMate.DataCase
+defmodule Marites.LocationsAddressesTest do
+  use Marites.DataCase
 
-  alias TeslaMate.{Locations, Repo}
-  alias TeslaMate.Locations.Address
+  alias Marites.{Locations, Repo}
+  alias Marites.Locations.Address
 
   describe "addresses" do
     @valid_attrs %{

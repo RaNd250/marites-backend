@@ -10,7 +10,7 @@ As far as we know, using the Tesla Fleet API and Telemetry API as a user has onl
 
 ### When Tesla Fleet API and Telemetry API are needed
 
-By default, TeslaMate uses the "_unofficial_" Owner API and streaming.
+By default, Marites uses the "_unofficial_" Owner API and streaming.
 
 Tesla now provides official APIs: the Fleet API and the Telemetry API, which replace the Owner API and streaming respectively. But come with limitations and drawbacks.
 
@@ -42,30 +42,30 @@ You can use a [third-party providers](#guide-for-third-party-providers) to easil
 Environment variables allow changing the API and streaming endpoints.
 You must use the `URL` and the `TOKEN` given by the third party API provider.
 
-### [MyTeslaMate](https://www.myteslamate.com) (free)
+### [MyMarites](https://www.myMarites.com) (free)
 
-#### MyTeslaMate Fleet API
+#### MyMarites Fleet API
 
-1. Log in the [MyTeslaMate](https://app.myteslamate.com) website **with your Tesla account** and go to the [MyTeslaMate Fleet](https://app.myteslamate.com/fleet) page to get your `TOKEN`.
+1. Log in the [MyMarites](https://app.myMarites.com) website **with your Tesla account** and go to the [MyMarites Fleet](https://app.myMarites.com/fleet) page to get your `TOKEN`.
 1. Add the following environment variables (using your `TOKEN` instead of _`xxxx-xxxx-xxxx-xxxx`_):
 
 ```yml
 # API Fleet
 - TOKEN=?token=xxxx-xxxx-xxxx-xxxx
-- TESLA_API_HOST=https://api.myteslamate.com
-- TESLA_AUTH_HOST=https://api.myteslamate.com
+- TESLA_API_HOST=https://api.myMarites.com
+- TESLA_AUTH_HOST=https://api.myMarites.com
 - TESLA_AUTH_PATH=/api/oauth2/v3
 ```
 
-#### MyTeslaMate Streaming
+#### MyMarites Streaming
 
-MyTeslaMate also provides streaming by [reproducing the old streaming from the data sent by Fleet Telemetry](https://github.com/MyTeslaMate/websocket).
+MyMarites also provides streaming by [reproducing the old streaming from the data sent by Fleet Telemetry](https://github.com/MyMarites/websocket).
 
-1. You need to "_Pair your vehicle(s)_" on the [fleet](https://app.myteslamate.com/fleet) page
+1. You need to "_Pair your vehicle(s)_" on the [fleet](https://app.myMarites.com/fleet) page
 1. Use the following dedicated environment variables:
 
    ```yml
-   - TESLA_WSS_HOST=wss://streaming.myteslamate.com
+   - TESLA_WSS_HOST=wss://streaming.myMarites.com
    - TESLA_WSS_TLS_ACCEPT_INVALID_CERTS=true
    - TESLA_WSS_USE_VIN=true
    ```
@@ -92,7 +92,7 @@ MyTeslaMate also provides streaming by [reproducing the old streaming from the d
 
 #### Teslemetry Streaming
 
-**_Important: Teslemetry's streaming is incompatible with Teslamate, you MUST disable manually the streaming in Teslamate settings._**
+**_Important: Teslemetry's streaming is incompatible with Marites, you MUST disable manually the streaming in Marites settings._**
 
 ## Guide to using the official Tesla API directly (free)
 
@@ -122,24 +122,24 @@ MyTeslaMate also provides streaming by [reproducing the old streaming from the d
 
 1. (Optional) If you want to send commands or use Tesla Telemetry:
    1. Send drivers a "Pairing request" to be able to use your own [Tesla Vehicle Command Protocol http proxy to send commands](https://github.com/teslamotors/vehicle-command?tab=readme-ov-file#using-the-http-proxy)
-   2. Send test commands or setup Telemetry to [stream it to your Teslamate](#streaming-via-tesla-telemetry)
+   2. Send test commands or setup Telemetry to [stream it to your Marites](#streaming-via-tesla-telemetry)
 
 #### Switching from Owners API to Fleet API
 
-1. Sign out from the current Owners API by visiting the teslamate settings page
-2. Follow step 1&2 from [Tesla Fleet API](https://docs.teslamate.org/docs/guides/api#tesla-fleet-api)
+1. Sign out from the current Owners API by visiting the Marites settings page
+2. Follow step 1&2 from [Tesla Fleet API](https://docs.Marites.org/docs/guides/api#tesla-fleet-api)
 3. Restart your docker instance to make the change in effect
-4. With proper setup, your teslamate instance will sign in automatically with your client ID after restart
+4. With proper setup, your Marites instance will sign in automatically with your client ID after restart
 
 ### Streaming via Tesla Telemetry
 
-**_Important: if you don't setup your own streaming, you MUST disable manually the streaming in Teslamate settings._**
+**_Important: if you don't setup your own streaming, you MUST disable manually the streaming in Marites settings._**
 
 To setup your own streaming server, you can follow these steps:
 
 1. Setup a [Tesla Fleet Telemetry](https://github.com/teslamotors/fleet-telemetry) instance on a public domain (eg: _telemetry.mydomain.com_)
 1. Add a [Google pubsub dispatcher](https://github.com/teslamotors/fleet-telemetry?tab=readme-ov-file#backendsdispatchers) to your own GCP PubSub.
-1. Setup a [MyTeslaMate Streaming Server from Fleet Telemetry Events](https://github.com/MyTeslaMate/websocket) on a public domain (eg: _streaming.mydomain.com_)
+1. Setup a [MyMarites Streaming Server from Fleet Telemetry Events](https://github.com/MyMarites/websocket) on a public domain (eg: _streaming.mydomain.com_)
 1. Manually create a subscription to the `telemetry_V` created in PubSub by the Tesla Telemetry with:
    - Delivery type: Push
    - Endpoint URL: [https://streaming.mydomain.com](https://streaming.mydomain.com)
