@@ -24,7 +24,8 @@ defmodule Marites.Vehicles.Vehicle do
               deps: %{},
               task: nil,
               import?: false,
-              stream_pid: nil
+              stream_pid: nil,
+              last_fleet_event_at: nil
   end
 
   @asleep_interval 30
@@ -1248,6 +1249,10 @@ defmodule Marites.Vehicles.Vehicle do
      {:next_event, :internal, event}}
   end
 
+  def handle_event(:cast, {:fleet_telemetry, _fields}, _state, %Data{} = data) do
+    {:keep_state, %{data | last_fleet_event_at: DateTime.utc_now()}}
+  end
+
   # Private
 
   defp restore_last_known_values(%Vehicle{} = vehicle, data) do
@@ -1766,7 +1771,14 @@ defmodule Marites.Vehicles.Vehicle do
     do: schedule_fetch(n |> max(minimum_interval()), :seconds, data)
 
   defp schedule_fetch(_n, _unit, %Data{import?: true}), do: {:state_timeout, 0, :fetch}
-  defp schedule_fetch(n, unit, _), do: {:state_timeout, fetch_timeout(n, unit), :fetch}
+
+  defp schedule_fetch(n, unit, %Data{last_fleet_event_at: ts}) when not is_nil(ts) do
+    age = DateTime.diff(DateTime.utc_now(), ts, :second)
+    effective_n = if age < 300, do: max(n, online_interval()), else: n
+    {:state_timeout, fetch_timeout(effective_n, unit), :fetch}
+  end
+
+  defp schedule_fetch(n, unit, _data), do: {:state_timeout, fetch_timeout(n, unit), :fetch}
 
   case(Mix.env()) do
     :test -> defp fetch_timeout(n, _), do: round(n)
