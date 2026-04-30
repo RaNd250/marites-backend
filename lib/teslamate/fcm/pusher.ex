@@ -185,7 +185,7 @@ defmodule TeslaMate.FCM.Pusher do
   end
 
   defp notification_text(event, summary) do
-    {to_string(event), summary.display_name || "TeslaMi"}
+    {to_string(event), summary.display_name || "Marit.es"}
   end
 
   # --- Google OAuth2 token management ---

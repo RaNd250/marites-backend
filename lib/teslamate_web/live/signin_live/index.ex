@@ -51,7 +51,7 @@ defmodule TeslaMateWeb.SignInLive.Index do
     case result do
       :ok ->
         Process.sleep(250)
-        {:noreply, issue_teslami_session(socket)}
+        {:noreply, issue_marites_session(socket)}
 
       {:error, %TeslaApi.Error{} = e} ->
         message =
@@ -80,7 +80,7 @@ defmodule TeslaMateWeb.SignInLive.Index do
     end
   end
 
-  defp issue_teslami_session(socket) do
+  defp issue_marites_session(socket) do
     with {:ok, auth}        <- Api.get_auth(),
          {:ok, userinfo}    <- TeslaAuth.get_userinfo(auth),
          email              = Map.get(userinfo, "email") || Map.get(userinfo, :email),
@@ -88,11 +88,11 @@ defmodule TeslaMateWeb.SignInLive.Index do
          {:ok, user}        <- Accounts.find_or_create_by_email(email),
          {:ok, access_tok}  <- JWT.generate_access_token(user),
          {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
-      params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
+      params = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
       redirect(socket, external: "/?#{params}")
     else
       _ ->
-        # Fallback: Tesla auth succeeded but we couldn't issue a TeslaMi JWT — go to legacy UI
+        # Fallback: Tesla auth succeeded but we couldn't issue a Marit.es JWT — go to legacy UI
         socket
         |> put_flash(:success, gettext("Signed in successfully"))
         |> redirect(to: Routes.car_path(socket, :index))

@@ -42,7 +42,7 @@ defmodule TeslaMateWeb.TeslaOAuthController do
          {:ok, access_tok} <- JWT.generate_access_token(user),
          {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
       link_cars_to_user(user.id)
-      params = URI.encode_query(%{teslami_token: access_tok, teslami_refresh: refresh_tok})
+      params = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
       redirect(conn, external: "/?#{params}")
     else
       {:error, :invalid_state} ->
@@ -163,6 +163,6 @@ defmodule TeslaMateWeb.TeslaOAuthController do
   end
 
   defp callback_uri do
-    System.get_env("APP_URL", "https://teslami.vitaldata.gr") <> "/auth/tesla/callback"
+    System.get_env("APP_URL", "https://app.marit.es") <> "/auth/tesla/callback"
   end
 end
