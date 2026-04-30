@@ -5,7 +5,7 @@ defmodule Marites.Application do
 
   def start(_type, _args) do
     Logger.info("System Info: #{system_info()}")
-    Logger.info("Version: #{Application.spec(:Marites, :vsn) || "???"}")
+    Logger.info("Version: #{Application.spec(:marites, :vsn) || "???"}")
 
     # Disable log entries
     :ok = :telemetry.detach({Phoenix.Logger, [:phoenix, :socket_connected]})
@@ -17,9 +17,9 @@ defmodule Marites.Application do
   end
 
   defp children do
-    mqtt_config = Application.get_env(:Marites, :mqtt)
+    mqtt_config = Application.get_env(:marites, :mqtt)
 
-    case Application.get_env(:Marites, :import_directory) do
+    case Application.get_env(:marites, :import_directory) do
       nil ->
         [
           Marites.Repo,

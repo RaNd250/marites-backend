@@ -1,5 +1,5 @@
 defmodule MaritesWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :Marites
+  use Phoenix.Endpoint, otp_app: :marites
 
   @session_options [
     store: :cookie,
@@ -15,7 +15,7 @@ defmodule MaritesWeb.Endpoint do
 
   plug Plug.Static,
     at: "/",
-    from: :Marites,
+    from: :marites,
     encodings: [{"zstd", ".zst"}, {"br", ".br"}, {"gzip", ".gz"}],
     only: MaritesWeb.static_paths()
 
@@ -25,7 +25,7 @@ defmodule MaritesWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :Marites
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :marites
   end
 
   plug Plug.RequestId

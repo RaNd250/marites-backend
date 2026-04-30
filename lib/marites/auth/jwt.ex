@@ -39,7 +39,7 @@ defmodule Marites.Auth.JWT do
   end
 
   defp signer do
-    secret = Application.fetch_env!(:Marites, :jwt_secret)
+    secret = Application.fetch_env!(:marites, :jwt_secret)
     Joken.Signer.create("HS256", secret)
   end
 end

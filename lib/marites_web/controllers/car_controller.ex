@@ -50,7 +50,7 @@ defmodule MaritesWeb.CarController do
   end
 
   defp redirect_if_importing(conn, _) do
-    case Application.get_env(:Marites, :import_directory) do
+    case Application.get_env(:marites, :import_directory) do
       nil -> conn
       _ -> conn |> redirect(to: import_page(conn)) |> halt()
     end

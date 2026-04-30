@@ -98,24 +98,24 @@ defmodule Util do
   end
 end
 
-config :Marites,
+config :marites,
   default_geofence: System.get_env("DEFAULT_GEOFENCE")
 
 case System.get_env("DATABASE_SOCKET_DIR") do
   nil ->
-    config :Marites, Marites.Repo,
+    config :marites, Marites.Repo,
       username: Util.fetch_env!("DATABASE_USER", all: "postgres"),
       password: Util.fetch_env!("DATABASE_PASS", all: "postgres"),
       hostname: Util.fetch_env!("DATABASE_HOST", all: "localhost"),
       port: System.get_env("DATABASE_PORT", "5432")
 
   socket_dir ->
-    config :Marites, Marites.Repo,
+    config :marites, Marites.Repo,
       socket_dir: socket_dir,
       port: System.get_env("DATABASE_PORT", "5432")
 end
 
-config :Marites, Marites.Repo,
+config :marites, Marites.Repo,
   pool_size: System.get_env("DATABASE_POOL_SIZE", "10") |> String.to_integer(),
   timeout: System.get_env("DATABASE_TIMEOUT", "60000") |> String.to_integer(),
   database: Util.fetch_env!("DATABASE_NAME", dev: "Marites_dev", test: "Marites_test")
@@ -125,7 +125,7 @@ case System.get_env("DATABASE_SSL") do
     ca_cert_file =
       System.get_env("DATABASE_SSL_CA_CERT_FILE") || raise "DATABASE_SSL_CA_CERT_FILE must be set"
 
-    config :Marites, Marites.Repo,
+    config :marites, Marites.Repo,
       ssl: true,
       ssl_opts: [
         verify: :verify_peer,
@@ -133,7 +133,7 @@ case System.get_env("DATABASE_SSL") do
       ]
 
   "noverify" ->
-    config :Marites, Marites.Repo,
+    config :marites, Marites.Repo,
       ssl: true,
       ssl_opts: [
         server_name_indication:
@@ -145,14 +145,14 @@ case System.get_env("DATABASE_SSL") do
       ]
 
   _false ->
-    config :Marites, Marites.Repo, ssl: false
+    config :marites, Marites.Repo, ssl: false
 end
 
 if System.get_env("DATABASE_IPV6") == "true" do
-  config :Marites, Marites.Repo, socket_options: [:inet6]
+  config :marites, Marites.Repo, socket_options: [:inet6]
 end
 
-config :Marites, MaritesWeb.Endpoint,
+config :marites, MaritesWeb.Endpoint,
   http:
     Util.choose_http_binding_address()
     |> Keyword.merge(protocol_options: [max_header_value_length: 16384]),
@@ -166,7 +166,7 @@ config :Marites, MaritesWeb.Endpoint,
   check_origin: System.get_env("CHECK_ORIGIN", "false") |> Util.parse_check_origin!()
 
 if System.get_env("DISABLE_MQTT") != "true" or config_env() == :test do
-  config :Marites, :mqtt,
+  config :marites, :mqtt,
     host: Util.fetch_env!("MQTT_HOST", all: "localhost"),
     port: System.get_env("MQTT_PORT") |> Util.to_integer(),
     username: System.get_env("MQTT_USERNAME"),
@@ -178,16 +178,16 @@ if System.get_env("DISABLE_MQTT") != "true" or config_env() == :test do
 end
 
 if config_env() != :test do
-  config :Marites,
+  config :marites,
     import_directory: System.get_env("IMPORT_DIR", "import") |> Util.validate_import_dir()
 end
 
-config :Marites, :srtm_cache, System.get_env("SRTM_CACHE", ".srtm_cache")
+config :marites, :srtm_cache, System.get_env("SRTM_CACHE", ".srtm_cache")
 
-config :Marites, Marites.Vault, key: Util.get_env("ENCRYPTION_KEY", test: "secret")
+config :marites, Marites.Vault, key: Util.get_env("ENCRYPTION_KEY", test: "secret")
 
 config :tzdata, :data_dir, System.get_env("TZDATA_DIR", "/tmp")
 
-config :Marites, :jwt_secret,
+config :marites, :jwt_secret,
   System.get_env("JWT_SECRET") ||
     raise("JWT_SECRET env var is not set")

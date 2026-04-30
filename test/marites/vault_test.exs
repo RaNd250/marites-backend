@@ -19,9 +19,9 @@ defmodule Marites.VaultTest do
   setup context do
     keys = context[:encryption_key] || %{}
 
-    config = Application.get_env(:Marites, Marites.Vault)
-    Application.put_env(:Marites, Marites.Vault, Keyword.put(config, :key, keys[:config]))
-    on_exit(fn -> Application.put_env(:Marites, Marites.Vault, config) end)
+    config = Application.get_env(:marites, Marites.Vault)
+    Application.put_env(:marites, Marites.Vault, Keyword.put(config, :key, keys[:config]))
+    on_exit(fn -> Application.put_env(:marites, Marites.Vault, config) end)
 
     if encryption_key = keys[:tmp_dir] || keys[:import_dir] do
       tmp_dir = context[:tmp_dir] || raise "Add a :tmp_dir tag!"

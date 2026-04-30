@@ -2,7 +2,7 @@ defmodule MaritesWeb.Cldr do
   use Cldr,
     gettext: MaritesWeb.Gettext,
     locales: [],
-    otp_app: :Marites,
+    otp_app: :marites,
     providers: [],
     generate_docs: false,
     force_locale_download:

@@ -1,5 +1,5 @@
 defmodule Marites.Repo do
   use Ecto.Repo,
-    otp_app: :Marites,
+    otp_app: :marites,
     adapter: Ecto.Adapters.Postgres
 end
