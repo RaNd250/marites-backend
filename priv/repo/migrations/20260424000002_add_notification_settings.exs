@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddNotificationSettings do
+defmodule Marites.Repo.Migrations.AddNotificationSettings do
   use Ecto.Migration
 
   def change do

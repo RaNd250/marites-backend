@@ -1,10 +1,10 @@
-defmodule TeslaMate.Vehicles.Vehicle.StreamingTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.StreamingTest do
+  use Marites.VehicleCase, async: false
 
   import ExUnit.CaptureLog
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Vehicles.Vehicle
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Vehicles.Vehicle
   alias TeslaApi.Stream
 
   defp stream(name, data) do

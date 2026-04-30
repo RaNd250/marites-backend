@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DoNotRequireEfficiency do
+defmodule Marites.Repo.Migrations.DoNotRequireEfficiency do
   use Ecto.Migration
 
   def up do

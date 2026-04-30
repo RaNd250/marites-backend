@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.RenameUnitEnums do
+defmodule Marites.Repo.Migrations.RenameUnitEnums do
   use Ecto.Migration
 
   def change do

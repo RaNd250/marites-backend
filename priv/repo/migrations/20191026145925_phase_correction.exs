@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.PhaseCorrection do
+defmodule Marites.Repo.Migrations.PhaseCorrection do
   use Ecto.Migration
 
   def change do

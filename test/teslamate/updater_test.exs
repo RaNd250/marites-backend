@@ -1,7 +1,7 @@
-defmodule TeslaMate.UpdaterTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.UpdaterTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Updater
+  alias Marites.Updater
   import Mock
 
   defmodule HTTPMocck do
@@ -18,7 +18,7 @@ defmodule TeslaMate.UpdaterTest do
         {Tesla.Adapter.Finch, [],
          call: fn %Tesla.Env{} = env, _opts ->
            assert env.url ==
-                    "https://api.github.com/repos/teslamate-org/teslamate/releases/latest"
+                    "https://api.github.com/repos/Marites-org/Marites/releases/latest"
 
            resp
          end}

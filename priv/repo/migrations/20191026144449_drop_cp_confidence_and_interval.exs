@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DropCpConfidenceAndInterval do
+defmodule Marites.Repo.Migrations.DropCpConfidenceAndInterval do
   use Ecto.Migration
 
   def change do

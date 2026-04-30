@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddFkeyIndexes do
+defmodule Marites.Repo.Migrations.AddFkeyIndexes do
   use Ecto.Migration
 
   def change do

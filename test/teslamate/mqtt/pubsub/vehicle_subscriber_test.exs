@@ -1,9 +1,9 @@
-defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.Mqtt.PubSub.VehicleSubscriberTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Mqtt.PubSub.VehicleSubscriber
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Locations.GeoFence
+  alias Marites.Mqtt.PubSub.VehicleSubscriber
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Locations.GeoFence
 
   defp start_subscriber(name, car_id, namespace \\ nil) do
     publisher_name = :"mqtt_publisher_#{name}"
@@ -69,7 +69,7 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
 
     for {key, val} <- Map.from_struct(summary),
         not is_nil(val) and key not in [:since, :geofence] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       data = to_string(val)
       retain = key not in [:healthy]
       assert_receive {MqttPublisherMock, {:publish, ^topic, ^data, [retain: ^retain, qos: 1]}}
@@ -78,10 +78,10 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     iso_time = DateTime.to_iso8601(summary.since)
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/since", ^iso_time, [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/since", ^iso_time, [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/geofence", "Home", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/geofence", "Home", [retain: true, qos: 1]}}
 
     for key <- [
           :charge_energy_added,
@@ -92,12 +92,12 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
           :scheduled_charging_start_time,
           :time_to_full_charge
         ] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "", [retain: true, qos: 1]}}
     end
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/location", data, [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/location", data, [retain: true, qos: 1]}}
 
     assert Jason.decode!(data) == %{
              "latitude" => 37.889602,
@@ -110,7 +110,7 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
           :active_route_longitude,
           :active_route_latitude
         ] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "nil", [retain: true, qos: 1]}}
     end
 
@@ -118,15 +118,15 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     for key <- [
           :active_route
         ] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, data, [retain: true, qos: 1]}}
       assert Jason.decode!(data) == %{"error" => "No active route available"}
     end
 
     # The healthy topic is published with retain: true to clean up previously retained messages
-    # See: https://github.com/teslamate-org/teslamate/pull/4817
+    # See: https://github.com/Marites-org/Marites/pull/4817
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/healthy", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/healthy", "", [retain: true, qos: 1]}}
 
     refute_receive _
   end
@@ -157,13 +157,13 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     send(pid, summary)
 
     # The healthy topic is published with retain: true to clean up previously retained messages
-    # See: https://github.com/teslamate-org/teslamate/pull/4817
+    # See: https://github.com/Marites-org/Marites/pull/4817
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/healthy", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/healthy", "", [retain: true, qos: 1]}}
 
     for {key, val} <- Map.from_struct(summary),
         not is_nil(val) and key != :scheduled_charging_start_time do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       data = to_string(val)
       retain = key not in [:healthy]
       assert_receive {MqttPublisherMock, {:publish, ^topic, ^data, [retain: ^retain, qos: 1]}}
@@ -173,18 +173,18 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     iso_time = DateTime.to_iso8601(summary.scheduled_charging_start_time)
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/scheduled_charging_start_time", ^iso_time,
+                    {:publish, "Marites/cars/0/scheduled_charging_start_time", ^iso_time,
                      [retain: true, qos: 1]}}
 
     # Always published
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/shift_state", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/shift_state", "", [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/geofence", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/geofence", "", [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/trim_badging", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/cars/0/trim_badging", "", [retain: true, qos: 1]}}
 
     # Published as nil
     for key <- [
@@ -192,7 +192,7 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
           :active_route_longitude,
           :active_route_latitude
         ] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "nil", [retain: true, qos: 1]}}
     end
 
@@ -200,15 +200,15 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     for key <- [
           :active_route
         ] do
-      topic = "teslamate/cars/0/#{key}"
+      topic = "Marites/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, data, [retain: true, qos: 1]}}
       assert Jason.decode!(data) == %{"error" => "No active route available"}
     end
 
     # The healthy topic is always published without retain to prevent stale status
-    # See: https://github.com/teslamate-org/teslamate/pull/4817
+    # See: https://github.com/Marites-org/Marites/pull/4817
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/cars/0/healthy", "", [retain: false, qos: 1]}}
+                    {:publish, "Marites/cars/0/healthy", "", [retain: false, qos: 1]}}
 
     refute_receive _
   end
@@ -223,18 +223,18 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
 
     # Send geofence
     send(pid, %Summary{geofence: geofence, version: "1"})
-    assert_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/geofence", "Home", _}}
-    assert_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/version", "1", _}}
+    assert_receive {MqttPublisherMock, {:publish, "Marites/cars/0/geofence", "Home", _}}
+    assert_receive {MqttPublisherMock, {:publish, "Marites/cars/0/version", "1", _}}
 
     # Send geofence again and expect no message
     send(pid, %Summary{geofence: geofence, version: "2"})
-    refute_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/geofence", _, _}}
-    assert_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/version", "2", _}}
+    refute_receive {MqttPublisherMock, {:publish, "Marites/cars/0/geofence", _, _}}
+    assert_receive {MqttPublisherMock, {:publish, "Marites/cars/0/version", "2", _}}
 
     # Send another geofence
     send(pid, %Summary{geofence: other_geofence, version: "3"})
-    assert_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/geofence", "Work", _}}
-    assert_receive {MqttPublisherMock, {:publish, "teslamate/cars/0/version", "3", _}}
+    assert_receive {MqttPublisherMock, {:publish, "Marites/cars/0/geofence", "Work", _}}
+    assert_receive {MqttPublisherMock, {:publish, "Marites/cars/0/version", "3", _}}
   end
 
   test "allows namespaces", %{test: name} do
@@ -250,16 +250,16 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     send(pid, summary)
 
     # The healthy topic is published with retain: true to clean up previously retained messages
-    # See: https://github.com/teslamate-org/teslamate/pull/4817
+    # See: https://github.com/Marites-org/Marites/pull/4817
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/account_0/cars/0/healthy", "", [retain: true, qos: 1]}}
+                    {:publish, "Marites/account_0/cars/0/healthy", "", [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/account_0/cars/0/display_name", "Foo",
+                    {:publish, "Marites/account_0/cars/0/display_name", "Foo",
                      [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/account_0/cars/0/state", "online",
+                    {:publish, "Marites/account_0/cars/0/state", "online",
                      [retain: true, qos: 1]}}
 
     # Always published
@@ -275,7 +275,7 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
           :geofence,
           :trim_badging
         ] do
-      topic = "teslamate/account_0/cars/0/#{key}"
+      topic = "Marites/account_0/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "", [retain: true, qos: 1]}}
     end
 
@@ -285,7 +285,7 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
           :active_route_longitude,
           :active_route_latitude
         ] do
-      topic = "teslamate/account_0/cars/0/#{key}"
+      topic = "Marites/account_0/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, "nil", [retain: true, qos: 1]}}
     end
 
@@ -293,15 +293,15 @@ defmodule TeslaMate.Mqtt.PubSub.VehicleSubscriberTest do
     for key <- [
           :active_route
         ] do
-      topic = "teslamate/account_0/cars/0/#{key}"
+      topic = "Marites/account_0/cars/0/#{key}"
       assert_receive {MqttPublisherMock, {:publish, ^topic, data, [retain: true, qos: 1]}}
       assert Jason.decode!(data) == %{"error" => "No active route available"}
     end
 
     # The healthy topic is always published without retain to prevent stale status
-    # See: https://github.com/teslamate-org/teslamate/pull/4817
+    # See: https://github.com/Marites-org/Marites/pull/4817
     assert_receive {MqttPublisherMock,
-                    {:publish, "teslamate/account_0/cars/0/healthy", "", [retain: false, qos: 1]}}
+                    {:publish, "Marites/account_0/cars/0/healthy", "", [retain: false, qos: 1]}}
 
     refute_receive _
   end

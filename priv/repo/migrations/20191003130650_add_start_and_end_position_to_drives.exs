@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddStartAndEndPositionToDrives do
+defmodule Marites.Repo.Migrations.AddStartAndEndPositionToDrives do
   use Ecto.Migration
 
   def change do

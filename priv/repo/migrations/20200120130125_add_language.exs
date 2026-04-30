@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddLanguage do
+defmodule Marites.Repo.Migrations.AddLanguage do
   use Ecto.Migration
 
   def change do

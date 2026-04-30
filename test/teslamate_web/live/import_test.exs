@@ -1,7 +1,7 @@
-defmodule TeslaMateWeb.ImportLiveTest do
-  use TeslaMateWeb.ConnCase
+defmodule MaritesWeb.ImportLiveTest do
+  use MaritesWeb.ConnCase
 
-  alias TeslaMate.{Import, Repair}
+  alias Marites.{Import, Repair}
 
   test "imports files", %{conn: conn} do
     {:ok, _} = start_supervised({Import, directory: "./test/fixtures/import/01_complete"})

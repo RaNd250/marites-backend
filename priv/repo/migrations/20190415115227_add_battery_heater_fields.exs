@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddBatteryHeaterFields do
+defmodule Marites.Repo.Migrations.AddBatteryHeaterFields do
   use Ecto.Migration
 
   def change do

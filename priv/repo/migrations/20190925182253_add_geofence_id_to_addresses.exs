@@ -63,11 +63,11 @@ defmodule Old do
   end
 end
 
-defmodule TeslaMate.Repo.Migrations.AddGeofenceIdToAddresses do
+defmodule Marites.Repo.Migrations.AddGeofenceIdToAddresses do
   use Ecto.Migration
 
   import Ecto.Query
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   def up do
     alias New.{GeoFence, Address}
@@ -113,7 +113,7 @@ defmodule TeslaMate.Repo.Migrations.AddGeofenceIdToAddresses do
   end
 
   def down do
-    alias TeslaMate.Locations.Geocoder
+    alias Marites.Locations.Geocoder
     alias Old.{GeoFence, Address}
 
     {:ok, _pid} = Application.ensure_all_started(:mojito)

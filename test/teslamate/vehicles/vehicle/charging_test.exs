@@ -1,8 +1,8 @@
-defmodule TeslaMate.Vehicles.Vehicle.ChargingTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.ChargingTest do
+  use Marites.VehicleCase, async: false
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Log.ChargingProcess
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Log.ChargingProcess
 
   import ExUnit.CaptureLog
 

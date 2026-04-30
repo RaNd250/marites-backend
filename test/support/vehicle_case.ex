@@ -1,4 +1,4 @@
-defmodule TeslaMate.VehicleCase do
+defmodule Marites.VehicleCase do
   use ExUnit.CaseTemplate
 
   using do
@@ -6,12 +6,12 @@ defmodule TeslaMate.VehicleCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import TeslaMate.VehicleCase
+      import Marites.VehicleCase
     end
   end
 
   setup tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(TeslaMate.Repo, shared: not tags[:async])
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Marites.Repo, shared: not tags[:async])
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
     :ok
   rescue
@@ -22,9 +22,9 @@ defmodule TeslaMate.VehicleCase do
       end
   end
 
-  alias TeslaMate.Vehicles.Vehicle
-  alias TeslaMate.Settings.CarSettings
-  alias TeslaMate.Log.{Car, Update}
+  alias Marites.Vehicles.Vehicle
+  alias Marites.Settings.CarSettings
+  alias Marites.Log.{Car, Update}
   alias TeslaApi.Vehicle.State
 
   def start_vehicle(name, events, opts \\ []) when length(events) > 0 do

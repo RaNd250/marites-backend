@@ -46,10 +46,10 @@ end
 
 # Migration
 
-defmodule TeslaMate.Repo.Migrations.SetStartAndEndRatedRangeKm do
+defmodule Marites.Repo.Migrations.SetStartAndEndRatedRangeKm do
   use Ecto.Migration
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
   import Ecto.Query
 
   defp add_rated_range(%Drive{id: drive_id} = drive) do

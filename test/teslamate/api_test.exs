@@ -1,8 +1,8 @@
-defmodule TeslaMate.ApiTest do
-  use TeslaMate.DataCase
+defmodule Marites.ApiTest do
+  use Marites.DataCase
 
-  alias TeslaMate.Api
-  alias TeslaMate.Auth.Tokens
+  alias Marites.Api
+  alias Marites.Auth.Tokens
 
   import Mock
 
@@ -66,7 +66,7 @@ defmodule TeslaMate.ApiTest do
   @valid_tokens %Tokens{access: "$access", refresh: "$refresh"}
 
   setup do
-    start_supervised!(TeslaMate.Vault)
+    start_supervised!(Marites.Vault)
     :ok
   end
 

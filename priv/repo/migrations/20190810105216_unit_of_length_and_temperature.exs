@@ -1,7 +1,7 @@
-defmodule TeslaMate.Repo.Migrations.UnitOfLengthAndTemperature do
+defmodule Marites.Repo.Migrations.UnitOfLengthAndTemperature do
   use Ecto.Migration
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   import Ecto.Query
 

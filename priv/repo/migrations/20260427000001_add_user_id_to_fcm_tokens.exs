@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddUserIdToFcmTokens do
+defmodule Marites.Repo.Migrations.AddUserIdToFcmTokens do
   use Ecto.Migration
 
   def change do

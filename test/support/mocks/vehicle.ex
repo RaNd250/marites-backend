@@ -1,5 +1,5 @@
 defmodule VehicleMock do
-  alias TeslaMate.Vehicles.Vehicle
+  alias Marites.Vehicles.Vehicle
 
   def child_spec(arg) do
     arg = Keyword.put(arg, :deps_api, {ApiMock, :api_vehicle})

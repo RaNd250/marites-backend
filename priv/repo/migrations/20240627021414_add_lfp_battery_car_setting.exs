@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddLFPBatteryCarSetting do
+defmodule Marites.Repo.Migrations.AddLFPBatteryCarSetting do
   use Ecto.Migration
 
   def change do

@@ -1,10 +1,10 @@
-defmodule TeslaMate.AuthTest do
-  use TeslaMate.DataCase
+defmodule Marites.AuthTest do
+  use Marites.DataCase
 
-  alias TeslaMate.Auth
+  alias Marites.Auth
 
   setup do
-    start_supervised!(TeslaMate.Vault)
+    start_supervised!(Marites.Vault)
     :ok
   end
 

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.UseRatedAsDefaultPreferredRange do
+defmodule Marites.Repo.Migrations.UseRatedAsDefaultPreferredRange do
   use Ecto.Migration
 
   def up do

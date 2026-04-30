@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.LocationBasedChargeCostIncreaseScale do
+defmodule Marites.Repo.Migrations.LocationBasedChargeCostIncreaseScale do
   use Ecto.Migration
 
   def up do

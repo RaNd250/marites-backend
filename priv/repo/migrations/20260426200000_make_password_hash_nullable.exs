@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.MakePasswordHashNullable do
+defmodule Marites.Repo.Migrations.MakePasswordHashNullable do
   use Ecto.Migration
 
   def change do

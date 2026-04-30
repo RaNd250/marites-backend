@@ -1,9 +1,9 @@
-defmodule TeslaMate.VehiclesTest do
-  use TeslaMate.VehicleCase
-  use TeslaMate.DataCase
+defmodule Marites.VehiclesTest do
+  use Marites.VehicleCase
+  use Marites.DataCase
 
-  alias TeslaMate.Vehicles.Vehicle
-  alias TeslaMate.Vehicles
+  alias Marites.Vehicles.Vehicle
+  alias Marites.Vehicles
 
   @tag :capture_log
   test "kill/0" do
@@ -48,9 +48,9 @@ defmodule TeslaMate.VehiclesTest do
   end
 
   describe "uses fallback vehicles" do
-    alias TeslaMate.Settings.CarSettings
-    alias TeslaMate.{Log, Api}
-    alias TeslaMate.Log.Car
+    alias Marites.Settings.CarSettings
+    alias Marites.{Log, Api}
+    alias Marites.Log.Car
 
     import Mock
 
@@ -94,10 +94,10 @@ defmodule TeslaMate.VehiclesTest do
   end
 
   describe "car settings" do
-    alias TeslaMate.Settings.CarSettings
+    alias Marites.Settings.CarSettings
     alias TeslaApi.Vehicle.State.VehicleConfig
-    alias TeslaMate.{Log, Repo}
-    alias TeslaMate.Vehicles.Vehicle.Summary
+    alias Marites.{Log, Repo}
+    alias Marites.Vehicles.Vehicle.Summary
 
     import Ecto.Query
 

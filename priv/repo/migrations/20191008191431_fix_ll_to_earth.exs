@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.FixLlToEarth do
+defmodule Marites.Repo.Migrations.FixLlToEarth do
   use Ecto.Migration
 
   def up do

@@ -1,7 +1,7 @@
-defmodule TeslaMate.Locations.GeocoderTest do
+defmodule Marites.Locations.GeocoderTest do
   use ExUnit.Case, async: false
 
-  alias TeslaMate.Locations.Geocoder
+  alias Marites.Locations.Geocoder
 
   import Mock
 

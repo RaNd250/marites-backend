@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddTirePressures do
+defmodule Marites.Repo.Migrations.AddTirePressures do
   use Ecto.Migration
 
   def change do

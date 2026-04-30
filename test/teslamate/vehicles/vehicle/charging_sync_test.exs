@@ -1,10 +1,10 @@
-defmodule TeslaMate.Vehicles.Vehicle.ChargingSyncTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.ChargingSyncTest do
+  use Marites.VehicleCase, async: false
 
   import ExUnit.CaptureLog
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Log
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Log
 
   @log_opts format: "[$level] $message\n",
             colors: [enabled: false]

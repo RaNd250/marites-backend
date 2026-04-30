@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CostByMinute do
+defmodule Marites.Repo.Migrations.CostByMinute do
   use Ecto.Migration
 
   def up do

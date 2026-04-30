@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddNotNullConstraintToDisplayPriority do
+defmodule Marites.Repo.Migrations.AddNotNullConstraintToDisplayPriority do
   use Ecto.Migration
 
   def up do

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreatePositions do
+defmodule Marites.Repo.Migrations.CreatePositions do
   use Ecto.Migration
 
   def change do

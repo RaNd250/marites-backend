@@ -1,8 +1,8 @@
-defmodule TeslaMate.Vehicles.Vehicle.DrivingTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.DrivingTest do
+  use Marites.VehicleCase, async: false
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
-  alias TeslaMate.Log.Drive
+  alias Marites.Vehicles.Vehicle.Summary
+  alias Marites.Log.Drive
 
   test "logs a full drive", %{test: name} do
     now = DateTime.utc_now()
@@ -528,7 +528,7 @@ defmodule TeslaMate.Vehicles.Vehicle.DrivingTest do
   end
 
   describe "geofencing" do
-    alias TeslaMate.Locations.GeoFence
+    alias Marites.Locations.GeoFence
 
     test "changes geofence when enterling or leaving", %{test: name} do
       ts = DateTime.utc_now() |> DateTime.to_unix(:millisecond)

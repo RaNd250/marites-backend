@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddThemeModeToSettings do
+defmodule Marites.Repo.Migrations.AddThemeModeToSettings do
   use Ecto.Migration
 
   def change do

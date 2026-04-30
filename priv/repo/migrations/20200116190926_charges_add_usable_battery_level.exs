@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.ChargesAddUsableBatteryLevel do
+defmodule Marites.Repo.Migrations.ChargesAddUsableBatteryLevel do
   use Ecto.Migration
 
   def change do

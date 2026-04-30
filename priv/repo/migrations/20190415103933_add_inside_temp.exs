@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddInsideTemp do
+defmodule Marites.Repo.Migrations.AddInsideTemp do
   use Ecto.Migration
 
   def change do

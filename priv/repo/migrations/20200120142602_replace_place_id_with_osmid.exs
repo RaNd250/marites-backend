@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.ReplacePlaceIdWithOsmid do
+defmodule Marites.Repo.Migrations.ReplacePlaceIdWithOsmid do
   use Ecto.Migration
 
   def change do

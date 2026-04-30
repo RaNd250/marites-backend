@@ -1,8 +1,8 @@
-defmodule TeslaMate.LogChargingTest do
-  use TeslaMate.DataCase, async: true
+defmodule Marites.LogChargingTest do
+  use Marites.DataCase, async: true
 
-  alias TeslaMate.Log.{Car, ChargingProcess, Charge, Position}
-  alias TeslaMate.{Log, Repo, Locations}
+  alias Marites.Log.{Car, ChargingProcess, Charge, Position}
+  alias Marites.{Log, Repo, Locations}
 
   @valid_attrs %{
     date: DateTime.utc_now(),
@@ -347,8 +347,8 @@ defmodule TeslaMate.LogChargingTest do
   end
 
   describe "geo-fencing" do
-    alias TeslaMate.Locations.GeoFence
-    alias TeslaMate.Locations
+    alias Marites.Locations.GeoFence
+    alias Marites.Locations
 
     def geofence_fixture(attrs \\ %{}) do
       {:ok, geofence} =
@@ -571,7 +571,7 @@ defmodule TeslaMate.LogChargingTest do
     end
 
     test "sets charge cost to zero if free supercharging is enabled" do
-      alias TeslaMate.Settings
+      alias Marites.Settings
 
       car = car_fixture()
 
@@ -606,7 +606,7 @@ defmodule TeslaMate.LogChargingTest do
 
   describe "efficiency factor" do
     test "recalculates the efficiency factor after completing a charging session" do
-      alias TeslaMate.Settings
+      alias Marites.Settings
 
       data = [
         {293.9, 293.9, 0.0, 59, 59, 0},

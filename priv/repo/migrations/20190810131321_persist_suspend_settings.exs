@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.PersistSuspendSettings do
+defmodule Marites.Repo.Migrations.PersistSuspendSettings do
   use Ecto.Migration
 
   def change do

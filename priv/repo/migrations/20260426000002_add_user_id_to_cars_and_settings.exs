@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddUserIdToCarsAndSettings do
+defmodule Marites.Repo.Migrations.AddUserIdToCarsAndSettings do
   use Ecto.Migration
 
   def change do

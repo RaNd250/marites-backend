@@ -1,9 +1,9 @@
-defmodule TeslaMate.Repo.Migrations.IncreaseSuspendMin do
+defmodule Marites.Repo.Migrations.IncreaseSuspendMin do
   use Ecto.Migration
 
   import Ecto.Query
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   def up do
     alter table(:settings) do

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.RemoveSleepModeRequirements do
+defmodule Marites.Repo.Migrations.RemoveSleepModeRequirements do
   use Ecto.Migration
 
   def change do

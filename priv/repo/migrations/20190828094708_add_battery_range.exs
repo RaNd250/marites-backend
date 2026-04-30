@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddBatteryRange do
+defmodule Marites.Repo.Migrations.AddBatteryRange do
   use Ecto.Migration
 
   def change do

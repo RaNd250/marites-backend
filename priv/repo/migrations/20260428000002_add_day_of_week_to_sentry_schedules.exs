@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddDayOfWeekToSentrySchedules do
+defmodule Marites.Repo.Migrations.AddDayOfWeekToSentrySchedules do
   use Ecto.Migration
 
   def up do

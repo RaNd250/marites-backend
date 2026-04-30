@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.RecreateGeoExtensions do
+defmodule Marites.Repo.Migrations.RecreateGeoExtensions do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.DropUnusedIndexes do
+defmodule Marites.Repo.Migrations.DropUnusedIndexes do
   use Ecto.Migration
 
   def change do

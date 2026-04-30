@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateAlarmResponseSettings do
+defmodule Marites.Repo.Migrations.CreateAlarmResponseSettings do
   use Ecto.Migration
 
   def change do

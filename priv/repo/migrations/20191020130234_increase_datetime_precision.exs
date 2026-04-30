@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.IncreaseDatetimePrecision do
+defmodule Marites.Repo.Migrations.IncreaseDatetimePrecision do
   use Ecto.Migration
 
   def change do

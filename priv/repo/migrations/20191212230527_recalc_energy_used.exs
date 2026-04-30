@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.RecalcEnergyUsed.CustomExpressions do
+defmodule Marites.Repo.Migrations.RecalcEnergyUsed.CustomExpressions do
   import Ecto.Query, warn: false
 
   defmacro c_if(condition, do: do_clause, else: else_clause) do
@@ -35,7 +35,7 @@ defmodule TeslaMate.Repo.Migrations.RecalcEnergyUsed.CustomExpressions do
   end
 end
 
-defmodule TeslaMate.Repo.Migrations.RecalcEnergyUsed do
+defmodule Marites.Repo.Migrations.RecalcEnergyUsed do
   use Ecto.Migration
 
   require Logger
@@ -66,7 +66,7 @@ defmodule TeslaMate.Repo.Migrations.RecalcEnergyUsed do
     use Ecto.Schema
     import Ecto.Changeset
 
-    alias TeslaMate.Log.Charge
+    alias Marites.Log.Charge
 
     schema "charging_processes" do
       field(:start_date, :utc_datetime_usec)
@@ -111,7 +111,7 @@ defmodule TeslaMate.Repo.Migrations.RecalcEnergyUsed do
   import Ecto.Query
   import __MODULE__.CustomExpressions
 
-  alias TeslaMate.Repo
+  alias Marites.Repo
 
   def up do
     ChargingProcess

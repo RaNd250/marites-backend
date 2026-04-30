@@ -1,8 +1,8 @@
-defmodule TeslaMate.Terrain.UpdatePositionsTest do
-  use TeslaMate.DataCase
+defmodule Marites.Terrain.UpdatePositionsTest do
+  use Marites.DataCase
 
-  alias TeslaMate.{Log, Terrain}
-  alias TeslaMate.Log.Position
+  alias Marites.{Log, Terrain}
+  alias Marites.Log.Position
 
   defp start_terrain(name, responses) do
     srtm_name = :"srtm_#{name}"
@@ -54,9 +54,9 @@ defmodule TeslaMate.Terrain.UpdatePositionsTest do
 
     for {position, i} <- Enum.with_index(positions) do
       if i in [50, 150] do
-        assert %Position{elevation: 420} = TeslaMate.Repo.get(Position, position.id)
+        assert %Position{elevation: 420} = Marites.Repo.get(Position, position.id)
       else
-        assert %Position{elevation: 42} = TeslaMate.Repo.get(Position, position.id)
+        assert %Position{elevation: 42} = Marites.Repo.get(Position, position.id)
       end
     end
 
@@ -110,12 +110,12 @@ defmodule TeslaMate.Terrain.UpdatePositionsTest do
 
     Process.sleep(300)
 
-    assert %Position{elevation: 42} = TeslaMate.Repo.get(Position, p0.id)
-    assert %Position{elevation: nil} = TeslaMate.Repo.get(Position, p1.id)
-    assert %Position{elevation: nil} = TeslaMate.Repo.get(Position, p2.id)
-    assert %Position{elevation: nil} = TeslaMate.Repo.get(Position, p3.id)
-    assert %Position{elevation: nil} = TeslaMate.Repo.get(Position, p4.id)
-    assert %Position{elevation: nil} = TeslaMate.Repo.get(Position, p5.id)
+    assert %Position{elevation: 42} = Marites.Repo.get(Position, p0.id)
+    assert %Position{elevation: nil} = Marites.Repo.get(Position, p1.id)
+    assert %Position{elevation: nil} = Marites.Repo.get(Position, p2.id)
+    assert %Position{elevation: nil} = Marites.Repo.get(Position, p3.id)
+    assert %Position{elevation: nil} = Marites.Repo.get(Position, p4.id)
+    assert %Position{elevation: nil} = Marites.Repo.get(Position, p5.id)
 
     refute_receive _
   end

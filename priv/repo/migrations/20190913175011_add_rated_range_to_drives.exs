@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.AddRatedRangeToDrives do
+defmodule Marites.Repo.Migrations.AddRatedRangeToDrives do
   use Ecto.Migration
 
   def change do

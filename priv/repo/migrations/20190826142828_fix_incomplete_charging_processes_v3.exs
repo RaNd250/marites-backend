@@ -1,8 +1,8 @@
-defmodule TeslaMate.Repo.Migrations.FixIncompleteChargingProcessesV3 do
+defmodule Marites.Repo.Migrations.FixIncompleteChargingProcessesV3 do
   use Ecto.Migration
 
-  # alias TeslaMate.Log.{ChargingProcess, Charge}
-  # alias TeslaMate.Repo
+  # alias Marites.Log.{ChargingProcess, Charge}
+  # alias Marites.Repo
 
   # import Ecto.Query
 
@@ -14,7 +14,7 @@ defmodule TeslaMate.Repo.Migrations.FixIncompleteChargingProcessesV3 do
     #   |> Repo.all()
 
     # for id <- incomplete_charging_processes do
-    #   {:ok, cproc} = TeslaMate.Log.complete_charging_process(id)
+    #   {:ok, cproc} = Marites.Log.complete_charging_process(id)
 
     #   %{end_date: end_date} =
     #     Charge

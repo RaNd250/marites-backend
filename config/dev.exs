@@ -1,6 +1,6 @@
 import Config
 
-config :teslamate, TeslaMateWeb.Endpoint,
+config :Marites, MaritesWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -15,8 +15,8 @@ config :teslamate, TeslaMateWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/teslamate_web/(live|views)/.*(ex)$",
-      ~r"lib/teslamate_web/templates/.*(eex)$",
+      ~r"lib/Marites_web/(live|views)/.*(ex)$",
+      ~r"lib/Marites_web/templates/.*(eex)$",
       ~r"grafana/dashboards/.*(json)$"
     ]
   ]
@@ -26,5 +26,5 @@ config :logger, :console, format: "$metadata[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
-config :teslamate, TeslaMate.Repo, show_sensitive_data_on_connection_error: true
-config :teslamate, disable_token_refresh: true
+config :Marites, Marites.Repo, show_sensitive_data_on_connection_error: true
+config :Marites, disable_token_refresh: true

@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateAuthTables do
+defmodule Marites.Repo.Migrations.CreateAuthTables do
   use Ecto.Migration
 
   def change do

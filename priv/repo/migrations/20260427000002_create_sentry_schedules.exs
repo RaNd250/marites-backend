@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CreateSentrySchedules do
+defmodule Marites.Repo.Migrations.CreateSentrySchedules do
   use Ecto.Migration
 
   def change do

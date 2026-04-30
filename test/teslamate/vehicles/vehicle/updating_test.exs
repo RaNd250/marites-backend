@@ -1,7 +1,7 @@
-defmodule TeslaMate.Vehicles.Vehicle.UpdatingTest do
-  use TeslaMate.VehicleCase, async: false
+defmodule Marites.Vehicles.Vehicle.UpdatingTest do
+  use Marites.VehicleCase, async: false
 
-  alias TeslaMate.Vehicles.Vehicle.Summary
+  alias Marites.Vehicles.Vehicle.Summary
 
   @tag :capture_log
   test "logs an update cycle", %{test: name} do

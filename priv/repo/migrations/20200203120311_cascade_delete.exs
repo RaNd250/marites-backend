@@ -1,4 +1,4 @@
-defmodule TeslaMate.Repo.Migrations.CascadeDelete do
+defmodule Marites.Repo.Migrations.CascadeDelete do
   use Ecto.Migration
 
   def up do
