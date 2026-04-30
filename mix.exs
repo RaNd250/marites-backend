@@ -78,7 +78,8 @@ defmodule Marites.MixProject do
       {:joken, "~> 2.6"},
       {:bcrypt_elixir, "~> 3.0"},
       {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
-      {:credo, "~> 1.7.1", only: [:dev], runtime: false}
+      {:credo, "~> 1.7.1", only: [:dev], runtime: false},
+      {:protobuf, "~> 0.12"}
     ]
   end
 
