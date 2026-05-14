@@ -1,4 +1,5 @@
 defmodule TeslaApi.Vehicle do
+  require Logger
   alias __MODULE__.State.{Charge, Climate, Drive, VehicleConfig, VehicleState}
   alias TeslaApi.{Auth, Error}
 
@@ -66,15 +67,16 @@ defmodule TeslaApi.Vehicle do
     |> handle_response(transform: &result/1)
   end
 
-  def command(%Auth{} = auth, vehicle_id, command_name, body \\ %{}) do
+  def command(%Auth{} = auth, vin, command_name, body \\ %{}) do
     endpoint_url =
-      case Auth.region(auth) do
-        :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
-        _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
-      end
+      System.get_env("TESLA_CMD_HOST") ||
+        case Auth.region(auth) do
+          :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
+          _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+        end
 
     TeslaApi.post(
-      endpoint_url <> "/api/1/vehicles/#{vehicle_id}/command/#{command_name}",
+      endpoint_url <> "/api/1/vehicles/#{vin}/command/#{command_name}",
       body,
       opts: [access_token: auth.token]
     )
@@ -101,11 +103,26 @@ defmodule TeslaApi.Vehicle do
   defp handle_command_response({:ok, %Tesla.Env{status: 401} = env}),
     do: {:error, %Error{reason: :unauthorized, env: env}}
 
-  defp handle_command_response({:ok, %Tesla.Env{status: 403, body: %{"error" => msg}}}),
-    do: {:error, {:command_unauthorized, msg}}
+  defp handle_command_response({:ok, %Tesla.Env{status: 403, body: %{"error" => "account disabled: " <> _ = msg}}}) do
+    Logger.warning("Tesla command 403 account_disabled: #{msg}")
+    {:error, :account_disabled}
+  end
 
-  defp handle_command_response({:ok, %Tesla.Env{status: 403}}),
-    do: {:error, {:command_unauthorized, "forbidden"}}
+  defp handle_command_response({:ok, %Tesla.Env{status: 403, body: %{"error" => msg}}}) do
+    Logger.warning("Tesla command 403: #{msg}")
+    # "key" in the message = virtual key not paired (Fleet API)
+    # anything else = missing vehicle_cmds OAuth scope (legacy API)
+    if String.contains?(msg, "key") do
+      {:error, {:command_unauthorized, msg}}
+    else
+      {:error, :missing_scope}
+    end
+  end
+
+  defp handle_command_response({:ok, %Tesla.Env{status: 403}}) do
+    Logger.warning("Tesla command 403: (no body)")
+    {:error, :missing_scope}
+  end
 
   defp handle_command_response({:ok, %Tesla.Env{status: 400, body: body}}),
     do: {:error, {:bad_request, body}}
@@ -180,6 +197,9 @@ defmodule TeslaApi.Vehicle do
 
       %Tesla.Env{status: status, body: %{"error" => msg}} = env when status >= 500 ->
         {:error, %Error{reason: :unknown, message: msg, env: env}}
+
+      %Tesla.Env{status: 403, body: %{"error" => "account disabled: " <> _}} = env ->
+        {:error, %Error{reason: :account_disabled, env: env}}
 
       %Tesla.Env{body: body} = env ->
         {:error, %Error{reason: :unknown, message: inspect(body), env: env}}

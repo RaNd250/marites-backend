@@ -416,6 +416,12 @@ defmodule Marites.Vehicles.Vehicle do
         {:keep_state, data,
          [broadcast_fetch(false), broadcast_summary(), schedule_fetch(retry_after, data)]}
 
+      {:error, :account_disabled} ->
+        Logger.warning("Account disabled / EXCEEDED_LIMIT — suspending polling for 1 hour",
+          car_id: data.car.id)
+        {:keep_state, data,
+         [broadcast_fetch(false), broadcast_summary(), schedule_fetch(60, :minutes, data)]}
+
       {:error, reason} ->
         Logger.error("Error / #{inspect(reason)}", car_id: data.car.id)
 
@@ -1774,8 +1780,12 @@ defmodule Marites.Vehicles.Vehicle do
 
   defp schedule_fetch(n, unit, %Data{last_fleet_event_at: ts}) when not is_nil(ts) do
     age = DateTime.diff(DateTime.utc_now(), ts, :second)
-    effective_n = if age < 300, do: max(n, online_interval()), else: n
-    {:state_timeout, fetch_timeout(effective_n, unit), :fetch}
+    if age < 300 do
+      # Fleet telemetry is active — cap REST polling at 15 min
+      {:state_timeout, fetch_timeout(15, :minutes), :fetch}
+    else
+      {:state_timeout, fetch_timeout(n, unit), :fetch}
+    end
   end
 
   defp schedule_fetch(n, unit, _data), do: {:state_timeout, fetch_timeout(n, unit), :fetch}
