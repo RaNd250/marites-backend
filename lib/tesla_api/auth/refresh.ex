@@ -15,7 +15,7 @@ defmodule TeslaApi.Auth.Refresh do
 
     data = %{
       grant_type: "refresh_token",
-      scope: "openid email offline_access",
+      scope: "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds vehicle_location",
       client_id: System.get_env("TESLA_AUTH_CLIENT_ID", @web_client_id),
       refresh_token: auth.refresh_token
     }
