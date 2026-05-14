@@ -15,15 +15,15 @@ defmodule MaritesWeb.API.V1.CommandsController do
     case Repo.one(
            from c in Car,
              where: c.id == ^car_id and c.user_id == ^user_id,
-             select: c.eid
+             select: c.vin
          ) do
       nil ->
         conn |> put_status(404) |> json(%{error: "car not found"})
 
-      eid ->
+      vin ->
         {tesla_cmd, body} = map_command(command)
 
-        case Api.run_command(eid, tesla_cmd, body) do
+        case Api.run_command(Marites.Api, vin, tesla_cmd, body) do
           {:ok, _} ->
             json(conn, %{ok: true})
 
@@ -45,10 +45,22 @@ defmodule MaritesWeb.API.V1.CommandsController do
             |> put_status(503)
             |> json(%{error: "Tesla authentication expired — reconnecting, please try again in a moment"})
 
-          {:error, {:command_unauthorized, _}} ->
+          {:error, :account_disabled} ->
+            conn
+            |> put_status(503)
+            |> json(%{error: "commands_unavailable", message: "Vehicle commands are not yet enabled for this app. Please check back soon."})
+
+          {:error, :missing_scope} ->
             conn
             |> put_status(403)
-            |> json(%{error: "Commands not authorized — add Marit.es as a key to your vehicle in the Tesla app, then re-sign-in at the web interface"})
+            |> json(%{error: "missing_scope"})
+
+          {:error, {:command_unauthorized, _}} ->
+            pairing_url = "https://tesla.com/_ak/app.marit.es"
+
+            conn
+            |> put_status(403)
+            |> json(%{error: "command_unauthorized", pairing_url: pairing_url})
 
           {:error, reason} ->
             conn |> put_status(500) |> json(%{error: inspect(reason)})
