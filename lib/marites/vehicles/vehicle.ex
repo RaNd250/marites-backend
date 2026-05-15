@@ -1255,6 +1255,13 @@ defmodule Marites.Vehicles.Vehicle do
      {:next_event, :internal, event}}
   end
 
+  def handle_event(:cast, {:fleet_telemetry, fields}, _state, %Data{last_response: vehicle} = data)
+      when vehicle != nil do
+    updated = apply_fleet_fields(vehicle, fields)
+    {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
+     broadcast_summary()}
+  end
+
   def handle_event(:cast, {:fleet_telemetry, _fields}, _state, %Data{} = data) do
     {:keep_state, %{data | last_fleet_event_at: DateTime.utc_now()}}
   end
@@ -1757,6 +1764,35 @@ defmodule Marites.Vehicles.Vehicle do
 
   defp fuse_name(:vehicle_not_found, car_id), do: :"#{__MODULE__}_#{car_id}_not_found"
   defp fuse_name(:api_error, car_id), do: :"#{__MODULE__}_#{car_id}_api_error"
+
+  defp apply_fleet_fields(%Vehicle{} = v, fields) do
+    Enum.reduce(fields, v, fn
+      {:sentry_mode, val}, acc when is_boolean(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | sentry_mode: val}}
+
+      {:soc, val}, acc when is_number(val) and acc.charge_state != nil ->
+        %{acc | charge_state: %{acc.charge_state | battery_level: round(val)}}
+
+      {:shift_state, val}, acc when is_binary(val) and acc.drive_state != nil ->
+        %{acc | drive_state: %{acc.drive_state | shift_state: val}}
+
+      {:charge_state, val}, acc when is_binary(val) and acc.charge_state != nil ->
+        %{acc | charge_state: %{acc.charge_state | charging_state: val}}
+
+      {:speed, val}, acc when is_number(val) and acc.drive_state != nil ->
+        %{acc | drive_state: %{acc.drive_state | speed: val}}
+
+      {:odometer, val}, acc when is_number(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | odometer: val}}
+
+      {:location, %Marites.FleetTelemetry.Location{latitude: lat, longitude: lng}}, acc
+          when acc.drive_state != nil ->
+        %{acc | drive_state: %{acc.drive_state | latitude: lat, longitude: lng}}
+
+      _, acc ->
+        acc
+    end)
+  end
 
   defp broadcast_summary, do: {:next_event, :internal, :broadcast_summary}
   defp broadcast_fetch(status), do: {:next_event, :internal, {:broadcast_fetch, status}}
