@@ -15,7 +15,7 @@ defmodule Marites.Notifications.Settings do
     timestamps()
   end
 
-  @event_types ~w(sentry_activated sentry_deactivated charge_complete charge_started battery_low)
+  @event_types ~w(sentry_activated sentry_deactivated sentry_alarm drive_started charge_complete charge_started)
 
   def get_all(user_id) do
     rows =

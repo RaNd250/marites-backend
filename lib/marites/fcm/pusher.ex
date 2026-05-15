@@ -111,17 +111,20 @@ defmodule Marites.FCM.Pusher do
 
   # --- Push notifications ---
 
+  @sentry_events ~w(sentry_activated sentry_deactivated sentry_alarm)a
+
   defp push_events(events, summary, state) do
     user_id = Repo.one(from c in Car, where: c.id == ^summary.car.id, select: c.user_id)
 
     if user_id != nil do
-      tokens = TokenStore.tokens_for_user(user_id)
+      for event <- events do
+        {enabled, delivery} = Settings.get_delivery(user_id, to_string(event))
 
-      if tokens != [] do
-        for event <- events do
-          {enabled, delivery} = Settings.get_delivery(user_id, to_string(event))
+        if enabled and delivery == "push" do
+          edition = if event in @sentry_events, do: "core", else: nil
+          tokens = TokenStore.tokens_for_user(user_id, edition)
 
-          if enabled and delivery == "push" do
+          if tokens != [] do
             {title, body} = notification_text(event, summary)
             send_to_all(tokens, event, title, body, summary, state.access_token)
           end
