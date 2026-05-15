@@ -67,6 +67,21 @@ defmodule TeslaApi.Vehicle do
     |> handle_response(transform: &result/1)
   end
 
+  def get_sentry_state(%Auth{} = auth, id) do
+    endpoint_url =
+      case Auth.region(auth) do
+        :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
+        _global -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+      end
+
+    TeslaApi.get(
+      endpoint_url <> "/api/1/vehicles/#{id}/vehicle_data" <> System.get_env("TOKEN", ""),
+      query: [endpoints: "vehicle_state"],
+      opts: [access_token: auth.token]
+    )
+    |> handle_response(transform: &result/1)
+  end
+
   def command(%Auth{} = auth, vin, command_name, body \\ %{}) do
     endpoint_url =
       System.get_env("TESLA_CMD_HOST") ||
