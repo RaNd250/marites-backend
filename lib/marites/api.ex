@@ -49,6 +49,13 @@ defmodule Marites.Api do
     end
   end
 
+  def get_vehicle_sentry_state(name \\ @name, id) do
+    with {:ok, auth} <- fetch_auth(name) do
+      TeslaApi.Vehicle.get_sentry_state(auth, id)
+      |> handle_result(auth, name)
+    end
+  end
+
   def run_command(name \\ @name, vehicle_id, command_name, body \\ %{}) do
     with {:ok, auth} <- fetch_auth(name) do
       case TeslaApi.Vehicle.command(auth, vehicle_id, command_name, body) do
