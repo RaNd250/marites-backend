@@ -111,7 +111,7 @@ defmodule Marites.FCM.Pusher do
 
   # --- Push notifications ---
 
-  @sentry_events ~w(sentry_activated sentry_deactivated sentry_alarm)a
+  @core_only_events ~w(drive_started charge_started charge_complete)a
 
   defp push_events(events, summary, state) do
     user_id = Repo.one(from c in Car, where: c.id == ^summary.car.id, select: c.user_id)
@@ -121,7 +121,7 @@ defmodule Marites.FCM.Pusher do
         {enabled, delivery} = Settings.get_delivery(user_id, to_string(event))
 
         if enabled and delivery == "push" do
-          edition = if event in @sentry_events, do: "core", else: nil
+          edition = if event in @core_only_events, do: "core", else: nil
           tokens = TokenStore.tokens_for_user(user_id, edition)
 
           if tokens != [] do
