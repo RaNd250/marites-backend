@@ -2,6 +2,7 @@ defmodule MaritesWeb.API.V1.AdminController do
   use MaritesWeb, :controller
 
   alias Marites.Accounts
+  alias Marites.FleetTelemetry.Registrar
 
   def create_invite(conn, _params) do
     admin_id = conn.assigns.current_user.id
@@ -48,5 +49,18 @@ defmodule MaritesWeb.API.V1.AdminController do
       {:error, :not_found} -> conn |> put_status(404) |> json(%{error: "not found"})
       {:error, cs} -> conn |> put_status(422) |> json(%{error: inspect(cs.errors)})
     end
+  end
+
+  def register_fleet_telemetry(conn, _params) do
+    results =
+      Registrar.register_all()
+      |> Enum.map(fn {vin, result} ->
+        case result do
+          {:ok, resp}      -> %{vin: vin, ok: true,  response: resp}
+          {:error, reason} -> %{vin: vin, ok: false, error: inspect(reason)}
+        end
+      end)
+
+    json(conn, %{results: results})
   end
 end

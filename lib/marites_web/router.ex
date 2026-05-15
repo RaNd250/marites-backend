@@ -112,10 +112,11 @@ defmodule MaritesWeb.Router do
   scope "/api/v1/admin", MaritesWeb.API.V1 do
     pipe_through [:api, :admin_only]
 
-    post "/invites",          AdminController, :create_invite
-    get  "/invites",          AdminController, :list_invites
-    get  "/users",            AdminController, :list_users
-    put  "/users/:id/revoke", AdminController, :revoke_user
+    post "/invites",                    AdminController, :create_invite
+    get  "/invites",                    AdminController, :list_invites
+    get  "/users",                      AdminController, :list_users
+    put  "/users/:id/revoke",           AdminController, :revoke_user
+    post "/fleet_telemetry/register",   AdminController, :register_fleet_telemetry
   end
 
   scope "/api/v1/vehicles" do

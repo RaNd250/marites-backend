@@ -39,6 +39,8 @@ defmodule MaritesWeb.API.V1.VehiclesController do
           longitude: to_float(pos_field(latest_pos, :longitude)),
           odometer: pos_field(latest_pos, :odometer),
           speed: pos_field(latest_pos, :speed),
+          inside_temp: to_float(pos_field(latest_pos, :inside_temp)),
+          outside_temp: to_float(pos_field(latest_pos, :outside_temp)),
           updated_at: pos_field(latest_pos, :date)
         }
       end)

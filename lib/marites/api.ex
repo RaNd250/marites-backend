@@ -62,6 +62,19 @@ defmodule Marites.Api do
     end
   end
 
+  def register_fleet_telemetry(name \\ @name, vin, config) do
+    with {:ok, auth} <- fetch_auth(name) do
+      case TeslaApi.Vehicle.fleet_telemetry_config(auth, vin, config) do
+        {:error, %TeslaApi.Error{reason: :unauthorized}} ->
+          send(name, :refresh_auth)
+          {:error, :unauthorized}
+
+        result ->
+          result
+      end
+    end
+  end
+
   def stream(name \\ @name, vid, receiver) do
     with {:ok, %Auth{} = auth} <- fetch_auth(name) do
       TeslaApi.Stream.start_link(auth: auth, vehicle_id: vid, receiver: receiver)

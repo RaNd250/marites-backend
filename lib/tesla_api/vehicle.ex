@@ -83,6 +83,21 @@ defmodule TeslaApi.Vehicle do
     |> handle_command_response()
   end
 
+  def fleet_telemetry_config(%Auth{} = auth, vin, config) do
+    endpoint_url =
+      case Auth.region(auth) do
+        :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
+        _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+      end
+
+    TeslaApi.post(
+      endpoint_url <> "/api/1/vehicles/#{vin}/fleet_telemetry_config",
+      config,
+      opts: [access_token: auth.token]
+    )
+    |> handle_response([])
+  end
+
   defp handle_command_response(
          {:ok, %Tesla.Env{status: 200, body: %{"response" => %{"result" => true}}}}
        ),
