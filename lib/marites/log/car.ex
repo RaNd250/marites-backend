@@ -6,18 +6,14 @@ defmodule Marites.Log.Car do
   alias Marites.Settings.CarSettings
 
   schema "cars" do
-    field :name, :string
-    field :efficiency, :float
-    field :model, :string
-    field :trim_badging, :string
+    field :name,           :string
+    field :efficiency,     :float
+    field :model,          :string
+    field :trim_badging,   :string
     field :marketing_name, :string
-    field :exterior_color, :string
-    field :wheel_type, :string
-    field :spoiler_type, :string
 
     field :eid, :integer
     field :vid, :integer
-    # TODO: with v2.0 mark as non nullable
     field :vin, :string
     field :user_id, :integer
     field :display_priority, :integer
@@ -43,9 +39,6 @@ defmodule Marites.Log.Car do
       :efficiency,
       :trim_badging,
       :marketing_name,
-      :exterior_color,
-      :wheel_type,
-      :spoiler_type,
       :display_priority
     ])
     |> validate_required([:eid, :vid, :vin])

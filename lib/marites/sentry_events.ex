@@ -9,9 +9,6 @@ defmodule Marites.SentryEvents do
 
   defstruct car_states: %{}, active_events: %{}
 
-  # car_states:    %{car_id => %{sentry_mode: bool | nil}}
-  # active_events: %{car_id => sentry_event_db_id}
-
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -51,18 +48,14 @@ defmodule Marites.SentryEvents do
 
   def handle_info(_msg, state), do: {:noreply, state}
 
-  # --- Sentry activation: insert a new row ---
-
   defp on_activated(state, car_id, summary) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
-    address = if summary.geofence, do: summary.geofence.name, else: nil
 
     attrs = %{
       car_id: car_id,
       activated_at: now,
       start_lat: to_float(summary.latitude),
-      start_lng: to_float(summary.longitude),
-      address: address
+      start_lng: to_float(summary.longitude)
     }
 
     case Repo.insert(SentryEvent.changeset(%SentryEvent{}, attrs)) do
@@ -75,8 +68,6 @@ defmodule Marites.SentryEvents do
         state
     end
   end
-
-  # --- Sentry deactivation: update the open row ---
 
   defp on_deactivated(state, car_id) do
     case Map.get(state.active_events, car_id) do
