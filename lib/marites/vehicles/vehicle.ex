@@ -58,9 +58,6 @@ defmodule Marites.Vehicles.Vehicle do
       %VehicleConfig{
         car_type: type,
         trim_badging: trim_badging,
-        exterior_color: exterior_color,
-        wheel_type: wheel_type,
-        spoiler_type: spoiler_type
       } ->
         trim_badging =
           with str when is_binary(str) <- trim_badging do
@@ -106,9 +103,6 @@ defmodule Marites.Vehicles.Vehicle do
            name: name,
            trim_badging: trim_badging,
            marketing_name: marketing_name,
-           exterior_color: exterior_color,
-           spoiler_type: spoiler_type,
-           wheel_type: wheel_type
          }}
 
       nil ->
