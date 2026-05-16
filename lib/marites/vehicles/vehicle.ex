@@ -25,7 +25,8 @@ defmodule Marites.Vehicles.Vehicle do
               task: nil,
               import?: false,
               stream_pid: nil,
-              last_fleet_event_at: nil
+              last_fleet_event_at: nil,
+              polling_mode: :full
   end
 
   @asleep_interval 30
@@ -46,6 +47,9 @@ defmodule Marites.Vehicles.Vehicle do
   def default_interval, do: interval("POLLING_DEFAULT_INTERVAL", 15)
   def online_interval, do: interval("POLLING_ONLINE_INTERVAL", 60)
   def charging_interval, do: interval("POLLING_CHARGING_INTERVAL", 5)
+
+  defp idle_interval(%Data{polling_mode: :sentry_only}), do: 120
+  defp idle_interval(%Data{}), do: online_interval()
   def minimum_interval, do: interval("POLLING_MINIMUM_INTERVAL", 0)
 
   def identify(%Vehicle{display_name: name, vehicle_config: config}) do
@@ -183,6 +187,10 @@ defmodule Marites.Vehicles.Vehicle do
       deps: deps,
       import?: Keyword.get(opts, :import?, false)
     }
+
+    polling_mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    data = %{data | polling_mode: polling_mode}
+    :ok = Phoenix.PubSub.subscribe(Marites.PubSub, "fcm_tokens/changed/#{car.user_id}")
 
     fuses = [
       {:vehicle_not_found, {{:standard, 8, :timer.minutes(20)}, {:reset, :timer.minutes(10)}}},
@@ -381,11 +389,11 @@ defmodule Marites.Vehicles.Vehicle do
              [
                broadcast_fetch(false),
                broadcast_summary(),
-               schedule_fetch(online_interval(), data)
+               schedule_fetch(idle_interval(data), data)
              ]}
 
           _ ->
-            {:keep_state, data, [broadcast_fetch(false), schedule_fetch(online_interval(), data)]}
+            {:keep_state, data, [broadcast_fetch(false), schedule_fetch(idle_interval(data), data)]}
         end
 
       {:error, :not_signed_in} ->
@@ -668,6 +676,11 @@ defmodule Marites.Vehicles.Vehicle do
       end
 
     {:keep_state, %{data | car: Map.put(data.car, :settings, settings), stream_pid: stream_pid}}
+  end
+
+  def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{car: car} = data) do
+    mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    {:keep_state, %{data | polling_mode: mode}}
   end
 
   def handle_event(:info, message, _state, data) do
@@ -1329,7 +1342,7 @@ defmodule Marites.Vehicles.Vehicle do
     end
   end
 
-  defp fetch(%Data{car: car, deps: deps}, expected_state: expected_state) do
+  defp fetch(%Data{car: car, deps: deps, polling_mode: polling_mode}, expected_state: expected_state) do
     reachable? =
       case expected_state do
         :online -> true
@@ -1343,19 +1356,31 @@ defmodule Marites.Vehicles.Vehicle do
       end
 
     if reachable? do
-      fetch_with_reachable_assumption(car.eid, deps)
+      fetch_with_reachable_assumption(car.eid, deps, polling_mode)
     else
-      fetch_with_unreachable_assumption(car.eid, deps)
+      fetch_with_unreachable_assumption(car.eid, deps, polling_mode)
     end
   end
 
-  defp fetch_with_reachable_assumption(id, deps) do
+  defp fetch_with_reachable_assumption(id, deps, :sentry_only) do
+    with {:error, :vehicle_unavailable} <- call(deps.api, :get_vehicle_sentry_state, [id]) do
+      call(deps.api, :get_vehicle, [id])
+    end
+  end
+
+  defp fetch_with_reachable_assumption(id, deps, _polling_mode) do
     with {:error, :vehicle_unavailable} <- call(deps.api, :get_vehicle_with_state, [id]) do
       call(deps.api, :get_vehicle, [id])
     end
   end
 
-  defp fetch_with_unreachable_assumption(id, deps) do
+  defp fetch_with_unreachable_assumption(id, deps, :sentry_only) do
+    with {:ok, %Vehicle{state: "online"}} <- call(deps.api, :get_vehicle, [id]) do
+      call(deps.api, :get_vehicle_sentry_state, [id])
+    end
+  end
+
+  defp fetch_with_unreachable_assumption(id, deps, _polling_mode) do
     with {:ok, %Vehicle{state: "online"}} <- call(deps.api, :get_vehicle, [id]) do
       call(deps.api, :get_vehicle_with_state, [id])
     end
