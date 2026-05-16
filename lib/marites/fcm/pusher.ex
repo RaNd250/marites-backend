@@ -10,9 +10,12 @@ defmodule Marites.FCM.Pusher do
   @google_token_url "https://oauth2.googleapis.com/token"
   @fcm_scope "https://www.googleapis.com/auth/firebase.messaging"
 
-  defstruct car_states: %{}, access_token: nil, token_expires_at: 0
+  defstruct car_states: %{}, last_push_at: %{}, access_token: nil, token_expires_at: 0
 
   # car_states: %{car_id => %{sentry_mode: bool | nil, sentry_mode_active: bool | nil, charging_state: string | nil, shift_state: string | nil}}
+  # last_push_at: %{{car_id, event} => unix_seconds} — for deduplication
+
+  @default_dedup_seconds 60
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -41,8 +44,8 @@ defmodule Marites.FCM.Pusher do
       else
         case maybe_refresh_token(state) do
           {:ok, refreshed} ->
-            push_events(events, summary, refreshed)
-            refreshed
+            updated_last_push = push_events(events, car_id, summary, refreshed)
+            %{refreshed | last_push_at: Map.merge(refreshed.last_push_at, updated_last_push)}
 
           {:error, reason} ->
             Logger.error("FCM.Pusher auth failed: #{inspect(reason)}")
@@ -50,14 +53,14 @@ defmodule Marites.FCM.Pusher do
         end
       end
 
-    updated = Map.put(new_state.car_states, car_id, %{
+    updated_car_states = Map.put(new_state.car_states, car_id, %{
       sentry_mode: summary.sentry_mode,
       sentry_mode_active: summary.sentry_mode_active,
       charging_state: summary.charging_state,
       shift_state: summary.shift_state
     })
 
-    {:noreply, %{new_state | car_states: updated}}
+    {:noreply, %{new_state | car_states: updated_car_states}}
   end
 
   def handle_info(_msg, state), do: {:noreply, state}
@@ -113,14 +116,21 @@ defmodule Marites.FCM.Pusher do
 
   @core_only_events ~w(drive_started charge_started charge_complete)a
 
-  defp push_events(events, summary, state) do
-    user_id = Repo.one(from c in Car, where: c.id == ^summary.car.id, select: c.user_id)
+  defp push_events(events, car_id, summary, state) do
+    user_id = Repo.one(from c in Car, where: c.id == ^car_id, select: c.user_id)
 
-    if user_id != nil do
-      for event <- events do
-        {enabled, delivery} = Settings.get_delivery(user_id, to_string(event))
+    if user_id == nil do
+      %{}
+    else
+      now = System.system_time(:second)
 
-        if enabled and delivery == "push" do
+      Enum.reduce(events, %{}, fn event, acc ->
+        {enabled, delivery, threshold} = Settings.get_delivery_with_threshold(user_id, to_string(event))
+        dedup_secs = threshold || @default_dedup_seconds
+        key = {car_id, event}
+        last_at = Map.get(state.last_push_at, key, 0)
+
+        if enabled and delivery == "push" and now - last_at >= dedup_secs do
           edition = if event in @core_only_events, do: "core", else: nil
           tokens = TokenStore.tokens_for_user(user_id, edition)
 
@@ -128,8 +138,17 @@ defmodule Marites.FCM.Pusher do
             {title, body} = notification_text(event, summary)
             send_to_all(tokens, event, title, body, summary, state.access_token)
           end
+
+          Map.put(acc, key, now)
+        else
+          if not enabled or delivery != "push" do
+            acc
+          else
+            Logger.debug("FCM.Pusher dedup suppressed #{event} for car #{car_id} (#{now - last_at}s < #{dedup_secs}s)")
+            acc
+          end
         end
-      end
+      end)
     end
   end
 
