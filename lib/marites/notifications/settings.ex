@@ -34,6 +34,7 @@ defmodule Marites.Notifications.Settings do
     |> put_change(:event_type, event_type)
     |> validate_required([:event_type, :user_id])
     |> validate_inclusion(:delivery, @valid_delivery)
+    |> validate_number(:threshold, greater_than: 0, less_than_or_equal_to: 3600)
     |> Repo.insert(
       on_conflict: {:replace, [:enabled, :threshold, :delivery, :updated_at]},
       conflict_target: [:user_id, :event_type]
@@ -49,6 +50,18 @@ defmodule Marites.Notifications.Settings do
     |> case do
       nil -> {true, "push"}
       {enabled, delivery} -> {enabled, delivery}
+    end
+  end
+
+  def get_delivery_with_threshold(user_id, event_type) do
+    from(ns in __MODULE__,
+      where: ns.user_id == ^user_id and ns.event_type == ^event_type,
+      select: {ns.enabled, ns.delivery, ns.threshold}
+    )
+    |> Repo.one()
+    |> case do
+      nil -> {true, "push", nil}
+      {enabled, delivery, threshold} -> {enabled, delivery, threshold}
     end
   end
 end
