@@ -30,6 +30,7 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   @asleep_interval 30
+  @max_asleep_interval 600
 
   @drive_timeout_min 15
 
@@ -1243,15 +1244,11 @@ defmodule Marites.Vehicles.Vehicle do
 
   #### :asleep / :offline
 
-  def handle_event(:internal, {:update, {state, _}}, {state, @asleep_interval}, data)
-      when state in [:asleep, :offline] do
-    {:keep_state_and_data, [schedule_fetch(asleep_interval(), data), broadcast_summary()]}
-  end
-
   def handle_event(:internal, {:update, {state, _}}, {state, interval}, data)
       when state in [:asleep, :offline] do
-    {:next_state, {state, min(interval * 2, asleep_interval())}, data,
-     schedule_fetch(interval, data)}
+    next_interval = min(interval * 2, @max_asleep_interval)
+    {:next_state, {state, next_interval}, data,
+     [schedule_fetch(next_interval, data), broadcast_summary()]}
   end
 
   def handle_event(:internal, {:update, {:offline, _}}, {:asleep, _interval}, data) do
@@ -1266,6 +1263,14 @@ defmodule Marites.Vehicles.Vehicle do
       when state in [:asleep, :offline] do
     {:next_state, :start, %{data | last_used: DateTime.utc_now()},
      {:next_event, :internal, event}}
+  end
+
+  def handle_event(:cast, {:fleet_telemetry, fields}, {dormant, _interval}, %Data{last_response: vehicle} = data)
+      when dormant in [:asleep, :offline] and vehicle != nil do
+    updated = apply_fleet_fields(vehicle, fields)
+    {:next_state, :start,
+     %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
+     {:next_event, :internal, :fetch}}
   end
 
   def handle_event(:cast, {:fleet_telemetry, fields}, _state, %Data{last_response: vehicle} = data)
