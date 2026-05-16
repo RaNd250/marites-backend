@@ -28,7 +28,7 @@ defmodule MaritesWeb.API.V1.SentryEventsController do
     %{
       id: e.id, car_id: e.car_id, activated_at: e.activated_at,
       deactivated_at: e.deactivated_at, duration_seconds: e.duration_seconds,
-      lat: e.start_lat, lng: e.start_lng, address: e.address
+      lat: e.start_lat, lng: e.start_lng
     }
   end
 
