@@ -46,6 +46,12 @@ defmodule MaritesWeb.Router do
     get "/callback", TeslaOAuthController, :callback
   end
 
+  # ---- Tesla VCP public key (required for vehicle commands) ----
+  scope "/.well-known/appspecific", MaritesWeb do
+    pipe_through :api
+    get "/com.tesla.3p.public-key.pem", VcpKeyController, :show
+  end
+
   # ---- Browser routes (Marites internal UI) ----
   scope "/", MaritesWeb do
     pipe_through :browser
