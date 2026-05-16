@@ -3,13 +3,12 @@ defmodule Marites.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email,              :string
-    field :password,           :string, virtual: true
-    field :password_hash,      :string
-    field :admin,              :boolean, default: false
-    field :active,             :boolean, default: true
-    field :history_enabled,    :boolean, default: true
-    field :notification_email, :string
+    field :email,           :string
+    field :password,        :string, virtual: true
+    field :password_hash,   :string
+    field :admin,           :boolean, default: false
+    field :active,          :boolean, default: true
+    field :history_enabled, :boolean, default: true
     timestamps(updated_at: false)
   end
 
@@ -25,7 +24,7 @@ defmodule Marites.Accounts.User do
 
   def oauth_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :notification_email])
+    |> cast(attrs, [:email])
     |> validate_required([:email])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
