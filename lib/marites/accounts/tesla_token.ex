@@ -3,10 +3,10 @@ defmodule Marites.Accounts.TeslaToken do
   import Ecto.Changeset
 
   schema "tesla_tokens" do
-    field :user_id,                :id
-    field :encrypted_refresh_token, Marites.Vault.Encrypted.Binary
-    field :access_token,           :string
-    field :token_expires_at,       :utc_datetime
+    field :user_id,                  :id
+    field :encrypted_refresh_token,  Marites.Vault.Encrypted.Binary
+    field :access_token,             Marites.Vault.Encrypted.Binary
+    field :token_expires_at,         :utc_datetime
     timestamps()
   end
 

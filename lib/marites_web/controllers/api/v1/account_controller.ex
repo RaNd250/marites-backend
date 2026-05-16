@@ -12,7 +12,6 @@ defmodule MaritesWeb.API.V1.AccountController do
       email: user.email,
       admin: user.admin,
       history_enabled: user.history_enabled,
-      notification_email: user.notification_email,
       tesla_connected: has_tesla
     })
   end

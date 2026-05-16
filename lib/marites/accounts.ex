@@ -15,13 +15,9 @@ defmodule Marites.Accounts do
     email = String.downcase(email)
     case Repo.get_by(User, email: email) do
       %User{} = user ->
-        if is_nil(user.notification_email) do
-          Repo.update(Ecto.Changeset.change(user, notification_email: email))
-        else
-          {:ok, user}
-        end
+        {:ok, user}
       nil ->
-        Repo.insert(User.oauth_changeset(%User{}, %{email: email, notification_email: email}))
+        Repo.insert(User.oauth_changeset(%User{}, %{email: email}))
     end
   end
 
