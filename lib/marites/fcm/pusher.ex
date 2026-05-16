@@ -154,7 +154,8 @@ defmodule Marites.FCM.Pusher do
         "message" => %{
           "token"        => token,
           "notification" => %{"title" => title, "body" => body},
-          "data"         => data
+          "data"         => data,
+          "android"      => %{"priority" => "high"}
         }
       })
 
