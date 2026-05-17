@@ -96,7 +96,7 @@ defmodule Marites.FCM.Pusher do
   end
 
   defp check_sentry_alarm(events, %{sentry_mode_active: prev}, %Summary{sentry_mode_active: curr}) do
-    if prev == false and curr == true do
+    if prev != true and curr == true do
       [:sentry_alarm | events]
     else
       events

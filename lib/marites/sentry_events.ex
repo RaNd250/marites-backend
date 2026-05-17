@@ -32,7 +32,7 @@ defmodule Marites.SentryEvents do
 
     new_state =
       cond do
-        prev_sentry == false and curr_sentry == true ->
+        prev_sentry != true and curr_sentry == true ->
           on_activated(state, car_id, summary)
 
         prev_sentry == true and curr_sentry != true ->
