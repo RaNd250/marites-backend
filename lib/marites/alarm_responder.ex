@@ -31,7 +31,7 @@ defmodule Marites.AlarmResponder do
     prev = get_in(state.car_states, [car_id, :sentry_mode_active])
     curr = summary.sentry_mode_active
 
-    if prev == false and curr == true do
+    if prev != true and curr == true do
       trigger_alarm_response(car_id)
     end
 
@@ -42,20 +42,20 @@ defmodule Marites.AlarmResponder do
   def handle_info(_msg, state), do: {:noreply, state}
 
   defp trigger_alarm_response(car_id) do
-    case Repo.one(from c in Car, where: c.id == ^car_id, select: {c.user_id, c.eid}) do
-      {user_id, eid} when not is_nil(user_id) and not is_nil(eid) ->
+    case Repo.one(from c in Car, where: c.id == ^car_id, select: {c.user_id, c.vin}) do
+      {user_id, vin} when not is_nil(user_id) and not is_nil(vin) ->
         prefs = Settings.get(user_id)
 
         Task.start(fn ->
           if prefs.honk_on_alarm do
-            case Api.run_command(eid, "honk_horn", %{}) do
+            case Api.run_command(Marites.Api, vin, "honk_horn", %{}) do
               {:ok, _}     -> Logger.info("AlarmResponder: honked for car #{car_id}")
               {:error, r}  -> Logger.error("AlarmResponder: honk failed: #{inspect(r)}")
             end
           end
 
           if prefs.flash_on_alarm do
-            case Api.run_command(eid, "flash_lights", %{}) do
+            case Api.run_command(Marites.Api, vin, "flash_lights", %{}) do
               {:ok, _}     -> Logger.info("AlarmResponder: flashed lights for car #{car_id}")
               {:error, r}  -> Logger.error("AlarmResponder: flash failed: #{inspect(r)}")
             end
@@ -63,7 +63,7 @@ defmodule Marites.AlarmResponder do
         end)
 
       _ ->
-        Logger.warning("AlarmResponder: no user/eid for car #{car_id}, skipping")
+        Logger.warning("AlarmResponder: no user/vin for car #{car_id}, skipping")
     end
   end
 end
