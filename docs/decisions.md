@@ -88,6 +88,50 @@
 
 ---
 
+## 2026-05-18 — iOS: SwiftUI native over cross-platform
+
+**Decision**: Build iOS apps in native SwiftUI rather than React Native, Flutter, or Capacitor.
+
+**Why**: The Android apps are Kotlin/Compose — the codebase is already native-first. SwiftUI gives direct access to Keychain, WKWebView, UNUserNotificationCenter, and Firebase Messaging without bridging layers. The app surface is small (mostly List views, one dashboard card, one WebView for OAuth); cross-platform overhead isn't justified.
+
+**Trade-off**: Separate Swift codebase from Kotlin. Shared logic (API contract, token storage pattern, brand colours) is duplicated in Swift — acceptable because the API surface is stable and the two languages have similar idioms at this scale.
+
+---
+
+## 2026-05-18 — iOS: Separate marites-ios repo (not monorepo)
+
+**Decision**: iOS code lives in a dedicated `RaNd250/marites-ios` repo rather than inside the main `marites` monorepo or the `marites-android` repo.
+
+**Why**: Xcode workspaces, `.xcodeproj` files, and SPM package resolution create large git churn. Keeping them isolated avoids polluting the backend/Android diff history. CI/CD signing secrets are scoped to the iOS repo only. Mirrors the existing `marites` / `marites-android` split.
+
+---
+
+## 2026-05-18 — iOS: XcodeGen over committed .xcodeproj
+
+**Decision**: `project.yml` (XcodeGen) is committed; the generated `.xcodeproj`/`.xcworkspace` are gitignored.
+
+**Why**: `.pbxproj` files are line-noise XML that causes constant merge conflicts. XcodeGen regenerates the project deterministically from a readable YAML spec. CI runs `xcodegen generate` as its first step. Any developer clones the repo, runs `xcodegen generate`, and opens the workspace — no manual Xcode configuration.
+
+---
+
+## 2026-05-18 — iOS push: FCM→APNs bridge (not direct APNs)
+
+**Decision**: iOS push delivery goes through Firebase Messaging (FCM → APNs), not a direct APNs connection from the backend.
+
+**Why**: The backend already uses FCM HTTP v1 for Android. Adding APNs support required only adding an `"apns"` key to the existing FCM payload — zero new backend infrastructure. Direct APNs would require managing APNs auth keys, a separate HTTP/2 connection pool, and per-device token registration outside the existing `fcm_tokens` table.
+
+**Trade-off**: Firebase dependency. If Firebase is unavailable, iOS push stops. Acceptable given Android already has this dependency.
+
+---
+
+## 2026-05-18 — iOS: Swift actor for APIClient, not singleton + mutex
+
+**Decision**: `APIClient` is a Swift `actor` rather than a class with a `DispatchQueue` or `NSLock` mutex.
+
+**Why**: Swift actor isolation makes data races impossible at compile time. The key race to prevent — multiple concurrent 401 responses each triggering a token refresh — is solved with `private var refreshTask: Task<String, Error>?`: the first caller starts the refresh task, subsequent callers `await` the same task value. Actors eliminate the need for explicit locking.
+
+---
+
 ## 2026-05-16 — Lite APK: R8 full mode + ABI splits, no WorkManager
 
 **Decision**: Lite release build enables R8 full mode (`android.enableR8.fullMode=true`), `minifyEnabled true`, `shrinkResources true`, and per-ABI splits (arm64-v8a, armeabi-v7a, x86_64). No WorkManager or foreground service for FCM keep-alive.
