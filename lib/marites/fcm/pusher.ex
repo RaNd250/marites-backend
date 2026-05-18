@@ -174,7 +174,18 @@ defmodule Marites.FCM.Pusher do
           "token"        => token,
           "notification" => %{"title" => title, "body" => body},
           "data"         => data,
-          "android"      => %{"priority" => "high"}
+          "android"      => %{"priority" => "high"},
+          "apns"         => %{
+            "payload" => %{
+              "aps" => %{
+                "sound"             => "default",
+                "content-available" => 1
+              }
+            },
+            "headers" => %{
+              "apns-priority" => "10"
+            }
+          }
         }
       })
 
