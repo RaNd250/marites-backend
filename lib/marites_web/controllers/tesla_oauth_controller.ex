@@ -7,12 +7,14 @@ defmodule MaritesWeb.TeslaOAuthController do
   @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds vehicle_location"
   @state_ttl_seconds 600
 
-  def authorize(conn, _params) do
+  def authorize(conn, params) do
     code_verifier = :crypto.strong_rand_bytes(32) |> Base.url_encode64(padding: false)
     code_challenge = :crypto.hash(:sha256, code_verifier) |> Base.url_encode64(padding: false)
 
-    # Embed code_verifier in a signed state param — no session needed
-    state = build_state(code_verifier)
+    # Optional: mobile apps pass redirect_scheme=es.marit.lite://auth-callback
+    # to receive tokens via a deep-link instead of the web redirect.
+    redirect_scheme = Map.get(params, "redirect_scheme")
+    state = build_state(code_verifier, redirect_scheme)
 
     auth_host = System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
     auth_path = System.get_env("TESLA_AUTH_PATH", "/oauth2/v3")
@@ -42,8 +44,12 @@ defmodule MaritesWeb.TeslaOAuthController do
          {:ok, access_tok} <- JWT.generate_access_token(user),
          {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
       link_cars_to_user(user.id)
-      params = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
-      redirect(conn, external: "/?#{params}")
+      query = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
+      redirect_target = case verify_state_scheme(state) do
+        {:ok, scheme} when is_binary(scheme) -> "#{scheme}?#{query}"
+        _ -> "/?#{query}"
+      end
+      redirect(conn, external: redirect_target)
     else
       {:error, :invalid_state} ->
         conn |> put_status(400) |> text("Invalid or expired state parameter — please try signing in again")
@@ -64,11 +70,11 @@ defmodule MaritesWeb.TeslaOAuthController do
 
   # --- State: signed JSON containing code_verifier + expiry ---
 
-  defp build_state(code_verifier) do
-    payload = Jason.encode!(%{
-      "cv" => code_verifier,
-      "exp" => System.os_time(:second) + @state_ttl_seconds
-    })
+  defp build_state(code_verifier, redirect_scheme \\ nil) do
+    payload =
+      %{"cv" => code_verifier, "exp" => System.os_time(:second) + @state_ttl_seconds}
+      |> then(fn p -> if redirect_scheme, do: Map.put(p, "rs", redirect_scheme), else: p end)
+      |> Jason.encode!()
     sig = hmac_sign(payload)
     Base.url_encode64(payload, padding: false) <> "." <> sig
   end
@@ -83,6 +89,18 @@ defmodule MaritesWeb.TeslaOAuthController do
       {:ok, cv}
     else
       _ -> {:error, :invalid_state}
+    end
+  end
+
+  # Returns {:ok, scheme} if the state contains a valid mobile redirect scheme,
+  # {:ok, nil} otherwise. Separate from verify_state to avoid breaking the main with-chain.
+  defp verify_state_scheme(state) do
+    with [encoded, _sig] <- String.split(state, ".", parts: 2),
+         {:ok, payload_json} <- Base.url_decode64(encoded, padding: false),
+         {:ok, payload} <- Jason.decode(payload_json) do
+      {:ok, Map.get(payload, "rs")}
+    else
+      _ -> {:ok, nil}
     end
   end
 
