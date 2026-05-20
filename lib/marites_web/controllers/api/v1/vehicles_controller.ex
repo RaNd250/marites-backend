@@ -6,7 +6,8 @@ defmodule MaritesWeb.API.V1.VehiclesController do
   import Ecto.Query
 
   def status(conn, _params) do
-    cars = Repo.all(Car)
+    user_id = conn.assigns.current_user.id
+    cars = Repo.all(from c in Car, where: c.user_id == ^user_id)
 
     result =
       Enum.map(cars, fn car ->
