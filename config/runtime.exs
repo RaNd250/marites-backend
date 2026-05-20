@@ -182,6 +182,10 @@ if config_env() != :test do
     import_directory: System.get_env("IMPORT_DIR", "import") |> Util.validate_import_dir()
 end
 
+if System.get_env("OPEN_REGISTRATION") in ["true", "1"] do
+  Application.put_env(:marites, :open_registration, true)
+end
+
 if System.get_env("FLEET_TELEMETRY_MQTT_HOST") do
   config :marites,
     fleet_telemetry_mqtt_host: System.get_env("FLEET_TELEMETRY_MQTT_HOST") |> String.to_charlist(),

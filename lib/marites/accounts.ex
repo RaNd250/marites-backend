@@ -40,18 +40,32 @@ defmodule Marites.Accounts do
     end
   end
 
-  def register_user(email, password, invite_code_str) do
-    Repo.transaction(fn ->
-      invite = Repo.one(from i in InviteCode, where: i.code == ^invite_code_str and is_nil(i.used_by))
+  def open_registration? do
+    Application.get_env(:marites, :open_registration, false)
+  end
 
-      unless invite do
+  def register_user(email, password, invite_code_str, opts \\ []) do
+    skip_invite = Keyword.get(opts, :skip_invite, false) or open_registration?()
+
+    Repo.transaction(fn ->
+      invite =
+        if skip_invite do
+          nil
+        else
+          Repo.one(from i in InviteCode, where: i.code == ^invite_code_str and is_nil(i.used_by))
+        end
+
+      unless skip_invite or invite do
         Repo.rollback(:invalid_invite)
       end
 
       case Repo.insert(User.registration_changeset(%User{}, %{email: String.downcase(email), password: password})) do
         {:ok, user} ->
-          now = DateTime.utc_now() |> DateTime.truncate(:second)
-          Repo.update!(Ecto.Changeset.change(invite, used_by: user.id, used_at: now))
+          if invite do
+            now = DateTime.utc_now() |> DateTime.truncate(:second)
+            Repo.update!(Ecto.Changeset.change(invite, used_by: user.id, used_at: now))
+          end
+
           user
 
         {:error, changeset} ->
