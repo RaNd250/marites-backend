@@ -4,30 +4,41 @@ defmodule MaritesWeb.API.V1.AuthController do
   alias Marites.Accounts
   alias Marites.Auth.JWT
 
-  def register(conn, %{"email" => email, "password" => password, "invite_code" => invite_code}) do
-    case Accounts.register_user(email, password, invite_code) do
-      {:ok, user} ->
-        {:ok, access_token} = JWT.generate_access_token(user)
-        {:ok, refresh_token} = Accounts.create_refresh_token(user.id)
+  def register(conn, params) do
+    email = params["email"]
+    password = params["password"]
+    invite_code = params["invite_code"]
 
-        conn
-        |> put_status(:created)
-        |> json(%{
-          access_token: access_token,
-          refresh_token: refresh_token,
-          user: %{id: user.id, email: user.email, admin: user.admin}
-        })
+    cond do
+      is_nil(email) or is_nil(password) ->
+        conn |> put_status(400) |> json(%{error: "email and password required"})
 
-      {:error, :invalid_invite} ->
-        conn |> put_status(422) |> json(%{error: "Invalid or already-used invite code"})
+      not Accounts.open_registration?() and is_nil(invite_code) ->
+        conn |> put_status(400) |> json(%{error: "email, password and invite_code required"})
 
-      {:error, %Ecto.Changeset{} = cs} ->
-        errors = Ecto.Changeset.traverse_errors(cs, fn {msg, _} -> msg end)
-        conn |> put_status(422) |> json(%{error: errors})
+      true ->
+        case Accounts.register_user(email, password, invite_code) do
+          {:ok, user} ->
+            {:ok, access_token} = JWT.generate_access_token(user)
+            {:ok, refresh_token} = Accounts.create_refresh_token(user.id)
+
+            conn
+            |> put_status(:created)
+            |> json(%{
+              access_token: access_token,
+              refresh_token: refresh_token,
+              user: %{id: user.id, email: user.email, admin: user.admin}
+            })
+
+          {:error, :invalid_invite} ->
+            conn |> put_status(422) |> json(%{error: "Invalid or already-used invite code"})
+
+          {:error, %Ecto.Changeset{} = cs} ->
+            errors = Ecto.Changeset.traverse_errors(cs, fn {msg, _} -> msg end)
+            conn |> put_status(422) |> json(%{error: errors})
+        end
     end
   end
-
-  def register(conn, _), do: conn |> put_status(400) |> json(%{error: "email, password and invite_code required"})
 
   def login(conn, %{"email" => email, "password" => password}) do
     case Accounts.authenticate(email, password) do
