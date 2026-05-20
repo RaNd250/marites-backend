@@ -2,6 +2,7 @@ defmodule Marites.UserApiLoader do
   use GenServer
 
   require Logger
+  import Ecto.Query
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
