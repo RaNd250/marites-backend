@@ -1,8 +1,8 @@
 defmodule MaritesWeb.TeslaOAuthController do
   use MaritesWeb, :controller
 
-  alias Marites.{Accounts, Api}
-  alias Marites.Auth.{JWT, Tokens}
+  alias Marites.{Accounts}
+  alias Marites.Auth.JWT
 
   @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds vehicle_location"
   @state_ttl_seconds 600
@@ -39,24 +39,29 @@ defmodule MaritesWeb.TeslaOAuthController do
          {:ok, %{access_token: access, refresh_token: refresh}} <- exchange_code(code, code_verifier),
          {:ok, userinfo} <- get_userinfo(access),
          {:ok, email} <- extract_email(userinfo),
-         :ok <- store_in_Marites(access, refresh),
          {:ok, user} <- Accounts.find_or_create_by_email(email),
+         :ok <- start_user_api(user.id, access, refresh),
+         :ok <- claim_vehicles_by_vin(user.id, access),
          {:ok, access_tok} <- JWT.generate_access_token(user),
          {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
-      link_cars_to_user(user.id)
       query = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
-      redirect_target = case verify_state_scheme(state) do
-        {:ok, scheme} when is_binary(scheme) -> "#{scheme}?#{query}"
-        _ -> "/?#{query}"
-      end
+
+      redirect_target =
+        case verify_state_scheme(state) do
+          {:ok, scheme} when is_binary(scheme) -> "#{scheme}?#{query}"
+          _ -> "/?#{query}"
+        end
+
       redirect(conn, external: redirect_target)
     else
       {:error, :invalid_state} ->
         conn |> put_status(400) |> text("Invalid or expired state parameter — please try signing in again")
+
       {:error, reason} ->
         require Logger
         Logger.error("Tesla OAuth callback failed: #{inspect(reason)}")
         conn |> put_status(502) |> text("Sign-in failed: #{inspect(reason)}")
+
       other ->
         require Logger
         Logger.error("Tesla OAuth callback unexpected: #{inspect(other)}")
@@ -155,28 +160,64 @@ defmodule MaritesWeb.TeslaOAuthController do
   defp extract_email(%{"email" => email}) when is_binary(email) and email != "", do: {:ok, email}
   defp extract_email(_), do: {:error, "email not found in Tesla userinfo"}
 
-  # Link all Marites cars that have no user_id to this user.
-  # Marites creates cars asynchronously after sign_in, so we run the update
-  # immediately (for existing cars) and again after a short delay (for new ones).
-  defp link_cars_to_user(user_id) do
-    alias Marites.{Repo, Log.Car}
-    # Marites is single-tenant — all cars belong to whoever just signed in via Tesla OAuth.
-    # Update every car unconditionally, and again after a short delay for newly created ones.
-    Repo.update_all(Car, set: [user_id: user_id])
-    Task.start(fn ->
-      Process.sleep(8_000)
-      Repo.update_all(Car, set: [user_id: user_id])
-    end)
+  # Upsert cars by VIN for this user. Safe for multi-tenant: only touches
+  # cars whose VINs belong to the Tesla account that just authenticated.
+  defp claim_vehicles_by_vin(user_id, access_token) do
+    alias Marites.Log.Car
+    auth = %TeslaApi.Auth{token: access_token}
+
+    case TeslaApi.Vehicle.list(auth) do
+      {:ok, vehicles} ->
+        Enum.each(vehicles, fn v ->
+          Marites.Repo.insert!(
+            %Car{
+              user_id: user_id,
+              vin: v.vin,
+              vid: v.vehicle_id,
+              eid: v.id,
+              name: v.display_name || "Tesla",
+              model: nil
+            },
+            on_conflict: [
+              set: [user_id: user_id, eid: v.id, vid: v.vehicle_id, name: v.display_name || "Tesla"]
+            ],
+            conflict_target: :vin
+          )
+        end)
+
+        :ok
+
+      {:error, reason} ->
+        require Logger
+        Logger.warning("claim_vehicles_by_vin failed for user #{user_id}: #{inspect(reason)}")
+        :ok
+    end
   end
 
-  defp store_in_Marites(access, refresh) do
-    tokens = %Tokens{access: access, refresh: refresh}
-    # Always replace the token — user explicitly went through OAuth to update scopes
-    Api.sign_out()
-    case Api.sign_in(tokens) do
-      :ok -> :ok
-      {:error, :already_signed_in} -> :ok
-      {:error, reason} -> {:error, reason}
+  # Store tokens in DB and start (or restart) the per-user Api process.
+  defp start_user_api(user_id, access, refresh) do
+    expires_at =
+      DateTime.add(DateTime.utc_now(), 8 * 3600, :second)
+      |> DateTime.truncate(:second)
+
+    case Marites.Accounts.upsert_tesla_token(user_id, refresh, access, expires_at) do
+      {:ok, _} ->
+        :ok
+
+      {:error, reason} ->
+        require Logger
+        Logger.error("Failed to upsert Tesla token for user #{user_id}: #{inspect(reason)}")
+        :ok
+    end
+
+    case Marites.UserApiSupervisor.start_for_user(user_id) do
+      {:ok, _pid} ->
+        :ok
+
+      {:error, reason} ->
+        require Logger
+        Logger.error("Failed to start Api for user #{user_id}: #{inspect(reason)}")
+        :ok
     end
   end
 
