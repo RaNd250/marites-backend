@@ -12,7 +12,7 @@ defmodule Marites.Api do
   import Core.Dependency, only: [call: 3, call: 2]
 
   defmodule State do
-    defstruct name: nil, deps: %{}, refresh_timer: nil
+    defstruct name: nil, ets_name: nil, deps: %{}, refresh_timer: nil, user_id: nil
   end
 
   @timeout :timer.minutes(2)
@@ -116,7 +116,7 @@ defmodule Marites.Api do
   end
 
   def sign_out(name \\ @name) do
-    true = :ets.delete(name, :auth)
+    true = :ets.delete(ets_name_for(name), :auth)
     :ok
   rescue
     _ in ArgumentError -> {:error, :not_signed_in}
@@ -127,6 +127,13 @@ defmodule Marites.Api do
   @impl true
   def init(opts) do
     name = Keyword.fetch!(opts, :name)
+    user_id = Keyword.get(opts, :user_id)
+
+    # ETS table names must be atoms; derive one from user_id for per-user processes
+    ets_name =
+      if user_id,
+        do: :"marites_api_user_#{user_id}",
+        else: name
 
     deps = %{
       auth: Keyword.get(opts, :auth, Marites.Auth),
@@ -135,29 +142,46 @@ defmodule Marites.Api do
 
     :ok =
       :fuse.install(
-        fuse_name(name),
+        fuse_name(ets_name),
         {{:standard, 5, :timer.minutes(10)}, {:reset, :timer.hours(9999)}}
       )
 
-    ^name = :ets.new(name, [:named_table, :set, :public, read_concurrency: true])
-    state = %State{name: name, deps: deps}
+    ^ets_name = :ets.new(ets_name, [:named_table, :set, :public, read_concurrency: true])
+    state = %State{name: name, ets_name: ets_name, deps: deps, user_id: user_id}
+
+    initial_tokens =
+      if user_id do
+        alias Marites.Accounts
+        alias Marites.Accounts.TeslaToken
+
+        case Accounts.get_tesla_token(user_id) do
+          %TeslaToken{access_token: at, encrypted_refresh_token: rt}
+          when is_binary(at) and is_binary(rt) ->
+            %Tokens{access: at, refresh: rt}
+
+          _ ->
+            nil
+        end
+      else
+        call(deps.auth, :get_tokens)
+      end
 
     state =
-      case call(deps.auth, :get_tokens) do
+      case initial_tokens do
         %Tokens{access: at, refresh: rt} when is_binary(at) and is_binary(rt) ->
-          restored_tokens = %Auth{token: at, refresh_token: rt, expires_in: 10 * 60}
+          restored = %Auth{token: at, refresh_token: rt, expires_in: 10 * 60}
 
           {:ok, state} =
-            case refresh_tokens(restored_tokens) do
-              {:ok, refreshed_tokens} ->
-                :ok = call(deps.auth, :save, [refreshed_tokens])
-                true = insert_auth(name, refreshed_tokens)
-                schedule_refresh(refreshed_tokens, state)
+            case refresh_tokens(restored) do
+              {:ok, refreshed} ->
+                save_tokens(state, refreshed)
+                true = insert_auth(ets_name, refreshed)
+                schedule_refresh(refreshed, state)
 
               {:error, reason} ->
-                Logger.warning("Token refresh failed: #{inspect(reason, pretty: true)}")
-                true = insert_auth(name, restored_tokens)
-                schedule_refresh(restored_tokens, state)
+                Logger.warning("Token refresh failed on init: #{inspect(reason, pretty: true)}")
+                true = insert_auth(ets_name, restored)
+                schedule_refresh(restored, state)
             end
 
           state
@@ -181,11 +205,11 @@ defmodule Marites.Api do
     end
     |> case do
       {:ok, %Auth{} = auth} ->
-        true = insert_auth(state.name, auth)
-        :ok = call(state.deps.auth, :save, [auth])
-        :ok = call(state.deps.vehicles, :restart)
+        true = insert_auth(state.ets_name, auth)
+        save_tokens(state, auth)
+        if is_nil(state.user_id), do: :ok = call(state.deps.vehicles, :restart)
         {:ok, state} = schedule_refresh(auth, state)
-        :ok = :fuse.reset(fuse_name(state.name))
+        :ok = :fuse.reset(fuse_name(state.ets_name))
 
         {:reply, :ok, state}
 
@@ -209,17 +233,17 @@ defmodule Marites.Api do
   end
 
   @impl true
-  def handle_info(:refresh_auth, %State{name: name} = state) do
-    case fetch_auth(name) do
+  def handle_info(:refresh_auth, %State{ets_name: ets_name} = state) do
+    case fetch_auth(ets_name) do
       {:ok, tokens} ->
         Logger.info("Refreshing access token ...")
 
         case Auth.refresh(tokens) do
           {:ok, refreshed_tokens} ->
-            true = insert_auth(name, refreshed_tokens)
-            :ok = call(state.deps.auth, :save, [refreshed_tokens])
+            true = insert_auth(ets_name, refreshed_tokens)
+            save_tokens(state, refreshed_tokens)
             {:ok, state} = schedule_refresh(refreshed_tokens, state)
-            :ok = :fuse.reset(fuse_name(name))
+            :ok = :fuse.reset(fuse_name(ets_name))
             {:noreply, state}
 
           {:error, reason} ->
@@ -244,6 +268,23 @@ defmodule Marites.Api do
   end
 
   ## Private
+
+  defp save_tokens(%State{user_id: user_id}, %Auth{} = auth) when not is_nil(user_id) do
+    expires_at =
+      DateTime.add(DateTime.utc_now(), auth.expires_in, :second)
+      |> DateTime.truncate(:second)
+
+    Marites.Accounts.upsert_tesla_token(user_id, auth.refresh_token, auth.token, expires_at)
+  end
+
+  defp save_tokens(%State{deps: deps}, %Auth{} = auth) do
+    :ok = call(deps.auth, :save, [auth])
+  end
+
+  defp ets_name_for(name) when is_atom(name), do: name
+
+  defp ets_name_for({:via, Registry, {Marites.ApiRegistry, user_id}}),
+    do: :"marites_api_user_#{user_id}"
 
   defp refresh_tokens(%Auth{} = tokens) do
     case Application.get_env(:marites, :disable_token_refresh, false) do
@@ -286,7 +327,9 @@ defmodule Marites.Api do
   end
 
   defp fetch_auth(name) do
-    case :ets.lookup(name, :auth) do
+    ets = ets_name_for(name)
+
+    case :ets.lookup(ets, :auth) do
       [auth: %Auth{} = auth] -> {:ok, auth}
       [] -> {:error, :not_signed_in}
     end
@@ -295,13 +338,15 @@ defmodule Marites.Api do
   end
 
   defp handle_result(result, auth, name) do
+    ets = ets_name_for(name)
+
     case result do
       {:error, %TeslaApi.Error{reason: :unauthorized}} ->
-        :ok = :fuse.melt(fuse_name(name))
+        :ok = :fuse.melt(fuse_name(ets))
 
-        case :fuse.ask(fuse_name(name), :sync) do
+        case :fuse.ask(fuse_name(ets), :sync) do
           :blown ->
-            true = :ets.delete(name, :auth)
+            true = :ets.delete(ets, :auth)
             {:error, :not_signed_in}
 
           :ok ->
