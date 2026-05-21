@@ -2,7 +2,7 @@ defmodule MaritesWeb.API.V1.VehiclesController do
   use MaritesWeb, :controller
 
   alias Marites.Repo
-  alias Marites.Log.{Car, State, Position}
+  alias Marites.Log.{Car, State, Position, ChargingProcess, Charge}
   import Ecto.Query
 
   def status(conn, _params) do
@@ -27,6 +27,26 @@ defmodule MaritesWeb.API.V1.VehiclesController do
               limit: 1
           )
 
+        latest_charge =
+          if latest_state && to_string(latest_state.state) == "charging" do
+            active_process =
+              Repo.one(
+                from cp in ChargingProcess,
+                  where: cp.car_id == ^car.id and is_nil(cp.end_date),
+                  order_by: [desc: cp.start_date],
+                  limit: 1
+              )
+
+            if active_process do
+              Repo.one(
+                from c in Charge,
+                  where: c.charging_process_id == ^active_process.id,
+                  order_by: [desc: c.date],
+                  limit: 1
+              )
+            end
+          end
+
         %{
           id: car.id,
           name: car.name,
@@ -41,7 +61,12 @@ defmodule MaritesWeb.API.V1.VehiclesController do
           speed: pos_field(latest_pos, :speed),
           inside_temp: to_float(pos_field(latest_pos, :inside_temp)),
           outside_temp: to_float(pos_field(latest_pos, :outside_temp)),
-          updated_at: pos_field(latest_pos, :date)
+          updated_at: pos_field(latest_pos, :date),
+          charger_power: charge_field(latest_charge, :charger_power),
+          charger_voltage: charge_field(latest_charge, :charger_voltage),
+          fast_charger_present: charge_field(latest_charge, :fast_charger_present),
+          fast_charger_brand: charge_field(latest_charge, :fast_charger_brand),
+          charge_energy_added: to_float(charge_field(latest_charge, :charge_energy_added))
         }
       end)
 
@@ -50,6 +75,9 @@ defmodule MaritesWeb.API.V1.VehiclesController do
 
   defp pos_field(nil, _field), do: nil
   defp pos_field(pos, field), do: Map.get(pos, field)
+
+  defp charge_field(nil, _field), do: nil
+  defp charge_field(charge, field), do: Map.get(charge, field)
 
   defp to_float(nil), do: nil
   defp to_float(%Decimal{} = d), do: Decimal.to_float(d)
