@@ -32,6 +32,7 @@ defmodule MaritesWeb.API.V1.CommandsController do
 
           case Api.run_command(api_name, vin, tesla_cmd, body) do
             {:ok, _} ->
+              set_virtual_key_paired(car_id, true)
               json(conn, %{ok: true})
 
             {:error, {:command_failed, reason}} ->
@@ -55,7 +56,7 @@ defmodule MaritesWeb.API.V1.CommandsController do
             {:error, :account_disabled} ->
               conn
               |> put_status(503)
-              |> json(%{error: "commands_unavailable", message: "Vehicle commands are not yet enabled for this app. Please check back soon."})
+              |> json(%{error: "commands_unavailable", code: "MRT-ES403", message: "Action not available, please try later"})
 
             {:error, :missing_scope} ->
               conn
@@ -63,6 +64,7 @@ defmodule MaritesWeb.API.V1.CommandsController do
               |> json(%{error: "missing_scope"})
 
             {:error, {:command_unauthorized, _}} ->
+              set_virtual_key_paired(car_id, false)
               pairing_url = "https://tesla.com/_ak/app.marit.es"
 
               conn
@@ -78,6 +80,12 @@ defmodule MaritesWeb.API.V1.CommandsController do
 
   def run(conn, _),
     do: conn |> put_status(400) |> json(%{error: "unknown command"})
+
+  defp set_virtual_key_paired(car_id, value) do
+    Repo.get!(Car, car_id)
+    |> Ecto.Changeset.change(virtual_key_paired: value)
+    |> Repo.update!()
+  end
 
   defp map_command("sentry_on"),    do: {"set_sentry_mode", %{"on" => true}}
   defp map_command("sentry_off"),   do: {"set_sentry_mode", %{"on" => false}}
