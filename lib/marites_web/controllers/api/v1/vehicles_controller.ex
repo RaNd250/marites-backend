@@ -66,7 +66,8 @@ defmodule MaritesWeb.API.V1.VehiclesController do
           charger_voltage: charge_field(latest_charge, :charger_voltage),
           fast_charger_present: charge_field(latest_charge, :fast_charger_present),
           fast_charger_brand: charge_field(latest_charge, :fast_charger_brand),
-          charge_energy_added: to_float(charge_field(latest_charge, :charge_energy_added))
+          charge_energy_added: to_float(charge_field(latest_charge, :charge_energy_added)),
+          virtual_key_paired: car.virtual_key_paired
         }
       end)
 
