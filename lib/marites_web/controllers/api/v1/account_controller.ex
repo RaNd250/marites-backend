@@ -2,17 +2,26 @@ defmodule MaritesWeb.API.V1.AccountController do
   use MaritesWeb, :controller
 
   alias Marites.Accounts
+  alias Marites.FCM.TokenStore
 
   def me(conn, _params) do
     user = conn.assigns.current_user
     has_tesla = Accounts.get_tesla_token(user.id) != nil
+
+    edition =
+      cond do
+        TokenStore.any_core_token?(user.id) -> "core"
+        TokenStore.tokens_for_user(user.id, "lite") != [] -> "lite"
+        true -> "core"
+      end
 
     json(conn, %{
       id: user.id,
       email: user.email,
       admin: user.admin,
       history_enabled: user.history_enabled,
-      tesla_connected: has_tesla
+      tesla_connected: has_tesla,
+      edition: edition
     })
   end
 
