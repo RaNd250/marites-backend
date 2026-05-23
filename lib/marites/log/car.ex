@@ -17,6 +17,7 @@ defmodule Marites.Log.Car do
     field :vin, :string
     field :user_id, :integer
     field :display_priority, :integer
+    field :virtual_key_paired, :boolean, default: false
 
     belongs_to :settings, CarSettings
 
@@ -39,7 +40,8 @@ defmodule Marites.Log.Car do
       :efficiency,
       :trim_badging,
       :marketing_name,
-      :display_priority
+      :display_priority,
+      :virtual_key_paired
     ])
     |> validate_required([:eid, :vid, :vin])
     |> unique_constraint(:settings_id)
