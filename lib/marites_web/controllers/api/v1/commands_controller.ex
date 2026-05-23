@@ -82,9 +82,10 @@ defmodule MaritesWeb.API.V1.CommandsController do
     do: conn |> put_status(400) |> json(%{error: "unknown command"})
 
   defp set_virtual_key_paired(car_id, value) do
-    Repo.get!(Car, car_id)
-    |> Ecto.Changeset.change(virtual_key_paired: value)
-    |> Repo.update!()
+    case Repo.get(Car, car_id) do
+      nil -> :ok
+      car -> car |> Ecto.Changeset.change(virtual_key_paired: value) |> Repo.update()
+    end
   end
 
   defp map_command("sentry_on"),    do: {"set_sentry_mode", %{"on" => true}}
