@@ -14,13 +14,7 @@ module.exports = {
         src: "img/logo.png",
         style: { height: "36px" },
       },
-      items: [
-        {
-          href: "https://github.com/RaNd250/marites",
-          label: "GitHub",
-          position: "right",
-        },
-      ],
+      items: [],
     },
     prism: {
       additionalLanguages: ["elixir"],

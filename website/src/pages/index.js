@@ -1,15 +1,5 @@
 import React from "react";
 import Layout from "@theme/Layout";
-import styles from "./styles.module.css";
-
-const PlayStoreBadge = () => (
-  <svg height="20" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: "block" }}>
-    <rect width="135" height="40" rx="5" fill="#1a1a2e" />
-    <text x="38" y="13" fill="#9ca3af" fontSize="7" fontFamily="sans-serif">GET IT ON</text>
-    <text x="38" y="28" fill="#fff" fontSize="13" fontWeight="bold" fontFamily="sans-serif">Google Play</text>
-    <text x="10" y="27" fill="#4ade80" fontSize="22" fontFamily="sans-serif">▶</text>
-  </svg>
-);
 
 const FeatureItem = ({ icon, text }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#9ca3af", fontSize: 14 }}>
@@ -18,9 +8,15 @@ const FeatureItem = ({ icon, text }) => (
   </div>
 );
 
+const MissingItem = ({ text }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#4b5563", fontSize: 14 }}>
+    <span style={{ fontSize: 16 }}>✗</span> {text}
+  </div>
+);
+
 export default function Home() {
   return (
-    <Layout title="marit.es — Tesla monitoring for Android" description="Self-hosted Tesla monitoring app for Android. Track drives, charges, sentry events and control your Tesla.">
+    <Layout title="marit.es — Tesla monitoring for Android" description="Advanced Tesla sentry monitoring, drive history, charge tracking and vehicle control for Android.">
       <main style={{ background: "#0a0a0f", minHeight: "100vh" }}>
 
         {/* Hero */}
@@ -28,22 +24,34 @@ export default function Home() {
           display: "flex", flexDirection: "column", alignItems: "center",
           padding: "72px 24px 56px", textAlign: "center",
         }}>
-          <img src="img/logo.png" alt="marit.es" style={{ width: 160, marginBottom: 32, borderRadius: 16 }} />
-          <h1 style={{ color: "#fff", fontSize: 42, fontWeight: 800, margin: "0 0 16px", letterSpacing: "-0.5px" }}>
-            Your Tesla. Your data.
+          <img src="img/logo.png" alt="marit.es" style={{ width: 140, marginBottom: 28, borderRadius: 16 }} />
+
+          <h1 style={{ color: "#fff", fontSize: 40, fontWeight: 800, margin: "0 0 12px", letterSpacing: "-0.5px", lineHeight: 1.15 }}>
+            Marites knows what your<br />Tesla did last night.
           </h1>
-          <p style={{ color: "#6b7280", fontSize: 18, maxWidth: 520, margin: "0 0 12px", lineHeight: 1.6 }}>
-            Self-hosted Tesla monitoring for Android. Track every drive and charge,
-            control sentry mode, and keep your data on your own server.
+          <p style={{ color: "#6b7280", fontSize: 18, maxWidth: 540, margin: "0 0 10px", lineHeight: 1.6 }}>
+            Advanced sentry monitoring, drive &amp; charge history, vehicle control
+            and real-time alerts — all on your Android phone.
           </p>
-          <p style={{ color: "#4b5563", fontSize: 14, margin: "0 0 48px" }}>
-            Requires a self-hosted marit.es backend. Open source.
+          <p style={{ color: "#4b5563", fontSize: 14, margin: "0 0 16px" }}>
+            Available for free and as a full-featured edition on Google Play.
           </p>
+
+          <a
+            href="https://app.marit.es"
+            style={{
+              display: "inline-block", background: "#e31937", color: "#fff",
+              fontWeight: 700, padding: "14px 36px", borderRadius: 8,
+              textDecoration: "none", fontSize: 16, marginBottom: 56,
+            }}
+          >
+            Open App
+          </a>
 
           {/* Download cards */}
           <div style={{
             display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center",
-            width: "100%", maxWidth: 740,
+            width: "100%", maxWidth: 760,
           }}>
 
             {/* Core */}
@@ -72,7 +80,7 @@ export default function Home() {
                 <FeatureItem icon="⚡" text="Charge history &amp; stats" />
                 <FeatureItem icon="🛡" text="Sentry mode control &amp; alerts" />
                 <FeatureItem icon="📊" text="Battery health &amp; statistics" />
-                <FeatureItem icon="🔑" text="Honk, flash, vehicle commands" />
+                <FeatureItem icon="🔑" text="Honk, flash &amp; vehicle commands" />
                 <FeatureItem icon="🔔" text="Push notifications" />
                 <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
               </div>
@@ -121,12 +129,8 @@ export default function Home() {
                 <FeatureItem icon="🔋" text="Live battery &amp; vehicle status" />
                 <FeatureItem icon="🔔" text="Sentry push notifications" />
                 <FeatureItem icon="✅" text="Free — no subscription" />
-                <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#4b5563", fontSize: 14 }}>
-                  <span style={{ fontSize: 16 }}>✗</span> No drive/charge history
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#4b5563", fontSize: 14 }}>
-                  <span style={{ fontSize: 16 }}>✗</span> No stats or commands
-                </div>
+                <MissingItem text="No drive/charge history" />
+                <MissingItem text="No stats or commands" />
               </div>
 
               <a
@@ -151,17 +155,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Requirements */}
+        {/* Features strip */}
         <section style={{
-          maxWidth: 740, margin: "0 auto", padding: "0 24px 72px",
-          textAlign: "center",
+          maxWidth: 760, margin: "0 auto", padding: "0 24px 64px",
+          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24,
         }}>
-          <p style={{ color: "#4b5563", fontSize: 13, lineHeight: 1.7 }}>
-            marit.es requires a self-hosted backend server running the open-source marit.es stack (Elixir/Phoenix + PostgreSQL + TeslaMate).{" "}
-            <a href="https://github.com/RaNd250/marites" style={{ color: "#7c3aed" }}>
-              View on GitHub →
-            </a>
-          </p>
+          {[
+            { icon: "📡", title: "Real-time telemetry", body: "Live vehicle status, battery level and location — always up to date." },
+            { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts when sentry detects activity. Review events from anywhere." },
+            { icon: "🗺", title: "Drive history", body: "Every trip logged with route map, energy used and efficiency stats." },
+            { icon: "⚡", title: "Charge tracking", body: "Full charge history with cost, energy added and time at each session." },
+            { icon: "🔔", title: "Alarm response", body: "Automatic honk and flash when your Tesla alarm triggers." },
+            { icon: "📅", title: "Scheduling", body: "Set sentry to activate automatically on a schedule you control." },
+          ].map(({ icon, title, body }) => (
+            <div key={title} style={{ background: "#111113", borderRadius: 12, padding: "20px 20px 18px" }}>
+              <div style={{ fontSize: 26, marginBottom: 8 }}>{icon}</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, marginBottom: 6 }}>{title}</div>
+              <div style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.6 }}>{body}</div>
+            </div>
+          ))}
+        </section>
+
+        {/* Footer links */}
+        <section style={{
+          maxWidth: 760, margin: "0 auto", padding: "0 24px 56px",
+          textAlign: "center", display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap",
+        }}>
+          <a href="/privacy" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Privacy Policy</a>
+          <a href="/terms" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Terms of Service</a>
+          <a href="mailto:admin@marit.es" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Contact</a>
         </section>
 
       </main>
