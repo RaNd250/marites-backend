@@ -3,6 +3,7 @@ defmodule MaritesWeb.API.V1.ChargesController do
 
   alias Marites.Repo
   alias Marites.Log.{Car, ChargingProcess}
+  alias Marites.FCM.TokenStore
   import Ecto.Query
 
   def index(conn, params) do
@@ -21,7 +22,20 @@ defmodule MaritesWeb.API.V1.ChargesController do
 
     query = if car_id, do: where(query, [c], c.car_id == ^car_id), else: query
 
+    query =
+      if lite_edition?(user_id) do
+        cutoff = DateTime.add(DateTime.utc_now(), -7 * 24 * 3600, :second)
+        where(query, [c], c.start_date >= ^cutoff)
+      else
+        query
+      end
+
     json(conn, Enum.map(Repo.all(query), &format_charge/1))
+  end
+
+  defp lite_edition?(user_id) do
+    not TokenStore.any_core_token?(user_id) and
+      TokenStore.tokens_for_user(user_id, "lite") != []
   end
 
   defp format_charge(c) do

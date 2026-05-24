@@ -3,6 +3,7 @@ defmodule MaritesWeb.API.V1.DrivesController do
 
   alias Marites.Repo
   alias Marites.Log.{Car, Drive}
+  alias Marites.FCM.TokenStore
   import Ecto.Query
 
   def index(conn, params) do
@@ -21,7 +22,20 @@ defmodule MaritesWeb.API.V1.DrivesController do
 
     query = if car_id, do: where(query, [d], d.car_id == ^car_id), else: query
 
+    query =
+      if lite_edition?(user_id) do
+        cutoff = DateTime.add(DateTime.utc_now(), -7 * 24 * 3600, :second)
+        where(query, [d], d.start_date >= ^cutoff)
+      else
+        query
+      end
+
     json(conn, Enum.map(Repo.all(query), &format_drive/1))
+  end
+
+  defp lite_edition?(user_id) do
+    not TokenStore.any_core_token?(user_id) and
+      TokenStore.tokens_for_user(user_id, "lite") != []
   end
 
   def show(conn, %{"id" => id}) do

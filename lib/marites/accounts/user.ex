@@ -9,6 +9,7 @@ defmodule Marites.Accounts.User do
     field :admin,           :boolean, default: false
     field :active,          :boolean, default: true
     field :history_enabled, :boolean, default: true
+    field :selected_car_id, :integer
     timestamps(updated_at: false)
   end
 
