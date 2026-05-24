@@ -84,6 +84,32 @@ defmodule MaritesWeb.API.V1.VehiclesController do
     json(conn, result)
   end
 
+  def suspend_logging(conn, %{"car_id" => car_id_str}) do
+    user_id = conn.assigns.current_user.id
+    car_id = String.to_integer(car_id_str)
+
+    case Repo.one(from c in Car, where: c.id == ^car_id and c.user_id == ^user_id) do
+      nil -> conn |> put_status(404) |> json(%{error: "car not found"})
+      car ->
+        case Marites.Vehicles.suspend_logging(car.id) do
+          :ok -> json(conn, %{ok: true})
+          {:error, _reason} -> conn |> put_status(422) |> json(%{error: "could not suspend logging"})
+        end
+    end
+  end
+
+  def resume_logging(conn, %{"car_id" => car_id_str}) do
+    user_id = conn.assigns.current_user.id
+    car_id = String.to_integer(car_id_str)
+
+    case Repo.one(from c in Car, where: c.id == ^car_id and c.user_id == ^user_id) do
+      nil -> conn |> put_status(404) |> json(%{error: "car not found"})
+      car ->
+        :ok = Marites.Vehicles.resume_logging(car.id)
+        json(conn, %{ok: true})
+    end
+  end
+
   def select_vehicle(conn, %{"car_id" => car_id_raw}) do
     user_id = conn.assigns.current_user.id
 

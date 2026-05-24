@@ -3,6 +3,8 @@ import Config
 config :marites,
   ecto_repos: [Marites.Repo]
 
+config :marites, :session_signing_salt, "wK7rPmX4nQs2vBtJ"
+
 config :marites, MaritesWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Kz7vmP1gPYv/sogke6P3RP9uipMjOLhneQdbokZVx5gpLsNaN44TD20vtOWkMFIT",
