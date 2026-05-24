@@ -1,13 +1,23 @@
 defmodule MaritesWeb.API.V1.VehiclesController do
   use MaritesWeb, :controller
 
-  alias Marites.Repo
+  alias Marites.{Repo, Accounts}
   alias Marites.Log.{Car, State, Position, ChargingProcess, Charge}
+  alias Marites.FCM.TokenStore
   import Ecto.Query
 
   def status(conn, _params) do
-    user_id = conn.assigns.current_user.id
-    cars = Repo.all(from c in Car, where: c.user_id == ^user_id)
+    user = conn.assigns.current_user
+    user_id = user.id
+    all_cars = Repo.all(from c in Car, where: c.user_id == ^user_id)
+
+    cars =
+      if lite_edition?(user_id) do
+        selected = Enum.find(all_cars, fn c -> c.id == user.selected_car_id end) || List.first(all_cars)
+        if selected, do: [selected], else: []
+      else
+        all_cars
+      end
 
     result =
       Enum.map(cars, fn car ->
@@ -72,6 +82,23 @@ defmodule MaritesWeb.API.V1.VehiclesController do
       end)
 
     json(conn, result)
+  end
+
+  def select_vehicle(conn, %{"car_id" => car_id_raw}) do
+    user_id = conn.assigns.current_user.id
+
+    with {car_id, _} <- Integer.parse(to_string(car_id_raw)),
+         true <- Repo.exists?(from c in Car, where: c.id == ^car_id and c.user_id == ^user_id) do
+      Accounts.update_selected_car(user_id, car_id)
+      json(conn, %{ok: true})
+    else
+      _ -> conn |> put_status(400) |> json(%{error: "invalid car_id"})
+    end
+  end
+
+  defp lite_edition?(user_id) do
+    not TokenStore.any_core_token?(user_id) and
+      TokenStore.tokens_for_user(user_id, "lite") != []
   end
 
   defp pos_field(nil, _field), do: nil

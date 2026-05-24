@@ -91,6 +91,7 @@ defmodule MaritesWeb.Router do
     pipe_through [:api, :authenticated]
 
     get    "/account/me",             AccountController,       :me
+    put    "/account/vehicle",        VehiclesController,      :select_vehicle
     delete "/account/data",           AccountController,       :delete_data
     delete "/account",                AccountController,       :delete_account
 
