@@ -4,11 +4,12 @@ defmodule MaritesWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_Marites_key",
-    signing_salt: "yt5O3CAQ",
+    signing_salt: Application.compile_env!(:marites, :session_signing_salt),
     same_site: "Strict"
   ]
 
   plug MaritesWeb.HealthCheck
+  plug MaritesWeb.Plugs.SecurityHeaders
 
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options], transport_log: :debug]
@@ -19,8 +20,6 @@ defmodule MaritesWeb.Endpoint do
     encodings: [{"zstd", ".zst"}, {"br", ".br"}, {"gzip", ".gz"}],
     only: MaritesWeb.static_paths()
 
-  # Code reloading can be explicitly enabled under the
-  # :code_reloader configuration of your endpoint.
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader

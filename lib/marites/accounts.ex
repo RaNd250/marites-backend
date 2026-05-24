@@ -85,8 +85,12 @@ defmodule Marites.Accounts do
 
   def revoke_user(user_id) do
     case Repo.get(User, user_id) do
-      nil -> {:error, :not_found}
-      user -> Repo.update(Ecto.Changeset.change(user, active: false))
+      nil ->
+        {:error, :not_found}
+
+      user ->
+        Repo.delete_all(from r in RefreshToken, where: r.user_id == ^user_id)
+        Repo.update(Ecto.Changeset.change(user, active: false))
     end
   end
 
