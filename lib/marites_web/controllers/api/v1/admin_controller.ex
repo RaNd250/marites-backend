@@ -9,7 +9,7 @@ defmodule MaritesWeb.API.V1.AdminController do
 
     case Accounts.create_invite_code(admin_id) do
       {:ok, invite} -> json(conn, %{code: invite.code})
-      {:error, cs} -> conn |> put_status(422) |> json(%{error: inspect(cs.errors)})
+      {:error, _cs} -> conn |> put_status(422) |> json(%{error: "could not create invite"})
     end
   end
 
@@ -47,7 +47,7 @@ defmodule MaritesWeb.API.V1.AdminController do
     case Accounts.revoke_user(String.to_integer(id)) do
       {:ok, _} -> json(conn, %{ok: true})
       {:error, :not_found} -> conn |> put_status(404) |> json(%{error: "not found"})
-      {:error, cs} -> conn |> put_status(422) |> json(%{error: inspect(cs.errors)})
+      {:error, _cs} -> conn |> put_status(422) |> json(%{error: "could not revoke user"})
     end
   end
 

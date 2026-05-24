@@ -6,14 +6,19 @@ defmodule MaritesWeb.TeslaOAuthController do
 
   @scope "openid email offline_access vehicle_device_data vehicle_cmds vehicle_charging_cmds vehicle_location"
   @state_ttl_seconds 600
+  @allowed_redirect_schemes ~w(es.marit.app://auth-callback es.marit.lite://auth-callback)
 
   def authorize(conn, params) do
     code_verifier = :crypto.strong_rand_bytes(32) |> Base.url_encode64(padding: false)
     code_challenge = :crypto.hash(:sha256, code_verifier) |> Base.url_encode64(padding: false)
 
-    # Optional: mobile apps pass redirect_scheme=es.marit.lite://auth-callback
-    # to receive tokens via a deep-link instead of the web redirect.
-    redirect_scheme = Map.get(params, "redirect_scheme")
+    # Mobile apps pass redirect_scheme to receive tokens via deep-link.
+    # Only allowlisted schemes are accepted to prevent open redirect / token exfiltration.
+    redirect_scheme =
+      case Map.get(params, "redirect_scheme") do
+        scheme when scheme in @allowed_redirect_schemes -> scheme
+        _ -> nil
+      end
     state = build_state(code_verifier, redirect_scheme)
 
     auth_host = System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
@@ -60,7 +65,7 @@ defmodule MaritesWeb.TeslaOAuthController do
       {:error, reason} ->
         require Logger
         Logger.error("Tesla OAuth callback failed: #{inspect(reason)}")
-        conn |> put_status(502) |> text("Sign-in failed: #{inspect(reason)}")
+        conn |> put_status(502) |> text("Sign-in failed. Please try again.")
 
       other ->
         require Logger
@@ -110,8 +115,10 @@ defmodule MaritesWeb.TeslaOAuthController do
   end
 
   defp hmac_sign(data) do
-    secret = Application.fetch_env!(:marites, :jwt_secret)
-    :crypto.mac(:hmac, :sha256, secret, data) |> Base.url_encode64(padding: false)
+    jwt_secret = Application.fetch_env!(:marites, :jwt_secret)
+    # Derive a separate key for OAuth state to avoid cross-protocol key reuse
+    state_key = :crypto.mac(:hmac, :sha256, jwt_secret, "marites-oauth-state-v1")
+    :crypto.mac(:hmac, :sha256, state_key, data) |> Base.url_encode64(padding: false)
   end
 
   # --- Token exchange & userinfo ---
