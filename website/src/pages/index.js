@@ -17,8 +17,8 @@ const MissingItem = ({ text }) => (
 export default function Home() {
   return (
     <Layout
-      title="marit.es — Tesla monitoring for Android"
-      description="Advanced Tesla sentry monitoring, drive history, charge tracking and vehicle control for Android."
+      title="marit.es — Never Miss What Your Tesla Sees"
+      description="Never Miss What Your Tesla Sees — Advanced Tesla sentry monitoring, drive history, charge tracking and vehicle control for Android."
       noFooter
     >
       <main style={{
@@ -80,7 +80,10 @@ export default function Home() {
             }}>
               Marites knows what your Tesla<br />did last night.
             </h1>
-            <p style={{ color: "#6b7280", fontSize: 16, maxWidth: 480, margin: "0 0 28px", lineHeight: 1.6 }}>
+            <p style={{ color: "#9ca3af", fontSize: 15, fontWeight: 600, margin: "0 0 8px", letterSpacing: "0.2px" }}>
+              Never Miss What Your Tesla Sees
+            </p>
+            <p style={{ color: "#6b7280", fontSize: 15, maxWidth: 480, margin: "0 0 28px", lineHeight: 1.6 }}>
               Advanced sentry monitoring, drive &amp; charge history,
               vehicle control and real-time alerts — on your Android phone.
             </p>

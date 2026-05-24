@@ -1,6 +1,6 @@
 module.exports = {
   title: "marit.es",
-  tagline: "Self-hosted Tesla monitoring for your Android phone",
+  tagline: "Never Miss What Your Tesla Sees",
   url: "https://app.marit.es",
   baseUrl: "/",
   favicon: "img/logo.png",
