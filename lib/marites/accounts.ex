@@ -78,6 +78,11 @@ defmodule Marites.Accounts do
     Repo.all(from u in User, order_by: [asc: u.inserted_at])
   end
 
+  def update_selected_car(user_id, car_id) do
+    Repo.update_all(from(u in User, where: u.id == ^user_id), set: [selected_car_id: car_id])
+    :ok
+  end
+
   def revoke_user(user_id) do
     case Repo.get(User, user_id) do
       nil -> {:error, :not_found}
