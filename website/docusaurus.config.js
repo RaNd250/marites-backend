@@ -3,7 +3,7 @@ module.exports = {
   tagline: "Self-hosted Tesla monitoring for your Android phone",
   url: "https://app.marit.es",
   baseUrl: "/",
-  favicon: "img/favicon.ico",
+  favicon: "img/logo.png",
   organizationName: "RaNd250",
   projectName: "marites",
   themeConfig: {

@@ -9,7 +9,7 @@
   --ifm-background-color: #0a0a0f;
   --ifm-background-surface-color: #111113;
   --ifm-navbar-background-color: #0a0a0f;
-  --ifm-navbar-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  --ifm-navbar-shadow: none;
   --ifm-code-font-size: 95%;
 }
 
@@ -18,6 +18,11 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: #111113;
 }
 
-.navbar__brand {
-  gap: 0;
+/* Hide navbar entirely */
+.navbar {
+  display: none !important;
+}
+
+.main-wrapper {
+  padding-top: 0 !important;
 }

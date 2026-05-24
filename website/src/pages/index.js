@@ -2,190 +2,221 @@ import React from "react";
 import Layout from "@theme/Layout";
 
 const FeatureItem = ({ icon, text }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#9ca3af", fontSize: 14 }}>
-    <span style={{ color: "#7c3aed", fontSize: 16 }}>{icon}</span>
+  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#9ca3af", fontSize: 13 }}>
+    <span style={{ color: "#7c3aed", fontSize: 14, flexShrink: 0 }}>{icon}</span>
     {text}
   </div>
 );
 
 const MissingItem = ({ text }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#4b5563", fontSize: 14 }}>
-    <span style={{ fontSize: 16 }}>✗</span> {text}
+  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#374151", fontSize: 13 }}>
+    <span style={{ fontSize: 14, flexShrink: 0 }}>✗</span> {text}
   </div>
 );
 
 export default function Home() {
   return (
-    <Layout title="marit.es — Tesla monitoring for Android" description="Advanced Tesla sentry monitoring, drive history, charge tracking and vehicle control for Android.">
-      <main style={{ background: "#0a0a0f", minHeight: "100vh" }}>
+    <Layout
+      title="marit.es — Tesla monitoring for Android"
+      description="Advanced Tesla sentry monitoring, drive history, charge tracking and vehicle control for Android."
+      noFooter
+    >
+      <main style={{
+        background: "#0a0a0f",
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "hidden",
+      }}>
 
-        {/* Hero */}
-        <section style={{
-          display: "flex", flexDirection: "column", alignItems: "center",
-          padding: "72px 24px 56px", textAlign: "center",
-        }}>
-          <img src="img/logo.png" alt="marit.es" style={{ width: 140, marginBottom: 28, borderRadius: 16 }} />
+        {/* Background logo watermark */}
+        <div style={{
+          position: "fixed",
+          top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "min(600px, 90vw)",
+          height: "min(600px, 90vw)",
+          backgroundImage: "url(/img/logo.png)",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          opacity: 0.04,
+          pointerEvents: "none",
+          zIndex: 0,
+        }} />
 
-          <h1 style={{ color: "#fff", fontSize: 40, fontWeight: 800, margin: "0 0 12px", letterSpacing: "-0.5px", lineHeight: 1.15 }}>
-            Marites knows what your<br />Tesla did last night.
-          </h1>
-          <p style={{ color: "#6b7280", fontSize: 18, maxWidth: 540, margin: "0 0 10px", lineHeight: 1.6 }}>
-            Advanced sentry monitoring, drive &amp; charge history, vehicle control
-            and real-time alerts — all on your Android phone.
-          </p>
-          <p style={{ color: "#4b5563", fontSize: 14, margin: "0 0 16px" }}>
-            Available for free and as a full-featured edition on Google Play.
-          </p>
+        <div style={{ position: "relative", zIndex: 1 }}>
 
-          <a
-            href="https://app.marit.es"
-            style={{
-              display: "inline-block", background: "#e31937", color: "#fff",
-              fontWeight: 700, padding: "14px 36px", borderRadius: 8,
-              textDecoration: "none", fontSize: 16, marginBottom: 56,
-            }}
-          >
-            Open App
-          </a>
-
-          {/* Download cards */}
-          <div style={{
-            display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center",
-            width: "100%", maxWidth: 760,
+          {/* Header */}
+          <header style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "16px 28px",
           }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <img src="/img/logo.png" alt="marit.es" style={{ width: 32, height: 32, borderRadius: 6 }} />
+              <span style={{ color: "#fff", fontWeight: 800, fontSize: 16, letterSpacing: "-0.3px" }}>
+                marit<span style={{ color: "#e31937" }}>.es</span>
+              </span>
+            </div>
+            <a
+              href="https://app.marit.es"
+              style={{
+                background: "#e31937", color: "#fff", fontWeight: 700,
+                padding: "8px 20px", borderRadius: 6, textDecoration: "none", fontSize: 13,
+              }}
+            >
+              Open App →
+            </a>
+          </header>
 
-            {/* Core */}
-            <div style={{
-              flex: "1 1 320px", maxWidth: 360,
-              background: "#111113",
-              border: "1px solid rgba(124,58,237,0.4)",
-              borderRadius: 16, padding: "28px 28px 24px",
-              display: "flex", flexDirection: "column", gap: 16,
+          {/* Hero */}
+          <section style={{
+            display: "flex", flexDirection: "column", alignItems: "center",
+            padding: "32px 24px 28px", textAlign: "center",
+          }}>
+            <h1 style={{
+              color: "#fff", fontSize: "clamp(26px, 5vw, 38px)",
+              fontWeight: 800, margin: "0 0 10px", letterSpacing: "-0.5px", lineHeight: 1.15,
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: "rgba(124,58,237,0.15)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 22,
-                }}>🚗</div>
-                <div>
-                  <div style={{ color: "#fff", fontWeight: 700, fontSize: 18 }}>marit.es Core</div>
-                  <div style={{ color: "#7c3aed", fontSize: 12, fontWeight: 600 }}>Full experience</div>
-                </div>
-              </div>
+              Marites knows what your Tesla<br />did last night.
+            </h1>
+            <p style={{ color: "#6b7280", fontSize: 16, maxWidth: 480, margin: "0 0 28px", lineHeight: 1.6 }}>
+              Advanced sentry monitoring, drive &amp; charge history,
+              vehicle control and real-time alerts — on your Android phone.
+            </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <FeatureItem icon="📍" text="Drive history &amp; live map" />
-                <FeatureItem icon="⚡" text="Charge history &amp; stats" />
-                <FeatureItem icon="🛡" text="Sentry mode control &amp; alerts" />
-                <FeatureItem icon="📊" text="Battery health &amp; statistics" />
-                <FeatureItem icon="🔑" text="Honk, flash &amp; vehicle commands" />
-                <FeatureItem icon="🔔" text="Push notifications" />
-                <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
-              </div>
-
-              <a
-                href="https://play.google.com/store/apps/details?id=es.marit.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none", marginTop: 4 }}
-              >
-                <div style={{
-                  background: "#7c3aed",
-                  borderRadius: 10, padding: "12px 0",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: 8, color: "#fff", fontWeight: 600, fontSize: 14,
-                  cursor: "pointer",
-                }}>
-                  <span>▶</span> Get Core on Google Play
-                </div>
-              </a>
-            </div>
-
-            {/* Lite */}
+            {/* Download cards */}
             <div style={{
-              flex: "1 1 320px", maxWidth: 360,
-              background: "#111113",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 16, padding: "28px 28px 24px",
-              display: "flex", flexDirection: "column", gap: 16,
+              display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center",
+              width: "100%", maxWidth: 740,
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: "rgba(74,222,128,0.10)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 22,
-                }}>🟢</div>
+
+              {/* Core */}
+              <div style={{
+                flex: "1 1 300px", maxWidth: 350,
+                background: "#111113",
+                border: "1px solid rgba(124,58,237,0.4)",
+                borderRadius: 14, padding: "22px 22px 18px",
+                display: "flex", flexDirection: "column", gap: 14,
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 9,
+                    background: "rgba(124,58,237,0.15)",
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+                  }}>🚗</div>
+                  <div>
+                    <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Core</div>
+                    <div style={{ color: "#7c3aed", fontSize: 11, fontWeight: 600 }}>Full experience</div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <FeatureItem icon="📍" text="Drive history &amp; live map" />
+                  <FeatureItem icon="⚡" text="Charge history &amp; stats" />
+                  <FeatureItem icon="🛡" text="Sentry mode control &amp; alerts" />
+                  <FeatureItem icon="📊" text="Battery health &amp; statistics" />
+                  <FeatureItem icon="🔑" text="Honk, flash &amp; vehicle commands" />
+                  <FeatureItem icon="🔔" text="Push notifications" />
+                  <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
+                </div>
+                <a
+                  href="https://play.google.com/store/apps/details?id=es.marit.app"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <div style={{
+                    background: "#7c3aed", borderRadius: 8, padding: "11px 0",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    gap: 8, color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer",
+                  }}>
+                    ▶ Get Core on Google Play
+                  </div>
+                </a>
+              </div>
+
+              {/* Lite */}
+              <div style={{
+                flex: "1 1 300px", maxWidth: 350,
+                background: "#111113",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 14, padding: "22px 22px 18px",
+                display: "flex", flexDirection: "column", gap: 14,
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 9,
+                    background: "rgba(74,222,128,0.10)",
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+                  }}>🟢</div>
+                  <div>
+                    <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Lite</div>
+                    <div style={{ color: "#4ade80", fontSize: 11, fontWeight: 600 }}>Free · Sentry focus</div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <FeatureItem icon="🛡" text="Sentry ON / OFF control" />
+                  <FeatureItem icon="🔋" text="Live battery &amp; vehicle status" />
+                  <FeatureItem icon="🔔" text="Sentry push notifications" />
+                  <FeatureItem icon="✅" text="Free — no subscription" />
+                  <MissingItem text="No drive/charge history" />
+                  <MissingItem text="No stats or commands" />
+                </div>
+                <a
+                  href="https://play.google.com/store/apps/details?id=es.marit.lite"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <div style={{
+                    background: "rgba(74,222,128,0.12)",
+                    border: "1px solid rgba(74,222,128,0.3)",
+                    borderRadius: 8, padding: "11px 0",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    gap: 8, color: "#4ade80", fontWeight: 600, fontSize: 13, cursor: "pointer",
+                  }}>
+                    ▶ Get Lite on Google Play
+                  </div>
+                </a>
+              </div>
+
+            </div>
+          </section>
+
+          {/* Features strip — compact 3-col */}
+          <section style={{
+            maxWidth: 740, margin: "0 auto", padding: "0 20px 24px",
+            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12,
+          }}>
+            {[
+              { icon: "📡", title: "Real-time telemetry", body: "Live status, battery and location." },
+              { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts on any activity." },
+              { icon: "🗺", title: "Drive history", body: "Every trip with route, energy and stats." },
+              { icon: "⚡", title: "Charge tracking", body: "Cost, energy and time per session." },
+              { icon: "🔔", title: "Alarm response", body: "Auto honk &amp; flash when alarm triggers." },
+              { icon: "📅", title: "Scheduling", body: "Sentry on a schedule you control." },
+            ].map(({ icon, title, body }) => (
+              <div key={title} style={{
+                background: "#111113", borderRadius: 10, padding: "14px 16px",
+                display: "flex", gap: 10, alignItems: "flex-start",
+              }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
                 <div>
-                  <div style={{ color: "#fff", fontWeight: 700, fontSize: 18 }}>marit.es Lite</div>
-                  <div style={{ color: "#4ade80", fontSize: 12, fontWeight: 600 }}>Free · Sentry focus</div>
+                  <div style={{ color: "#fff", fontWeight: 700, fontSize: 12, marginBottom: 2 }}>{title}</div>
+                  <div style={{ color: "#6b7280", fontSize: 11, lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: body }} />
                 </div>
               </div>
+            ))}
+          </section>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <FeatureItem icon="🛡" text="Sentry ON / OFF control" />
-                <FeatureItem icon="🔋" text="Live battery &amp; vehicle status" />
-                <FeatureItem icon="🔔" text="Sentry push notifications" />
-                <FeatureItem icon="✅" text="Free — no subscription" />
-                <MissingItem text="No drive/charge history" />
-                <MissingItem text="No stats or commands" />
-              </div>
+          {/* Footer */}
+          <footer style={{
+            padding: "12px 24px 24px", textAlign: "center",
+            display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap",
+          }}>
+            <a href="/privacy" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Privacy Policy</a>
+            <a href="/terms" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Terms of Service</a>
+            <a href="mailto:admin@marit.es" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Contact</a>
+          </footer>
 
-              <a
-                href="https://play.google.com/store/apps/details?id=es.marit.lite"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none", marginTop: 4 }}
-              >
-                <div style={{
-                  background: "rgba(74,222,128,0.12)",
-                  border: "1px solid rgba(74,222,128,0.3)",
-                  borderRadius: 10, padding: "12px 0",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: 8, color: "#4ade80", fontWeight: 600, fontSize: 14,
-                  cursor: "pointer",
-                }}>
-                  <span>▶</span> Get Lite on Google Play
-                </div>
-              </a>
-            </div>
-
-          </div>
-        </section>
-
-        {/* Features strip */}
-        <section style={{
-          maxWidth: 760, margin: "0 auto", padding: "0 24px 64px",
-          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24,
-        }}>
-          {[
-            { icon: "📡", title: "Real-time telemetry", body: "Live vehicle status, battery level and location — always up to date." },
-            { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts when sentry detects activity. Review events from anywhere." },
-            { icon: "🗺", title: "Drive history", body: "Every trip logged with route map, energy used and efficiency stats." },
-            { icon: "⚡", title: "Charge tracking", body: "Full charge history with cost, energy added and time at each session." },
-            { icon: "🔔", title: "Alarm response", body: "Automatic honk and flash when your Tesla alarm triggers." },
-            { icon: "📅", title: "Scheduling", body: "Set sentry to activate automatically on a schedule you control." },
-          ].map(({ icon, title, body }) => (
-            <div key={title} style={{ background: "#111113", borderRadius: 12, padding: "20px 20px 18px" }}>
-              <div style={{ fontSize: 26, marginBottom: 8 }}>{icon}</div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, marginBottom: 6 }}>{title}</div>
-              <div style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.6 }}>{body}</div>
-            </div>
-          ))}
-        </section>
-
-        {/* Footer links */}
-        <section style={{
-          maxWidth: 760, margin: "0 auto", padding: "0 24px 56px",
-          textAlign: "center", display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap",
-        }}>
-          <a href="/privacy" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Privacy Policy</a>
-          <a href="/terms" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Terms of Service</a>
-          <a href="mailto:admin@marit.es" style={{ color: "#4b5563", fontSize: 13, textDecoration: "none" }}>Contact</a>
-        </section>
-
+        </div>
       </main>
     </Layout>
   );
