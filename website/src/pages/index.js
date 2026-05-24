@@ -58,6 +58,8 @@ export default function Home() {
             </div>
             <a
               href="https://app.marit.es"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 background: "#e31937", color: "#fff", fontWeight: 700,
                 padding: "8px 20px", borderRadius: 6, textDecoration: "none", fontSize: 13,
