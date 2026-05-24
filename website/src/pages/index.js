@@ -28,18 +28,17 @@ export default function Home() {
         overflow: "hidden",
       }}>
 
-        {/* Background logo watermark */}
+        {/* Background blurred image */}
         <div style={{
           position: "fixed",
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "min(600px, 90vw)",
-          height: "min(600px, 90vw)",
-          backgroundImage: "url(/img/logo.png)",
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url(/img/bg.png)",
+          backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.04,
+          backgroundRepeat: "no-repeat",
+          opacity: 0.12,
+          filter: "blur(32px)",
+          transform: "scale(1.05)",
           pointerEvents: "none",
           zIndex: 0,
         }} />
