@@ -150,15 +150,16 @@ export default function Home() {
                   }}>🟢</div>
                   <div>
                     <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Lite</div>
-                    <div style={{ color: "#4ade80", fontSize: 11, fontWeight: 600 }}>Free · Sentry focus</div>
+                    <div style={{ color: "#4ade80", fontSize: 11, fontWeight: 600 }}>Free · 1 vehicle · 7-day history</div>
                   </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <FeatureItem icon="🚗" text="1 vehicle" />
                   <FeatureItem icon="🛡" text="Sentry ON / OFF control" />
                   <FeatureItem icon="🔋" text="Live battery &amp; vehicle status" />
                   <FeatureItem icon="🔔" text="Sentry push notifications" />
+                  <FeatureItem icon="📅" text="Drive &amp; charge history (7 days)" />
                   <FeatureItem icon="✅" text="Free — no subscription" />
-                  <MissingItem text="No drive/charge history" />
                   <MissingItem text="No stats or commands" />
                 </div>
                 <a
