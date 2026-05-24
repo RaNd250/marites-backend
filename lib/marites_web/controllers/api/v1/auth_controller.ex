@@ -75,8 +75,8 @@ defmodule MaritesWeb.API.V1.AuthController do
           user: %{id: user.id, email: user.email, admin: user.admin}
         })
 
-      {:error, reason} ->
-        conn |> put_status(401) |> json(%{error: to_string(reason)})
+      {:error, _reason} ->
+        conn |> put_status(401) |> json(%{error: "invalid or expired refresh token"})
     end
   end
 

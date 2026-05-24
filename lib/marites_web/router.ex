@@ -70,15 +70,9 @@ defmodule MaritesWeb.Router do
     end
   end
 
-  scope "/api", MaritesWeb do
-    pipe_through :api
-    put "/car/:id/logging/resume", CarController, :resume_logging
-    put "/car/:id/logging/suspend", CarController, :suspend_logging
-  end
-
   # ---- Public auth endpoints (no JWT required) ----
   scope "/api/v1/auth", MaritesWeb.API.V1 do
-    pipe_through :api
+    pipe_through [:api]
 
     post   "/register", AuthController, :register
     post   "/login",    AuthController, :login
@@ -96,6 +90,8 @@ defmodule MaritesWeb.Router do
     delete "/account",                AccountController,       :delete_account
 
     get    "/vehicles/status",        VehiclesController,      :status
+    put    "/vehicles/:car_id/logging/suspend", VehiclesController, :suspend_logging
+    put    "/vehicles/:car_id/logging/resume",  VehiclesController, :resume_logging
     get    "/drives",                 DrivesController,        :index
     get    "/drives/:id",             DrivesController,        :show
     get    "/charges",                ChargesController,       :index
@@ -124,13 +120,6 @@ defmodule MaritesWeb.Router do
     get  "/users",                      AdminController, :list_users
     put  "/users/:id/revoke",           AdminController, :revoke_user
     post "/fleet_telemetry/register",   AdminController, :register_fleet_telemetry
-  end
-
-  scope "/api/v1/vehicles" do
-    pipe_through [:api, :authenticated]
-
-    get "/", MaritesWeb.API.V1.VehiclesController, :index
-    get "/:id", MaritesWeb.API.V1.VehiclesController, :show
   end
 
   def fetch_settings(conn, _opts) do

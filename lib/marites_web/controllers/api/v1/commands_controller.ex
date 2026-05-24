@@ -72,7 +72,9 @@ defmodule MaritesWeb.API.V1.CommandsController do
               |> json(%{error: "command_unauthorized", pairing_url: pairing_url})
 
             {:error, reason} ->
-              conn |> put_status(500) |> json(%{error: inspect(reason)})
+              require Logger
+              Logger.error("Command #{command} failed for car #{car_id}: #{inspect(reason)}")
+              conn |> put_status(500) |> json(%{error: "command failed"})
           end
         end
     end
@@ -82,10 +84,8 @@ defmodule MaritesWeb.API.V1.CommandsController do
     do: conn |> put_status(400) |> json(%{error: "unknown command"})
 
   defp set_virtual_key_paired(car_id, value) do
-    case Repo.get(Car, car_id) do
-      nil -> :ok
-      car -> car |> Ecto.Changeset.change(virtual_key_paired: value) |> Repo.update()
-    end
+    Repo.update_all(from(c in Car, where: c.id == ^car_id), set: [virtual_key_paired: value])
+    :ok
   end
 
   defp map_command("sentry_on"),    do: {"set_sentry_mode", %{"on" => true}}
