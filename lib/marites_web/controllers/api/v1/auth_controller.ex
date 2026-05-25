@@ -3,6 +3,7 @@ defmodule MaritesWeb.API.V1.AuthController do
 
   alias Marites.Accounts
   alias Marites.Auth.JWT
+  alias Marites.AuditLogger
 
   def register(conn, params) do
     email = params["email"]
@@ -21,6 +22,7 @@ defmodule MaritesWeb.API.V1.AuthController do
           {:ok, user} ->
             {:ok, access_token} = JWT.generate_access_token(user)
             {:ok, refresh_token} = Accounts.create_refresh_token(user.id)
+            AuditLogger.log(conn, "auth.register", result: "ok", metadata: %{email: email})
 
             conn
             |> put_status(:created)
@@ -31,10 +33,12 @@ defmodule MaritesWeb.API.V1.AuthController do
             })
 
           {:error, :invalid_invite} ->
+            AuditLogger.log(conn, "auth.register", result: "fail", metadata: %{email: email, reason: "invalid_invite"})
             conn |> put_status(422) |> json(%{error: "Invalid or already-used invite code"})
 
           {:error, %Ecto.Changeset{} = cs} ->
             errors = Ecto.Changeset.traverse_errors(cs, fn {msg, _} -> msg end)
+            AuditLogger.log(conn, "auth.register", result: "fail", metadata: %{email: email, reason: "validation"})
             conn |> put_status(422) |> json(%{error: errors})
         end
     end
@@ -45,6 +49,7 @@ defmodule MaritesWeb.API.V1.AuthController do
       {:ok, user} ->
         {:ok, access_token} = JWT.generate_access_token(user)
         {:ok, refresh_token} = Accounts.create_refresh_token(user.id)
+        AuditLogger.log(conn, "auth.login", result: "ok", metadata: %{email: email})
 
         json(conn, %{
           access_token: access_token,
@@ -53,9 +58,11 @@ defmodule MaritesWeb.API.V1.AuthController do
         })
 
       {:error, :invalid_credentials} ->
+        AuditLogger.log(conn, "auth.login", result: "fail", metadata: %{email: email, reason: "invalid_credentials"})
         conn |> put_status(401) |> json(%{error: "Invalid email or password"})
 
       {:error, :account_inactive} ->
+        AuditLogger.log(conn, "auth.login", result: "fail", metadata: %{email: email, reason: "account_inactive"})
         conn |> put_status(403) |> json(%{error: "Account has been deactivated"})
     end
   end
@@ -84,6 +91,7 @@ defmodule MaritesWeb.API.V1.AuthController do
 
   def logout(conn, %{"refresh_token" => raw_token}) do
     Accounts.revoke_refresh_token(raw_token)
+    AuditLogger.log(conn, "auth.logout")
     json(conn, %{ok: true})
   end
 
