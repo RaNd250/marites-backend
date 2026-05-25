@@ -120,6 +120,7 @@ defmodule MaritesWeb.Router do
     get  "/users",                      AdminController, :list_users
     put  "/users/:id/revoke",           AdminController, :revoke_user
     post "/fleet_telemetry/register",   AdminController, :register_fleet_telemetry
+    get  "/audit_logs",                 AdminController, :list_audit_logs
   end
 
   def fetch_settings(conn, _opts) do

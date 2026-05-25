@@ -3,6 +3,7 @@ defmodule MaritesWeb.API.V1.AccountController do
 
   alias Marites.Accounts
   alias Marites.FCM.TokenStore
+  alias Marites.AuditLogger
 
   def me(conn, _params) do
     user = conn.assigns.current_user
@@ -37,6 +38,7 @@ defmodule MaritesWeb.API.V1.AccountController do
   def delete_account(conn, %{"refresh_token" => raw_token}) do
     user_id = conn.assigns.current_user.id
     Accounts.revoke_refresh_token(raw_token)
+    AuditLogger.log(conn, "account.delete")
 
     case Accounts.delete_account(user_id) do
       {:ok, _} -> json(conn, %{ok: true})
@@ -46,6 +48,7 @@ defmodule MaritesWeb.API.V1.AccountController do
 
   def delete_account(conn, _params) do
     user_id = conn.assigns.current_user.id
+    AuditLogger.log(conn, "account.delete")
 
     case Accounts.delete_account(user_id) do
       {:ok, _} -> json(conn, %{ok: true})

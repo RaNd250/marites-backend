@@ -3,6 +3,7 @@ defmodule MaritesWeb.API.V1.AdminController do
 
   alias Marites.Accounts
   alias Marites.FleetTelemetry.Registrar
+  alias Marites.AuditLogger
 
   def create_invite(conn, _params) do
     admin_id = conn.assigns.current_user.id
@@ -44,11 +45,60 @@ defmodule MaritesWeb.API.V1.AdminController do
   end
 
   def revoke_user(conn, %{"id" => id}) do
-    case Accounts.revoke_user(String.to_integer(id)) do
-      {:ok, _} -> json(conn, %{ok: true})
-      {:error, :not_found} -> conn |> put_status(404) |> json(%{error: "not found"})
-      {:error, _cs} -> conn |> put_status(422) |> json(%{error: "could not revoke user"})
+    target_id = String.to_integer(id)
+
+    case Accounts.revoke_user(target_id) do
+      {:ok, _} ->
+        AuditLogger.log(conn, "admin.revoke_user", metadata: %{target_user_id: target_id})
+        json(conn, %{ok: true})
+
+      {:error, :not_found} ->
+        conn |> put_status(404) |> json(%{error: "not found"})
+
+      {:error, _cs} ->
+        conn |> put_status(422) |> json(%{error: "could not revoke user"})
     end
+  end
+
+  def list_audit_logs(conn, params) do
+    import Ecto.Query
+    alias Marites.{AuditLog, Repo}
+
+    limit  = min(String.to_integer(params["limit"]  || "100"), 500)
+    offset = String.to_integer(params["offset"] || "0")
+
+    query =
+      from l in AuditLog,
+        order_by: [desc: l.inserted_at],
+        limit: ^limit,
+        offset: ^offset
+
+    query =
+      case params["action"] do
+        nil -> query
+        a   -> where(query, [l], l.action == ^a)
+      end
+
+    query =
+      case params["user_id"] do
+        nil -> query
+        uid -> where(query, [l], l.user_id == ^String.to_integer(uid))
+      end
+
+    logs = Repo.all(query)
+
+    json(conn, Enum.map(logs, fn l ->
+      %{
+        id:          l.id,
+        user_id:     l.user_id,
+        action:      l.action,
+        ip:          l.ip,
+        vin:         l.vin,
+        result:      l.result,
+        metadata:    l.metadata,
+        inserted_at: l.inserted_at
+      }
+    end))
   end
 
   def register_fleet_telemetry(conn, _params) do
