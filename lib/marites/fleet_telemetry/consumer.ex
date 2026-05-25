@@ -6,13 +6,13 @@ defmodule Marites.FleetTelemetry.Consumer do
   alias Marites.Log.Car
 
   @field_map %{
-    Soc:          :soc,
-    ShiftState:   :shift_state,
-    ChargeState:  :charge_state,
-    SentryMode:   :sentry_mode,
-    VehicleSpeed: :speed,
-    Odometer:     :odometer,
-    Location:     :location
+    Soc:                 :soc,
+    Gear:                :shift_state,
+    DetailedChargeState: :charge_state,
+    SentryMode:          :sentry_mode,
+    VehicleSpeed:        :speed,
+    Odometer:            :odometer,
+    Location:            :location
   }
 
   # --- Public API ---
@@ -108,5 +108,28 @@ defmodule Marites.FleetTelemetry.Consumer do
   defp unwrap_value(%Marites.FleetTelemetry.Value{value: {:int_value, v}}),      do: v
   defp unwrap_value(%Marites.FleetTelemetry.Value{value: {:bool_value, v}}),     do: v
   defp unwrap_value(%Marites.FleetTelemetry.Value{value: {:location_value, v}}), do: v
+
+  defp unwrap_value(%Marites.FleetTelemetry.Value{value: {:shift_state_value, v}}) do
+    case v do
+      :ShiftStateD -> "D"
+      :ShiftStateR -> "R"
+      :ShiftStateN -> "N"
+      :ShiftStateP -> "P"
+      _ -> nil
+    end
+  end
+
+  defp unwrap_value(%Marites.FleetTelemetry.Value{value: {:detailed_charge_state_value, v}}) do
+    case v do
+      :DetailedChargeStateCharging     -> "Charging"
+      :DetailedChargeStateComplete     -> "Complete"
+      :DetailedChargeStateStopped      -> "Stopped"
+      :DetailedChargeStateStarting     -> "Starting"
+      :DetailedChargeStateDisconnected -> "Disconnected"
+      :DetailedChargeStateNoPower      -> "NoPower"
+      _ -> nil
+    end
+  end
+
   defp unwrap_value(_), do: nil
 end
