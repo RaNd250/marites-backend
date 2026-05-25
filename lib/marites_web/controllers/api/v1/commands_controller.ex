@@ -1,7 +1,7 @@
 defmodule MaritesWeb.API.V1.CommandsController do
   use MaritesWeb, :controller
 
-  alias Marites.{Api, Repo}
+  alias Marites.{Api, Repo, AuditLogger}
   alias Marites.Log.Car
   import Ecto.Query
 
@@ -33,12 +33,15 @@ defmodule MaritesWeb.API.V1.CommandsController do
           case Api.run_command(api_name, vin, tesla_cmd, body) do
             {:ok, _} ->
               set_virtual_key_paired(car_id, true)
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "ok")
               json(conn, %{ok: true})
 
             {:error, {:command_failed, reason}} ->
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "fail", metadata: %{reason: reason})
               conn |> put_status(422) |> json(%{error: reason})
 
             {:error, :vehicle_unavailable} ->
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "fail", metadata: %{reason: "vehicle_unavailable"})
               conn
               |> put_status(503)
               |> json(%{error: "vehicle is asleep — wake it from the Tesla app first"})
@@ -54,17 +57,20 @@ defmodule MaritesWeb.API.V1.CommandsController do
               |> json(%{error: "Tesla authentication expired — reconnecting, please try again in a moment"})
 
             {:error, :account_disabled} ->
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "fail", metadata: %{reason: "account_disabled"})
               conn
               |> put_status(503)
               |> json(%{error: "commands_unavailable", code: "MRT-ES403", message: "Action not available, please try later"})
 
             {:error, :missing_scope} ->
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "fail", metadata: %{reason: "missing_scope"})
               conn
               |> put_status(403)
               |> json(%{error: "missing_scope"})
 
             {:error, {:command_unauthorized, _}} ->
               set_virtual_key_paired(car_id, false)
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "fail", metadata: %{reason: "command_unauthorized"})
               pairing_url = "https://tesla.com/_ak/app.marit.es"
 
               conn
@@ -74,6 +80,7 @@ defmodule MaritesWeb.API.V1.CommandsController do
             {:error, reason} ->
               require Logger
               Logger.error("Command #{command} failed for car #{car_id}: #{inspect(reason)}")
+              AuditLogger.log(conn, "command.#{command}", vin: vin, result: "error", metadata: %{reason: inspect(reason)})
               conn |> put_status(500) |> json(%{error: "command failed"})
           end
         end
