@@ -6,14 +6,13 @@ defmodule Marites.FleetTelemetry.Registrar do
   import Ecto.Query
 
   @fields %{
-    "Location"     => %{"interval_seconds" => 10},
-    "Speed"        => %{"interval_seconds" => 10},
-    "Odometer"     => %{"interval_seconds" => 30},
-    "Soc"          => %{"interval_seconds" => 10},
-    "ChargeState"  => %{"interval_seconds" => 10},
-    "ShiftState"   => %{"interval_seconds" => 5},
-    "SentryMode"   => %{"interval_seconds" => 10},
-    "GearSelector" => %{"interval_seconds" => 5}
+    "Location"            => %{"interval_seconds" => 10},
+    "VehicleSpeed"        => %{"interval_seconds" => 10, "minimum_delta" => 1.0},
+    "Odometer"            => %{"interval_seconds" => 60, "minimum_delta" => 0.1},
+    "Soc"                 => %{"interval_seconds" => 30, "minimum_delta" => 1.0},
+    "DetailedChargeState" => %{"interval_seconds" => 10},
+    "Gear"                => %{"interval_seconds" => 5},
+    "SentryMode"          => %{"interval_seconds" => 10}
   }
 
   def register_all do
