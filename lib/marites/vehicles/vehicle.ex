@@ -163,7 +163,7 @@ defmodule Marites.Vehicles.Vehicle do
 
     deps = %{
       log: Keyword.get(opts, :deps_log, Log),
-      api: Keyword.get(opts, :deps_api, Api),
+      api: Keyword.get(opts, :deps_api, Marites.Api),
       settings: Keyword.get(opts, :deps_settings, Settings),
       locations: Keyword.get(opts, :deps_locations, Locations),
       vehicles: Keyword.get(opts, :deps_vehicles, Vehicles),
