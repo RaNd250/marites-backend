@@ -48,6 +48,7 @@ defmodule Marites.MixProject do
       {:ex_cldr_plugs, "~> 1.0"},
       {:excoveralls, "~> 0.18.5", only: :test},
       {:finch, "~> 0.20"},
+      {:fuse, "~> 2.5"},
       {:floki, "~> 0.38"},
       {:gen_state_machine, "~> 3.0"},
       # https://github.com/bitwalker/timex/pull/783

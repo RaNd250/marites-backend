@@ -2,9 +2,7 @@ defmodule MaritesWeb.SignInLive.Index do
   use MaritesWeb, :live_view
 
   import Core.Dependency, only: [call: 3]
-  alias Marites.{Auth, Api, Accounts}
-  alias Marites.Auth.JWT
-  alias TeslaApi.Auth, as: TeslaAuth
+  alias Marites.Auth
 
   on_mount {MaritesWeb.InitAssigns, :locale}
 
@@ -53,20 +51,12 @@ defmodule MaritesWeb.SignInLive.Index do
         Process.sleep(250)
         {:noreply, issue_marites_session(socket)}
 
-      {:error, %TeslaApi.Error{} = e} ->
+      {:error, reason} ->
         message =
-          case e.reason do
-            :token_refresh ->
-              gettext("Tokens are invalid")
-
-            :account_locked ->
-              gettext(
-                "Your Tesla account is locked due to too many failed sign in attempts. " <>
-                  "To unlock your account, reset your password"
-              )
-
-            _ ->
-              Exception.message(e)
+          case reason do
+            :token_refresh -> gettext("Tokens are invalid")
+            :account_locked -> gettext("Your Tesla account is locked due to too many failed sign in attempts. To unlock your account, reset your password")
+            _ -> inspect(reason)
           end
 
         {:noreply, assign(socket, error: message, task: nil)}
@@ -76,26 +66,13 @@ defmodule MaritesWeb.SignInLive.Index do
   defp get_api(socket) do
     case get_connect_params(socket) do
       %{api: api} -> api
-      _ -> Api
+      _ -> Auth
     end
   end
 
   defp issue_marites_session(socket) do
-    with {:ok, auth}        <- Api.get_auth(),
-         {:ok, userinfo}    <- TeslaAuth.get_userinfo(auth),
-         email              = Map.get(userinfo, "email") || Map.get(userinfo, :email),
-         true               <- is_binary(email),
-         {:ok, user}        <- Accounts.find_or_create_by_email(email),
-         {:ok, access_tok}  <- JWT.generate_access_token(user),
-         {:ok, refresh_tok} <- Accounts.create_refresh_token(user.id) do
-      params = URI.encode_query(%{marites_token: access_tok, marites_refresh: refresh_tok})
-      redirect(socket, external: "/?#{params}")
-    else
-      _ ->
-        # Fallback: Tesla auth succeeded but we couldn't issue a Marit.es JWT — go to legacy UI
-        socket
-        |> put_flash(:success, gettext("Signed in successfully"))
-        |> redirect(to: Routes.car_path(socket, :index))
-    end
+    socket
+    |> put_flash(:success, gettext("Signed in successfully"))
+    |> redirect(to: Routes.car_path(socket, :index))
   end
 end

@@ -4,7 +4,7 @@ defmodule Marites.Vehicles.Vehicle do
   require Logger
 
   alias __MODULE__.Summary
-  alias Marites.{Vehicles, Api, Log, Locations, Settings, Convert, Repo, Terrain}
+  alias Marites.{Vehicles, Log, Locations, Settings, Convert, Repo, Terrain}
   alias Marites.Settings.CarSettings
   alias Marites.Locations.GeoFence
   alias Marites.Log.Car
@@ -163,7 +163,7 @@ defmodule Marites.Vehicles.Vehicle do
 
     deps = %{
       log: Keyword.get(opts, :deps_log, Log),
-      api: Keyword.get(opts, :deps_api, Api),
+      api: Keyword.get(opts, :deps_api, Marites.Api),
       settings: Keyword.get(opts, :deps_settings, Settings),
       locations: Keyword.get(opts, :deps_locations, Locations),
       vehicles: Keyword.get(opts, :deps_vehicles, Vehicles),
@@ -183,7 +183,7 @@ defmodule Marites.Vehicles.Vehicle do
       import?: Keyword.get(opts, :import?, false)
     }
 
-    polling_mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    polling_mode = :full
     data = %{data | polling_mode: polling_mode}
     :ok = Phoenix.PubSub.subscribe(Marites.PubSub, "fcm_tokens/changed/#{car.user_id}")
 
@@ -674,7 +674,7 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{car: car} = data) do
-    mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    mode = :full
     {:keep_state, %{data | polling_mode: mode}}
   end
 
@@ -1809,8 +1809,7 @@ defmodule Marites.Vehicles.Vehicle do
       {:odometer, val}, acc when is_number(val) and acc.vehicle_state != nil ->
         %{acc | vehicle_state: %{acc.vehicle_state | odometer: val}}
 
-      {:location, %Marites.FleetTelemetry.Location{latitude: lat, longitude: lng}}, acc
-          when acc.drive_state != nil ->
+      {:location, %{latitude: lat, longitude: lng}}, acc when acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | latitude: lat, longitude: lng}}
 
       _, acc ->

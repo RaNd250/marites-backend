@@ -198,6 +198,3 @@ config :marites, Marites.Vault, key: Util.get_env("ENCRYPTION_KEY", test: "secre
 
 config :tzdata, :data_dir, System.get_env("TZDATA_DIR", "/tmp")
 
-config :marites, :jwt_secret,
-  System.get_env("JWT_SECRET") ||
-    raise("JWT_SECRET env var is not set")
