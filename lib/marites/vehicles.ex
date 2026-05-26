@@ -84,20 +84,7 @@ defmodule Marites.Vehicles do
   end
 
   defp list_vehicles! do
-    case Marites.Api.list_vehicles() do
-      {:error, :not_signed_in} ->
-        fallback_vehicles()
-
-      {:error, reason} ->
-        Logger.warning("Could not get vehicles: #{inspect(reason)}")
-        fallback_vehicles()
-
-      {:ok, []} ->
-        fallback_vehicles()
-
-      {:ok, vehicles} ->
-        vehicles
-    end
+    fallback_vehicles()
   end
 
   defp fallback_vehicles do

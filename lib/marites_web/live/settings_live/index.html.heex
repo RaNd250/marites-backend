@@ -406,7 +406,7 @@
   </div>
 </div>
 
-<%= if Marites.Api.signed_in?() and not Marites.Import.enabled?() do %>
+<%= if not Marites.Import.enabled?() do %>
   <div class="columns is-mobile is-centered">
     <div class="column is-narrow table-container">
       <button class="button is-text is-rounded" aria-label="sign out" phx-click="sign_out">
