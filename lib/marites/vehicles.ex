@@ -22,7 +22,10 @@ defmodule Marites.Vehicles do
       max_concurrency: 10,
       timeout: 5000
     )
-    |> Enum.map(fn {:ok, vehicle} -> vehicle end)
+    |> Enum.flat_map(fn
+      {:ok, vehicle} -> [vehicle]
+      _ -> []
+    end)
     |> Enum.sort_by(fn %Vehicle.Summary{car: %Car{id: id, display_priority: dp}} ->
       {dp, id}
     end)
@@ -84,20 +87,7 @@ defmodule Marites.Vehicles do
   end
 
   defp list_vehicles! do
-    case Marites.Api.list_vehicles() do
-      {:error, :not_signed_in} ->
-        fallback_vehicles()
-
-      {:error, reason} ->
-        Logger.warning("Could not get vehicles: #{inspect(reason)}")
-        fallback_vehicles()
-
-      {:ok, []} ->
-        fallback_vehicles()
-
-      {:ok, vehicles} ->
-        vehicles
-    end
+    fallback_vehicles()
   end
 
   defp fallback_vehicles do
