@@ -49,7 +49,6 @@ defmodule Marites.MixProject do
       {:excoveralls, "~> 0.18.5", only: :test},
       {:finch, "~> 0.20"},
       {:floki, "~> 0.38"},
-      {:fuse, "~> 2.5"},
       {:gen_state_machine, "~> 3.0"},
       # https://github.com/bitwalker/timex/pull/783
       {:gettext, "~> 1.0", override: true},
@@ -74,12 +73,8 @@ defmodule Marites.MixProject do
       {:tortoise311, "~> 0.12"},
       {:tzdata, "~> 1.1"},
       {:websockex, "~> 0.5"},
-      {:cloak_ecto, "~> 1.3"},
-      {:joken, "~> 2.6"},
-      {:bcrypt_elixir, "~> 3.0"},
       {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
-      {:credo, "~> 1.7.1", only: [:dev], runtime: false},
-      {:protobuf, "~> 0.12"}
+      {:credo, "~> 1.7.1", only: [:dev], runtime: false}
     ]
   end
 

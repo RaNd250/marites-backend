@@ -23,25 +23,12 @@ defmodule Marites.Application do
       nil ->
         [
           Marites.Repo,
-          Marites.Vault,
-          Marites.HTTP,
-          Marites.ApiRegistry,
-          Marites.UserApiSupervisor,
-          Marites.UserApiLoader,
-          Marites.Api,
           Marites.Updater,
           {Phoenix.PubSub, name: Marites.PubSub},
           MaritesWeb.Endpoint,
           Marites.Terrain,
           Marites.Vehicles,
-          Marites.FCM.Pusher,
-          Marites.SentryEvents,
-          Marites.AlarmResponder,
-          Marites.SentryScheduler,
           if(mqtt_config != nil, do: {Marites.Mqtt, mqtt_config}),
-          if(Application.get_env(:marites, :fleet_telemetry_mqtt_host) != nil,
-            do: Marites.FleetTelemetry.Consumer
-          ),
           Marites.Repair
         ]
         |> Enum.reject(&is_nil/1)
@@ -49,12 +36,6 @@ defmodule Marites.Application do
       import_directory ->
         [
           Marites.Repo,
-          Marites.Vault,
-          Marites.HTTP,
-          Marites.ApiRegistry,
-          Marites.UserApiSupervisor,
-          Marites.UserApiLoader,
-          Marites.Api,
           Marites.Updater,
           {Phoenix.PubSub, name: Marites.PubSub},
           MaritesWeb.Endpoint,
@@ -84,8 +65,6 @@ defmodule Marites.Application do
     ArgumentError -> nil
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
   def config_change(changed, _new, removed) do
     MaritesWeb.Endpoint.config_change(changed, removed)
     :ok
