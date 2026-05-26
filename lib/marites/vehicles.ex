@@ -22,7 +22,10 @@ defmodule Marites.Vehicles do
       max_concurrency: 10,
       timeout: 5000
     )
-    |> Enum.map(fn {:ok, vehicle} -> vehicle end)
+    |> Enum.flat_map(fn
+      {:ok, vehicle} -> [vehicle]
+      _ -> []
+    end)
     |> Enum.sort_by(fn %Vehicle.Summary{car: %Car{id: id, display_priority: dp}} ->
       {dp, id}
     end)
