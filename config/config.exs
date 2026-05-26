@@ -3,14 +3,14 @@ import Config
 config :marites,
   ecto_repos: [Marites.Repo]
 
-config :marites, :session_signing_salt, "wK7rPmX4nQs2vBtJ"
+config :marites, :session_signing_salt, System.get_env("SESSION_SIGNING_SALT", "dev-signing-salt-change-in-prod")
 
 config :marites, MaritesWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "Kz7vmP1gPYv/sogke6P3RP9uipMjOLhneQdbokZVx5gpLsNaN44TD20vtOWkMFIT",
+  secret_key_base: System.get_env("SECRET_KEY_BASE", String.duplicate("dev-secret-key-base-do-not-use-in-production", 2)),
   render_errors: [view: MaritesWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Marites.PubSub,
-  live_view: [signing_salt: "6nSVV0NtBtBfA9Mjh+7XaZANjp9T73XH"]
+  live_view: [signing_salt: System.get_env("LIVE_VIEW_SIGNING_SALT", "dev-lv-salt-change-in-prod")]
 
 config :marites,
   cloak_repo: Marites.Repo,
