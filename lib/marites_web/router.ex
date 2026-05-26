@@ -25,24 +25,6 @@ defmodule MaritesWeb.Router do
     plug :fetch_settings
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  # ---- Tesla OAuth PKCE flow ----
-  scope "/auth/tesla", MaritesWeb do
-    pipe_through :browser
-
-    get "/", TeslaOAuthController, :authorize
-    get "/callback", TeslaOAuthController, :callback
-  end
-
-  # ---- Tesla VCP public key (required for vehicle commands) ----
-  scope "/.well-known/appspecific", MaritesWeb do
-    pipe_through :api
-    get "/com.tesla.3p.public-key.pem", VcpKeyController, :show
-  end
-
   # ---- Browser routes (Marites internal UI) ----
   scope "/", MaritesWeb do
     pipe_through :browser
