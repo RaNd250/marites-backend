@@ -183,7 +183,7 @@ defmodule Marites.Vehicles.Vehicle do
       import?: Keyword.get(opts, :import?, false)
     }
 
-    polling_mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    polling_mode = :full
     data = %{data | polling_mode: polling_mode}
     :ok = Phoenix.PubSub.subscribe(Marites.PubSub, "fcm_tokens/changed/#{car.user_id}")
 
@@ -674,7 +674,7 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{car: car} = data) do
-    mode = if Marites.FCM.TokenStore.any_core_token?(car.user_id), do: :full, else: :sentry_only
+    mode = :full
     {:keep_state, %{data | polling_mode: mode}}
   end
 
