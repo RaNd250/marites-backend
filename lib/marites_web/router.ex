@@ -29,15 +29,6 @@ defmodule MaritesWeb.Router do
     plug :accepts, ["json"]
   end
 
-  pipeline :authenticated do
-    plug MaritesWeb.Plugs.RequireAuth
-  end
-
-  pipeline :admin_only do
-    plug MaritesWeb.Plugs.RequireAuth
-    plug :require_admin
-  end
-
   # ---- Tesla OAuth PKCE flow ----
   scope "/auth/tesla", MaritesWeb do
     pipe_through :browser
@@ -70,75 +61,11 @@ defmodule MaritesWeb.Router do
     end
   end
 
-  # ---- Public auth endpoints (no JWT required) ----
-  scope "/api/v1/auth", MaritesWeb.API.V1 do
-    pipe_through [:api]
-
-    post   "/register", AuthController, :register
-    post   "/login",    AuthController, :login
-    post   "/refresh",  AuthController, :refresh
-    delete "/logout",   AuthController, :logout
-  end
-
-  # ---- Protected API endpoints (JWT required) ----
-  scope "/api/v1", MaritesWeb.API.V1 do
-    pipe_through [:api, :authenticated]
-
-    get    "/account/me",             AccountController,       :me
-    put    "/account/vehicle",        VehiclesController,      :select_vehicle
-    delete "/account/data",           AccountController,       :delete_data
-    delete "/account",                AccountController,       :delete_account
-
-    get    "/vehicles/status",        VehiclesController,      :status
-    put    "/vehicles/:car_id/logging/suspend", VehiclesController, :suspend_logging
-    put    "/vehicles/:car_id/logging/resume",  VehiclesController, :resume_logging
-    get    "/drives",                 DrivesController,        :index
-    get    "/drives/:id",             DrivesController,        :show
-    get    "/charges",                ChargesController,       :index
-    get    "/sentry_events",          SentryEventsController,  :index
-    get    "/stats",                  StatsController,         :index
-    get    "/notifications/settings", NotificationsController, :index
-    put    "/notifications/settings", NotificationsController, :update
-    post   "/fcm/register",           FcmController,           :register
-    delete "/fcm/register",           FcmController,           :unregister
-
-    post   "/vehicles/:car_id/commands/:command", CommandsController,  :run
-    get    "/vehicles/:car_id/schedule",          SchedulesController, :show
-    put    "/vehicles/:car_id/schedule",          SchedulesController, :update
-    delete "/vehicles/:car_id/schedule",          SchedulesController, :delete
-
-    get "/alarm-response", AlarmResponseController, :show
-    put "/alarm-response", AlarmResponseController, :update
-  end
-
-  # ---- Admin-only endpoints ----
-  scope "/api/v1/admin", MaritesWeb.API.V1 do
-    pipe_through [:api, :admin_only]
-
-    post "/invites",                    AdminController, :create_invite
-    get  "/invites",                    AdminController, :list_invites
-    get  "/users",                      AdminController, :list_users
-    put  "/users/:id/revoke",           AdminController, :revoke_user
-    post "/fleet_telemetry/register",   AdminController, :register_fleet_telemetry
-    get  "/audit_logs",                 AdminController, :list_audit_logs
-  end
-
   def fetch_settings(conn, _opts) do
     settings = Settings.get_global_settings!()
 
     conn
     |> assign(:settings, settings)
     |> put_session(:settings, settings)
-  end
-
-  defp require_admin(conn, _opts) do
-    if conn.assigns.current_user.admin do
-      conn
-    else
-      conn
-      |> put_status(403)
-      |> Phoenix.Controller.json(%{error: "forbidden"})
-      |> halt()
-    end
   end
 end
