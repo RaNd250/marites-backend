@@ -12,11 +12,6 @@ config :marites, MaritesWeb.Endpoint,
   pubsub_server: Marites.PubSub,
   live_view: [signing_salt: System.get_env("LIVE_VIEW_SIGNING_SALT", "dev-lv-salt-change-in-prod")]
 
-config :marites,
-  cloak_repo: Marites.Repo,
-  cloak_schemas: [
-    Marites.Auth.Tokens
-  ]
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

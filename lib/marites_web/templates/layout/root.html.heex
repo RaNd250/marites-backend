@@ -131,8 +131,7 @@
       class={["section", if(update, do: " full-height")]}
     >
       <div class="container">
-        <%= if not Marites.Vault.encryption_key_provided?() or
-              (not Marites.Api.signed_in?() and not Marites.Auth.can_decrypt_tokens?()) do %>
+        <%= if not Marites.Vault.encryption_key_provided?() do %>
           <% docs_link =
             link("docs.Marites.org",
               to: "https://docs.Marites.org",
