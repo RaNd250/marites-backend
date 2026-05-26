@@ -4,7 +4,7 @@ defmodule Marites.Vehicles.Vehicle do
   require Logger
 
   alias __MODULE__.Summary
-  alias Marites.{Vehicles, Api, Log, Locations, Settings, Convert, Repo, Terrain}
+  alias Marites.{Vehicles, Log, Locations, Settings, Convert, Repo, Terrain}
   alias Marites.Settings.CarSettings
   alias Marites.Locations.GeoFence
   alias Marites.Log.Car
@@ -1809,8 +1809,7 @@ defmodule Marites.Vehicles.Vehicle do
       {:odometer, val}, acc when is_number(val) and acc.vehicle_state != nil ->
         %{acc | vehicle_state: %{acc.vehicle_state | odometer: val}}
 
-      {:location, %Marites.FleetTelemetry.Location{latitude: lat, longitude: lng}}, acc
-          when acc.drive_state != nil ->
+      {:location, %{latitude: lat, longitude: lng}}, acc when acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | latitude: lat, longitude: lng}}
 
       _, acc ->
