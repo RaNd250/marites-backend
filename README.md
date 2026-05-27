@@ -1,28 +1,28 @@
-# Marit.es Backend
+# marites-backend
 
-This repository contains the open-source vehicle monitoring engine powering [Marit.es](https://marit.es) — a Tesla vehicle monitoring and management app.
+Vehicle monitoring engine powering [Marit.es](https://marit.es) — a self-hosted Tesla vehicle monitoring platform.
 
-## Based on TeslaMate
+This is a fork of [TeslaMate](https://github.com/adriankumpf/teslamate) (AGPL v3), modified to serve as the data collection and telemetry engine for the Marit.es platform. The proprietary API layer (Tesla OAuth, mobile REST API, push notifications) is maintained separately and is not included here.
 
-This codebase is a fork of **[TeslaMate](https://github.com/teslamate-org/teslamate)** by the TeslaMate contributors, licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html).
+## What's here
 
-All credit for the core vehicle data collection, MQTT integration, Postgres storage, and Grafana dashboards belongs to the TeslaMate project and its contributors.
+- Elixir/Phoenix backend engine
+- Tesla Fleet Telemetry consumer (MQTT)
+- Postgres data models (drives, charges, positions, sentry events)
+- Fleet telemetry registration and proto decoding
+- Web UI (TeslaMate-derived, lightly modified)
 
-## What this repo is
+## What's not here
 
-Per the AGPL-3.0 requirements, the modified engine source code used by the Marit.es SaaS service is published here. This covers:
+The proprietary `marites-api` service (Tesla OAuth, JWT auth, mobile REST API, FCM push notifications) is not open source and is not included in this repository.
 
-- Vehicle data polling via the Tesla Fleet API
-- Drive, charge, and sentry event recording (Postgres)
-- MQTT publishing of vehicle state
-- Phoenix LiveView web UI (sign-in, vehicle management)
-- Grafana dashboard definitions
+## Relationship to TeslaMate
 
-The proprietary Marit.es application layer (REST API service, Android/iOS apps, billing) is **not** included here.
+This project is a fork of [TeslaMate](https://github.com/adriankumpf/teslamate) by Adrian Kumpf, licensed under AGPL v3. Significant modifications have been made including fleet telemetry integration, service architecture changes, and branding. Per AGPL v3 requirements, all modifications to the TeslaMate-derived code are published here.
 
 ## License
 
 GNU Affero General Public License v3.0 — see [LICENSE](LICENSE).
 
-Original work: © TeslaMate contributors  
-Modifications: © Marit.es contributors
+The original TeslaMate project is © Adrian Kumpf and contributors.
+Modifications are © Marit.es contributors.
