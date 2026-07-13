@@ -109,7 +109,7 @@ export default function Home() {
           letter-spacing: -0.2px;
         }
         .m-cards {
-          display: flex; gap: 20px; flex-wrap: wrap;
+          display: flex; gap: 20px; flex-wrap: wrap; align-items: stretch;
           justify-content: center; width: 100%;
         }
         .m-card {
@@ -198,9 +198,15 @@ export default function Home() {
             display: "flex", flexDirection: "column", alignItems: "center",
             padding: "18px 24px 28px", textAlign: "center",
           }}>
-            <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 22px", lineHeight: 1.65 }}>
+            <p style={{ color: "#e5e7eb", fontSize: 15, fontWeight: 700, letterSpacing: "-0.2px", margin: "0 0 10px" }}>
+              One subscription, every device — Android app, web dashboard &amp; Telegram.
+            </p>
+            <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 10px", lineHeight: 1.65 }}>
               The Android app for advanced sentry monitoring, drive &amp; charge history,
               vehicle control and real-time alerts — or use Web + Telegram, no app to install.
+            </p>
+            <p style={{ color: "#6b7280", fontSize: 12, fontStyle: "italic", margin: "0 0 22px", padding: "0 20px" }}>
+              &ldquo;Marites&rdquo; is Filipino slang for the neighborhood gossip who sees everything — just like your Tesla.
             </p>
 
             {/* Download cards */}
@@ -229,10 +235,13 @@ export default function Home() {
                     <FeatureItem icon="🔔" text="Push notifications" />
                     <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
                   </div>
+                  <div style={{ color: "#6b7280", fontSize: 11, textAlign: "center", marginTop: "auto" }}>
+                    Free for 2 weeks — cancel anytime during the trial and pay nothing.
+                  </div>
                   <a
                     href="https://play.google.com/store/apps/details?id=es.marit.app"
                     target="_blank" rel="noopener noreferrer"
-                    style={{ textDecoration: "none", marginTop: "auto" }}
+                    style={{ textDecoration: "none" }}
                   >
                     <div style={{
                       background: "#7c3aed", borderRadius: 8, padding: "12px 0",
@@ -264,6 +273,7 @@ export default function Home() {
                     <FeatureItem icon="🔔" text="Sentry push notifications" />
                     <FeatureItem icon="📅" text="Drive &amp; charge history (7 days)" />
                     <FeatureItem icon="✅" text="Free — no subscription" />
+                    <div style={{ color: "#6b7280", fontSize: 11, paddingLeft: 22 }}>Ad-supported</div>
                     <MissingItem text="No stats or commands" />
                   </div>
                   <a
@@ -344,16 +354,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-
-          {/* Name origin */}
-          <p style={{
-            color: "#6b7280", fontSize: 13, lineHeight: 1.65, textAlign: "center",
-            maxWidth: 700, margin: "0 auto 18px", padding: "0 24px",
-          }}>
-            Because your Tesla is the biggest gossip around. Inspired by the slang{" "}
-            <b style={{ color: "#e5e7eb" }}>&ldquo;Marites&rdquo;</b>, the app brings you every
-            Sentry event, charging update and trip — so you never miss what your car has to say.
-          </p>
 
           {/* Footer */}
           <footer style={{
