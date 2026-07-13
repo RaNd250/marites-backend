@@ -541,9 +541,12 @@ defmodule MaritesWeb.SettingsLiveTest do
 
         assert [
                  {"a",
-                  [_, {"href", "https://github.com/Marites-org/Marites/releases"}, _, _, _],
-                  [_, {_, _, ["Update available: 1.1.3"]}]}
+                  [_, {"href", "https://github.com/RaNd250/marites-backend"}, _, _, _],
+                  [_, {_, _, ["Update available: 1.1.3"]}]},
+                 {"a", source_attrs, _}
                ] = Floki.find(html, ".footer a")
+
+        assert {"href", "https://github.com/RaNd250/marites-backend"} in source_attrs
       end
     end
   end

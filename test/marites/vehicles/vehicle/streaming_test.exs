@@ -451,11 +451,16 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
 
   test "resumes logging when starting a drive", %{test: name} do
     now = DateTime.utc_now()
+    now_ts = DateTime.to_unix(now, :millisecond)
+    drive_time = DateTime.add(now, 4, :millisecond)
 
+    # Explicit poll timestamps: online_event() defaults to utc_now() at
+    # fixture-build time, which can outrun `now` under load and make the
+    # streamed events below "stale" (flaked in CI).
     events = [
-      {:ok, online_event()},
-      {:ok, online_event()},
-      {:ok, online_event()},
+      {:ok, online_event(drive_state: %{timestamp: now_ts})},
+      {:ok, online_event(drive_state: %{timestamp: now_ts + 1})},
+      {:ok, online_event(drive_state: %{timestamp: now_ts + 2})},
       fn -> Process.sleep(10_000) end
     ]
 
@@ -471,10 +476,14 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :suspended}}}
 
-    stream(name, %{shift_state: "P", speed: 0, power: 0, elevation: 50, time: now})
+    stream(
+      name,
+      %{shift_state: "P", speed: 0, power: 0, elevation: 50, time: DateTime.add(now, 3, :millisecond)}
+    )
+
     refute_receive _
 
-    stream(name, %{shift_state: "D", speed: 50, power: 5, elevation: 50, time: now})
+    stream(name, %{shift_state: "D", speed: 50, power: 5, elevation: 50, time: drive_time})
     assert_receive {:start_drive, ^car}
     assert_receive {:insert_position, _drive, position}
 
@@ -486,7 +495,7 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
              longitude: 42.0,
              speed: 80,
              battery_level: 60,
-             date: now,
+             date: drive_time,
              elevation: 50,
              odometer: 1609.344,
              power: 5
