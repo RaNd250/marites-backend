@@ -157,6 +157,17 @@ defmodule Marites.SettingsTest do
       assert settings.lfp_battery == false
     end
 
+    test "get_car_settings/0 ignores car_settings rows not attached to a car" do
+      car = car_fixture()
+
+      # An aborted app login leaves a settings row no car points at; it must
+      # not surface (rendering it crashed /settings with car: nil).
+      {1, _} = Repo.insert_all("car_settings", [%{}])
+
+      assert [settings] = Settings.get_car_settings()
+      assert settings.id == car.settings_id
+    end
+
     test "update_car_settings/2 with valid data updates the settings" do
       car = car_fixture()
       [settings] = Settings.get_car_settings()

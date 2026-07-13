@@ -673,7 +673,7 @@ defmodule Marites.Vehicles.Vehicle do
     {:keep_state, %{data | car: Map.put(data.car, :settings, settings), stream_pid: stream_pid}}
   end
 
-  def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{car: car} = data) do
+  def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{} = data) do
     mode = :full
     {:keep_state, %{data | polling_mode: mode}}
   end
@@ -1274,8 +1274,16 @@ defmodule Marites.Vehicles.Vehicle do
      broadcast_summary()}
   end
 
-  def handle_event(:cast, {:fleet_telemetry, _fields}, _state, %Data{} = data) do
-    {:keep_state, %{data | last_fleet_event_at: DateTime.utc_now()}}
+  def handle_event(:cast, {:fleet_telemetry, fields}, _state, %Data{last_response: nil} = data) do
+    blank = %Vehicle{
+      charge_state: %Charge{},
+      drive_state: %Drive{},
+      climate_state: %Climate{},
+      vehicle_state: %VehicleState{}
+    }
+    updated = apply_fleet_fields(blank, fields)
+    {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
+     broadcast_summary()}
   end
 
   # Private
@@ -1808,6 +1816,17 @@ defmodule Marites.Vehicles.Vehicle do
 
       {:odometer, val}, acc when is_number(val) and acc.vehicle_state != nil ->
         %{acc | vehicle_state: %{acc.vehicle_state | odometer: val}}
+
+      # RatedRange arrives in MILES, matching REST battery_range semantics;
+      # create_position converts via Convert.miles_to_km/2 downstream.
+      {:rated_battery_range, val}, acc when is_number(val) and acc.charge_state != nil ->
+        %{acc | charge_state: %{acc.charge_state | battery_range: val}}
+
+      {:inside_temp, val}, acc when is_number(val) and acc.climate_state != nil ->
+        %{acc | climate_state: %{acc.climate_state | inside_temp: val}}
+
+      {:outside_temp, val}, acc when is_number(val) and acc.climate_state != nil ->
+        %{acc | climate_state: %{acc.climate_state | outside_temp: val}}
 
       {:location, %{latitude: lat, longitude: lng}}, acc when acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | latitude: lat, longitude: lng}}

@@ -49,47 +49,26 @@ defmodule Marites.VehiclesTest do
 
   describe "uses fallback vehicles" do
     alias Marites.Settings.CarSettings
-    alias Marites.{Log, Api}
+    alias Marites.Log
     alias Marites.Log.Car
 
-    import Mock
-
+    # Since the service split, the engine never lists vehicles via the API;
+    # the database fallback is the only startup path.
     @tag :capture_log
-    test "empty list" do
+    test "starts vehicles from the database" do
       {:ok, %Car{id: id}} =
         %Car{settings: %CarSettings{}}
         |> Car.changeset(%{vid: 333_333, eid: 2_222_222, vin: "1234"})
         |> Log.create_or_update_car()
 
-      with_mock Api, list_vehicles: fn -> {:ok, []} end do
-        {:ok, _pid} =
-          start_supervised(
-            {ApiMock, name: :api_vehicle, events: [{:ok, online_event()}], pid: self()}
-          )
+      {:ok, _pid} =
+        start_supervised(
+          {ApiMock, name: :api_vehicle, events: [{:ok, online_event()}], pid: self()}
+        )
 
-        {:ok, _pid} = start_supervised({Vehicles, vehicle: VehicleMock})
+      {:ok, _pid} = start_supervised({Vehicles, vehicle: VehicleMock})
 
-        assert true = Vehicle.healthy?(id)
-      end
-    end
-
-    @tag :capture_log
-    test "not signed in" do
-      {:ok, %Car{id: id}} =
-        %Car{settings: %CarSettings{}}
-        |> Car.changeset(%{vid: 333_333, eid: 2_222_222, vin: "1234"})
-        |> Log.create_or_update_car()
-
-      with_mock Api, list_vehicles: fn -> {:error, :not_signed_in} end do
-        {:ok, _pid} =
-          start_supervised(
-            {ApiMock, name: :api_vehicle, events: [{:ok, online_event()}], pid: self()}
-          )
-
-        start_supervised!({Vehicles, vehicle: VehicleMock})
-
-        assert true = Vehicle.healthy?(id)
-      end
+      assert true = Vehicle.healthy?(id)
     end
   end
 

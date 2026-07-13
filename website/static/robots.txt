@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marit.es/sitemap.xml
+Sitemap: https://marit.es/el/sitemap.xml

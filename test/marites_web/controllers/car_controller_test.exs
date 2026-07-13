@@ -58,11 +58,8 @@ defmodule MaritesWeb.CarControllerTest do
   end
 
   describe "index" do
-    test "redirects if not signed in", %{conn: conn} do
-      assert conn = get(conn, Routes.car_path(conn, :index))
-      assert redirected_to(conn, 302) == Routes.live_path(conn, MaritesWeb.SignInLive.Index)
-    end
-
+    # The sign-in gate was removed with the service split — the engine UI
+    # always renders the car list (Fleet Telemetry-only mode).
     @tag :signed_in
     test "lists all active vehicles", %{conn: conn} do
       {:ok, _pid} =
@@ -538,78 +535,8 @@ defmodule MaritesWeb.CarControllerTest do
     end
   end
 
-  describe "suspend" do
-    setup %{conn: conn} do
-      {:ok, conn: put_req_header(conn, "accept", "application/json")}
-    end
-
-    test "suspends logging", %{conn: conn} do
-      _car = car_fixture(%{suspend_min: 60, suspend_after_idle_min: 60, use_streaming_api: false})
-
-      events = [
-        {:ok,
-         online_event(
-           display_name: "FooCar",
-           drive_state: %{timestamp: 0, latitude: 0.0, longitude: 0.0},
-           climate_state: %{is_preconditioning: false}
-         )}
-      ]
-
-      :ok = start_vehicles(events)
-
-      %Car{id: id} = Log.get_car_by(vin: "xxxxx")
-
-      conn = put(conn, Routes.car_path(conn, :suspend_logging, id))
-
-      assert "" == response(conn, 204)
-    end
-
-    test "returns error if suspending is not possible", %{conn: conn} do
-      _car = car_fixture(%{suspend_min: 60, suspend_after_idle_min: 60, use_streaming_api: false})
-
-      events = [
-        {:ok,
-         online_event(
-           display_name: "FooCar",
-           drive_state: %{timestamp: 0, latitude: 0.0, longitude: 0.0},
-           climate_state: %{is_preconditioning: true}
-         )}
-      ]
-
-      :ok = start_vehicles(events)
-
-      %Car{id: id} = Log.get_car_by(vin: "xxxxx")
-
-      conn = put(conn, Routes.car_path(conn, :suspend_logging, id))
-      assert "preconditioning" == json_response(conn, 412)["error"]
-    end
-  end
-
-  describe "resume" do
-    test "resumes logging", %{conn: conn} do
-      alias Marites.Vehicles.Vehicle.Summary
-
-      _car = car_fixture(%{suspend_min: 60, suspend_after_idle_min: 1, use_streaming_api: false})
-
-      events = [
-        {:ok,
-         online_event(
-           display_name: "FooCar",
-           drive_state: %{timestamp: 0, latitude: 0.0, longitude: 0.0},
-           climate_state: %{is_preconditioning: false}
-         )}
-      ]
-
-      :ok = start_vehicles(events)
-      Process.sleep(100)
-
-      %Car{id: id} = Log.get_car_by(vin: "xxxxx")
-      assert %Summary{state: :suspended} = Marites.Vehicles.summary(id)
-
-      conn = put(conn, Routes.car_path(conn, :resume_logging, id))
-      assert "" == response(conn, 204)
-    end
-  end
+  # The suspend/resume logging routes were removed from the router with the
+  # service split (REST polling lives in marites-api); their tests went with them.
 
   def start_vehicles(events \\ []) do
     {:ok, _pid} = start_supervised({ApiMock, name: :api_vehicle, events: events, pid: self()})

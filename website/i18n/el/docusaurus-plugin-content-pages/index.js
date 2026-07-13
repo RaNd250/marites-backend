@@ -24,8 +24,9 @@ const structuredData = {
       name: "marit.es Core",
       operatingSystem: "Android",
       applicationCategory: "UtilitiesApplication",
+      inLanguage: "el",
       description:
-        "Tesla companion app with sentry alerts, drive history, charge tracking and vehicle commands.",
+        "Εφαρμογή-σύντροφος για Tesla με ειδοποιήσεις Sentry, ιστορικό διαδρομών, παρακολούθηση φόρτισης και εντολές οχήματος.",
       installUrl: "https://play.google.com/store/apps/details?id=es.marit.app",
       offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
       author: { "@id": "https://marit.es/#org" },
@@ -35,8 +36,9 @@ const structuredData = {
       name: "marit.es Lite",
       operatingSystem: "Android",
       applicationCategory: "UtilitiesApplication",
+      inLanguage: "el",
       description:
-        "Free Tesla sentry alert and vehicle status app for Android.",
+        "Δωρεάν εφαρμογή για Android με ειδοποιήσεις Sentry και κατάσταση οχήματος Tesla.",
       installUrl: "https://play.google.com/store/apps/details?id=es.marit.lite",
       offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
       author: { "@id": "https://marit.es/#org" },
@@ -48,13 +50,14 @@ const structuredData = {
       applicationCategory: "UtilitiesApplication",
       operatingSystem: "Web",
       browserRequirements: "Requires a modern web browser.",
+      inLanguage: "el",
       description:
-        "Tesla companion web dashboard with drive history, charge tracking, battery health and Sentry alerts delivered to Telegram. No app to install.",
+        "Web dashboard για Tesla με ιστορικό διαδρομών, παρακολούθηση φόρτισης, υγεία μπαταρίας και ειδοποιήσεις Sentry στο Telegram. Χωρίς εγκατάσταση εφαρμογής.",
       offers: {
         "@type": "Offer",
         price: "4.99",
         priceCurrency: "EUR",
-        description: "Monthly subscription with a 7-day free trial.",
+        description: "Μηνιαία συνδρομή με δωρεάν δοκιμή 7 ημερών.",
       },
       author: { "@id": "https://marit.es/#org" },
     },
@@ -70,9 +73,9 @@ const FeatureItem = ({ icon, text }) => (
 
 const LangSwitch = () => (
   <div style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
-    <span style={{ color: "#fff" }}>EN</span>
+    <a href="/" lang="en" hrefLang="en" style={{ color: "#6b7280", textDecoration: "none" }}>EN</a>
     <span style={{ color: "#374151" }}>|</span>
-    <a href="/el/" lang="el" hrefLang="el" style={{ color: "#6b7280", textDecoration: "none" }}>ΕΛ</a>
+    <span style={{ color: "#fff" }}>ΕΛ</span>
   </div>
 );
 
@@ -85,8 +88,8 @@ const MissingItem = ({ text }) => (
 export default function Home() {
   return (
     <Layout
-      title="Tesla Sentry Alerts, Drive History & Charge Tracking for Android"
-      description="Never miss what your Tesla sees. Real-time sentry alerts, drive history, charge tracking and vehicle commands for Android — marit.es Core and Lite."
+      title="Ειδοποιήσεις Sentry, ιστορικό διαδρομών & φόρτισης Tesla για Android"
+      description="Παρακολουθήστε το Tesla σας σε πραγματικό χρόνο. Ειδοποιήσεις Sentry σε πραγματικό χρόνο, ιστορικό διαδρομών, παρακολούθηση φόρτισης και εντολές οχήματος για Android — marit.es Core και Lite."
       noFooter
     >
       <Head>
@@ -189,7 +192,7 @@ export default function Home() {
                 mari<span style={{ color: "#e31937" }}>t.es</span>
               </span>
             </div>
-            <span className="m-tagline">Never Miss What Your Tesla Sees.</span>
+            <span className="m-tagline">Παρακολουθήστε το Tesla σας σε πραγματικό χρόνο.</span>
             <LangSwitch />
           </header>
 
@@ -199,8 +202,8 @@ export default function Home() {
             padding: "18px 24px 28px", textAlign: "center",
           }}>
             <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 22px", lineHeight: 1.65 }}>
-              The Android app for advanced sentry monitoring, drive &amp; charge history,
-              vehicle control and real-time alerts — or use Web + Telegram, no app to install.
+              Η εφαρμογή Android για προηγμένη παρακολούθηση Sentry, ιστορικό διαδρομών &amp; φορτίσεων,
+              έλεγχο οχήματος και ειδοποιήσεις σε πραγματικό χρόνο — ή χρησιμοποιήστε Web + Telegram, χωρίς εγκατάσταση εφαρμογής.
             </p>
 
             {/* Download cards */}
@@ -217,17 +220,18 @@ export default function Home() {
                     }}>🚗</div>
                     <div>
                       <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Core</div>
-                      <div style={{ color: "#7c3aed", fontSize: 11, fontWeight: 600 }}>Full experience · €7/mo with a 2-week free trial</div>
+                      <div style={{ color: "#7c3aed", fontSize: 11, fontWeight: 600 }}>Η πλήρης εμπειρία · 7 €/μήνα με δοκιμαστική περίοδο 2 εβδομάδων</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                    <FeatureItem icon="📍" text="Drive history &amp; live map" />
-                    <FeatureItem icon="⚡" text="Charge history &amp; stats" />
-                    <FeatureItem icon="🛡" text="Sentry mode control &amp; alerts" />
-                    <FeatureItem icon="📊" text="Battery health &amp; statistics" />
-                    <FeatureItem icon="🔑" text="Honk, flash &amp; vehicle commands" />
-                    <FeatureItem icon="🔔" text="Push notifications" />
-                    <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
+                    <FeatureItem icon="📍" text="Ιστορικό διαδρομών & ζωντανός χάρτης" />
+                    <FeatureItem icon="⚡" text="Ιστορικό & στατιστικά φόρτισης" />
+                    <FeatureItem icon="🛡" text="Έλεγχος Sentry mode & ειδοποιήσεις" />
+                    <FeatureItem icon="📊" text="Battery Health & στατιστικά" />
+                    <FeatureItem icon="🔑" text="Κόρνα, φώτα & εντολές οχήματος" />
+                    <FeatureItem icon="🔔" text="Push ειδοποιήσεις" />
+                    <FeatureItem icon="📅" text="Προγραμματισμένο Sentry & απόκριση συναγερμού" />
+                    <FeatureItem icon="✅" text="Όλες οι δυνατότητες" />
                   </div>
                   <a
                     href="https://play.google.com/store/apps/details?id=es.marit.app"
@@ -239,7 +243,7 @@ export default function Home() {
                       display: "flex", alignItems: "center", justifyContent: "center",
                       gap: 8, color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer",
                     }}>
-                      ▶ Get Core on Google Play
+                      ▶ Αποκτήστε το Core στο Google Play
                     </div>
                   </a>
                 </div>
@@ -254,17 +258,17 @@ export default function Home() {
                     }}>🟢</div>
                     <div>
                       <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Lite</div>
-                      <div style={{ color: "#4ade80", fontSize: 11, fontWeight: 600 }}>Free with ads · 1 vehicle · 7-day history</div>
+                      <div style={{ color: "#4ade80", fontSize: 11, fontWeight: 600 }}>Δωρεάν με διαφημίσεις · 1 όχημα · ιστορικό 7 ημερών</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                    <FeatureItem icon="🚗" text="1 vehicle" />
-                    <FeatureItem icon="🛡" text="Sentry ON / OFF control" />
-                    <FeatureItem icon="🔋" text="Live battery &amp; vehicle status" />
-                    <FeatureItem icon="🔔" text="Sentry push notifications" />
-                    <FeatureItem icon="📅" text="Drive &amp; charge history (7 days)" />
-                    <FeatureItem icon="✅" text="Free — no subscription" />
-                    <MissingItem text="No stats or commands" />
+                    <FeatureItem icon="🚗" text="1 όχημα" />
+                    <FeatureItem icon="🛡" text="Ενεργοποίηση / Απενεργοποίηση Sentry" />
+                    <FeatureItem icon="🔋" text="Ζωντανή μπαταρία & κατάσταση οχήματος" />
+                    <FeatureItem icon="🔔" text="Push ειδοποιήσεις Sentry" />
+                    <FeatureItem icon="📅" text="Ιστορικό διαδρομών & φορτίσεων (7 ημέρες)" />
+                    <FeatureItem icon="✅" text="Δωρεάν, χωρίς συνδρομή" />
+                    <MissingItem text="Δεν περιλαμβάνει στατιστικά ή απομακρυσμένες εντολές" />
                   </div>
                   <a
                     href="https://play.google.com/store/apps/details?id=es.marit.lite"
@@ -278,7 +282,7 @@ export default function Home() {
                       display: "flex", alignItems: "center", justifyContent: "center",
                       gap: 8, color: "#4ade80", fontWeight: 600, fontSize: 13, cursor: "pointer",
                     }}>
-                      ▶ Get Lite on Google Play
+                      ▶ Αποκτήστε το Lite στο Google Play
                     </div>
                   </a>
                 </div>
@@ -293,16 +297,16 @@ export default function Home() {
                     }}>🌐</div>
                     <div>
                       <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>marit.es Web</div>
-                      <div style={{ color: "#e31937", fontSize: 11, fontWeight: 600 }}>Web + Telegram · €4.99/mo · 7-day trial</div>
+                      <div style={{ color: "#e31937", fontSize: 11, fontWeight: 600 }}>Android, Web και Telegram · 4,99 €/μήνα · δοκιμή 7 ημερών</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                    <FeatureItem icon="🌐" text="Full web dashboard — any device" />
-                    <FeatureItem icon="📍" text="Drives &amp; live route maps" />
-                    <FeatureItem icon="⚡" text="Charge history &amp; stats" />
-                    <FeatureItem icon="📊" text="Battery health &amp; phantom drain" />
-                    <FeatureItem icon="💬" text="Sentry alerts on Telegram (with location)" />
-                    <FeatureItem icon="🍏" text="iPhone, desktop — no app to install" />
+                    <FeatureItem icon="🌐" text="Πλήρες dashboard μέσω browser — σε κάθε συσκευή" />
+                    <FeatureItem icon="📍" text="Διαδρομές & Ζωντανός χάρτης διαδρομής" />
+                    <FeatureItem icon="⚡" text="Ιστορικό & στατιστικά φόρτισης" />
+                    <FeatureItem icon="📊" text="Υγεία μπαταρίας & phantom drain" />
+                    <FeatureItem icon="💬" text="Ειδοποιήσεις Sentry στο Telegram (με τοποθεσία)" />
+                    <FeatureItem icon="🍏" text="iPhone και υπολογιστής — χωρίς εγκατάσταση εφαρμογής" />
                   </div>
                   <a
                     href="https://app.marit.es"
@@ -314,7 +318,7 @@ export default function Home() {
                       display: "flex", alignItems: "center", justifyContent: "center",
                       gap: 8, color: "#fff", fontWeight: 600, fontSize: 13, cursor: "pointer",
                     }}>
-                      🌐 Open the web app
+                      🌐 Ανοίξτε το web app
                     </div>
                   </a>
                 </div>
@@ -327,12 +331,12 @@ export default function Home() {
           <div className="m-page">
             <div className="m-features">
               {[
-                { icon: "📡", title: "Real-time telemetry", body: "Live status, battery and location." },
-                { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts on any activity." },
-                { icon: "🗺", title: "Drive history", body: "Every trip with route, energy and stats." },
-                { icon: "⚡", title: "Charge tracking", body: "Cost, energy and time per session." },
-                { icon: "🔔", title: "Alarm response", body: "Auto honk &amp; flash when alarm triggers." },
-                { icon: "📅", title: "Scheduling", body: "Sentry on a schedule you control." },
+                { icon: "📡", title: "Τηλεμετρία σε πραγματικό χρόνο", body: "Ζωντανή κατάσταση, μπαταρία και τοποθεσία." },
+                { icon: "🛡", title: "Παρακολούθηση Sentry", body: "Άμεσες push ειδοποιήσεις σε κάθε δραστηριότητα." },
+                { icon: "🗺", title: "Ιστορικό διαδρομών", body: "Κάθε διαδρομή με πορεία, ενέργεια και στατιστικά." },
+                { icon: "⚡", title: "Παρακολούθηση φόρτισης", body: "Κόστος, ενέργεια και διάρκεια ανά φόρτιση." },
+                { icon: "🔔", title: "Απόκριση συναγερμού", body: "Αυτόματη κόρνα &amp; φώτα όταν χτυπήσει ο συναγερμός." },
+                { icon: "📅", title: "Προγραμματισμός", body: "Sentry στο πρόγραμμα που ορίζετε εσείς." },
               ].map(({ icon, title, body }) => (
                 <div key={title} className="m-feature-card">
                   <span style={{ fontSize: 22, flexShrink: 0 }}>{icon}</span>
@@ -350,9 +354,10 @@ export default function Home() {
             color: "#6b7280", fontSize: 13, lineHeight: 1.65, textAlign: "center",
             maxWidth: 700, margin: "0 auto 18px", padding: "0 24px",
           }}>
-            Because your Tesla is the biggest gossip around. Inspired by the slang{" "}
-            <b style={{ color: "#e5e7eb" }}>&ldquo;Marites&rdquo;</b>, the app brings you every
-            Sentry event, charging update and trip — so you never miss what your car has to say.
+            Γιατί το Tesla σας είναι το μεγαλύτερο κουτσομπόλα. Εμπνευσμένο από την αργκό{" "}
+            <b style={{ color: "#e5e7eb" }}>&laquo;Marites&raquo;</b>, η εφαρμογή σας φέρνει κάθε
+            συμβάν Sentry, ενημέρωση φόρτισης και διαδρομή — ώστε να μη χάνετε τίποτα απ&rsquo; όσα
+            έχει να πει το αυτοκίνητό σας.
           </p>
 
           {/* Footer */}
@@ -360,12 +365,12 @@ export default function Home() {
             padding: "12px 24px 28px", textAlign: "center",
             display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap",
           }}>
-            <a href="/faq/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>FAQ &amp; Manual</a>
-            <a href="/changelog/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Changelog</a>
-            <a href="/privacy/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Privacy Policy</a>
-            <a href="/terms/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Terms of Service</a>
-            <a href="mailto:admin@marit.es" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Contact</a>
-            <a href="https://github.com/RaNd250/marites-backend" target="_blank" rel="noopener noreferrer" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Source (AGPL-3.0)</a>
+            <a href="/el/faq/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>FAQ &amp; Οδηγίες</a>
+            <a href="/el/changelog/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Τι νέο υπάρχει</a>
+            <a href="/privacy/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Πολιτική Απορρήτου</a>
+            <a href="/terms/" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Όροι Χρήσης</a>
+            <a href="mailto:admin@marit.es" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Επικοινωνία</a>
+            <a href="https://github.com/RaNd250/marites-backend" target="_blank" rel="noopener noreferrer" style={{ color: "#374151", fontSize: 12, textDecoration: "none" }}>Πηγαίος κώδικας (AGPL-3.0)</a>
           </footer>
 
         </div>

@@ -1,29 +1,12 @@
 defmodule MaritesWeb.SignInLiveTest do
   use MaritesWeb.ConnCase
 
-  defp start_api(name) do
-    api_name = :"api_#{name}"
-
-    {:ok, _pid} = start_supervised({ApiMock, name: api_name, pid: self()})
-
-    %{api: {ApiMock, api_name}}
-  end
-
-  setup %{test: name, conn: conn} do
-    params = start_api(name)
-    conn = put_connect_params(conn, params)
-    [conn: conn]
-  end
-
-  test "signs in with api tokens", %{conn: conn} do
-    assert {:ok, view, _html} = live(conn, "/sign_in")
-
-    render_change(view, :validate, %{tokens: %{access: "$access", refresh: "$refresh"}})
-    render_submit(view, :sign_in, %{})
-
-    assert_receive {ApiMock,
-                    {:sign_in, %Marites.Auth.Tokens{access: "$access", refresh: "$refresh"}}}
-
-    assert_redirect(view, "/", 1000)
+  # Token sign-in is handled by marites-api since the service split; the
+  # engine page is a form shell. This guards against template regressions
+  # like the dangling Vault call that 500ed /sign_in (b4f3868b).
+  test "renders the sign-in page", %{conn: conn} do
+    assert {:ok, view, html} = live(conn, "/sign_in")
+    assert html =~ "Access Token"
+    assert render(view) =~ "Refresh Token"
   end
 end

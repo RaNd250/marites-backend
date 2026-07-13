@@ -1,0 +1,18 @@
+# Marit.es — Tesla companion app
+> Marit.es is a Tesla companion app (Android + web) for monitoring your Tesla: live vehicle status (battery, range, charging, location), automatic drive & charge logging with history, Sentry alarm push notifications, charging cost tracking and phantom drain monitoring. Data comes from the owner's own Tesla account via Tesla's official Fleet API.
+
+## Editions
+- Marit.es Core (Android, subscription): multiple vehicles, full drive/charge history, route maps, cost tracking, phantom drain, Telegram alerts, ad-free.
+- Marit.es Lite (Android, free with ads): Sentry alerts, live status, single vehicle, 7-day history.
+- Web + Telegram (subscription, 4.99 EUR/month, 7-day trial): full experience in any browser at https://app.marit.es.
+
+## Pages
+- Home: https://marit.es/
+- FAQ: https://marit.es/faq/
+- Changelog: https://marit.es/changelog/
+- Greek version: https://marit.es/el/
+- Privacy: https://marit.es/privacy/
+- Terms: https://marit.es/terms/
+
+## Contact
+- Support: app-support@vitaldata.gr

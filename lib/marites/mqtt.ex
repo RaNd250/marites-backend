@@ -54,7 +54,7 @@ defmodule Marites.Mqtt do
       password: opts[:password],
       server: server,
       handler: {Handler, []},
-      subscriptions: []
+      subscriptions: [{"marites/fleet/+/v/#", 0}]
     ]
   end
 
