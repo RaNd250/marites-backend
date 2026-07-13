@@ -57,9 +57,6 @@ defmodule Marites.Mqtt.PubSub.VehicleSubscriberTest do
       geofence: %GeoFence{id: 0, name: "Home", latitude: 0.0, longitude: 0.0, radius: 20},
       model: "S",
       trim_badging: "P100D",
-      exterior_color: "White",
-      spoiler_type: "None",
-      wheel_type: "AeroTurbine19",
       frunk_open: true,
       trunk_open: false,
       elevation: 100

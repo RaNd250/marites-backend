@@ -3,7 +3,6 @@ defmodule Marites.Repo.Migrations.AddSentryEvents do
 
   def change do
     create table(:sentry_events) do
-      add :id, :bigserial, primary_key: true
       add :car_id, references(:cars), null: false, on_delete: :delete_all
       add :activated_at, :utc_datetime, null: false
       add :deactivated_at, :utc_datetime, null: true

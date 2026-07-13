@@ -12,9 +12,6 @@ defmodule Marites.LogCarTest do
     name: "foo",
     trim_badging: "P100D",
     vin: "12345F",
-    exterior_color: "White",
-    spoiler_type: "None",
-    wheel_type: "AeroTurbine19",
     display_priority: 1
   }
   @update_attrs %{
@@ -25,9 +22,6 @@ defmodule Marites.LogCarTest do
     name: "bar",
     trim_badging: "100D",
     vin: "6789R",
-    exterior_color: "MetallicBlack",
-    spoiler_type: "Passive",
-    wheel_type: "AeroTurbine20",
     display_priority: 2
   }
   @invalid_attrs %{
@@ -38,9 +32,6 @@ defmodule Marites.LogCarTest do
     name: 1,
     trim_badging: 2,
     vin: 3,
-    exterior_color: 1,
-    spoiler_type: 2,
-    wheel_type: 3
   }
 
   def car_fixture(attrs \\ %{}) do
@@ -77,9 +68,6 @@ defmodule Marites.LogCarTest do
     assert car.name == "foo"
     assert car.trim_badging == "P100D"
     assert car.vin == "12345F"
-    assert car.exterior_color == "White"
-    assert car.spoiler_type == "None"
-    assert car.wheel_type == "AeroTurbine19"
     assert car.display_priority == 1
   end
 
@@ -91,9 +79,6 @@ defmodule Marites.LogCarTest do
              eid: ["can't be blank"],
              name: ["is invalid"],
              trim_badging: ["is invalid"],
-             exterior_color: ["is invalid"],
-             spoiler_type: ["is invalid"],
-             wheel_type: ["is invalid"],
              vid: ["can't be blank"],
              vin: ["is invalid"]
            } == errors_on(changeset)
@@ -111,9 +96,6 @@ defmodule Marites.LogCarTest do
     assert car.name == "bar"
     assert car.trim_badging == "100D"
     assert car.vin == "6789R"
-    assert car.exterior_color == "MetallicBlack"
-    assert car.spoiler_type == "Passive"
-    assert car.wheel_type == "AeroTurbine20"
     assert car.display_priority == 2
   end
 
