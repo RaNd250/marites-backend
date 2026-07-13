@@ -373,7 +373,7 @@
         <tr>
           <th align="right"><%= gettext("Version") %></th>
           <td>
-            <%= Application.spec(:Marites, :vsn) %><strong><%= if @update do
+            <%= Application.spec(:marites, :vsn) %><strong><%= if @update do
                   vsn = link @update, to: "https://github.com/Marites-org/Marites/releases",
                                       target: "_blank", rel: "noopener noreferrer"
 

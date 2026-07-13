@@ -3,7 +3,6 @@ defmodule Marites.Repo.Migrations.AddFcmTokens do
 
   def change do
     create table(:fcm_tokens) do
-      add :id, :bigserial, primary_key: true
       add :device_id, :string, null: false
       add :token, :string, null: false
 

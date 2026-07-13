@@ -88,7 +88,6 @@ defmodule Marites.Vehicles.VehicleSyncTest do
                doors_open: nil,
                elevation: nil,
                est_battery_range_km: 268.07,
-               exterior_color: nil,
                frunk_open: nil,
                geofence: nil,
                heading: nil,
@@ -111,7 +110,6 @@ defmodule Marites.Vehicles.VehicleSyncTest do
                shift_state: :unknown,
                since: summary.since,
                speed: nil,
-               spoiler_type: nil,
                state: :asleep,
                time_to_full_charge: :unknown,
                trim_badging: "P100D",
@@ -119,7 +117,6 @@ defmodule Marites.Vehicles.VehicleSyncTest do
                update_available: nil,
                usable_battery_level: 64,
                version: nil,
-               wheel_type: nil,
                windows_open: nil
              }
 

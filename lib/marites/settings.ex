@@ -19,7 +19,9 @@ defmodule Marites.Settings do
   end
 
   def get_car_settings do
-    from(s in CarSettings, order_by: s.id, preload: [:car])
+    # Inner join: aborted app logins can leave car_settings rows that no car
+    # points at; those orphans must not surface in the settings UI.
+    from(s in CarSettings, join: c in assoc(s, :car), order_by: s.id, preload: [car: c])
     |> Repo.all()
   end
 

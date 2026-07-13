@@ -131,43 +131,6 @@
       class={["section", if(update, do: " full-height")]}
     >
       <div class="container">
-        <%= if not Marites.Vault.encryption_key_provided?() do %>
-          <% docs_link =
-            link("docs.Marites.org",
-              to: "https://docs.Marites.org",
-              target: "_blank",
-              rel: "noopener noreferrer"
-            ) %>
-
-          <div class="notification is-warning">
-            <p class="title is-5 is-spaced">
-              <span class="icon"><i class="mdi mdi-shield-alert"></i></span>&nbsp;<%= gettext(
-                "No encryption key provided"
-              ) %>
-            </p>
-            <p class="subtitle is-6">
-              <%= raw(
-                gettext(
-                  "To ensure that your <strong>Tesla API tokens are stored securely</strong>, an encryption key must be provided to Marites via the <code>ENCRYPTION_KEY</code> environment variable. Otherwise, a <strong>login will be required after every restart</strong>."
-                )
-              ) %>
-            </p>
-            <p class="subtitle is-6">
-              <%= raw(
-                gettext(
-                  "The automatically generated encryption key used for the current session can be found <strong>in the application logs</strong>."
-                )
-              ) %>
-            </p>
-            <p class="subtitle is-6">
-              <%= raw(
-                gettext("For more information, see the updated installation guides on %{link}",
-                  link: safe_to_string(docs_link)
-                )
-              ) %>
-            </p>
-          </div>
-        <% end %>
 
         <%= Enum.map(@flash, fn {flash_key, flash_message} -> %>
           <p class={"notification is-#{flash_key}"}><%= flash_message %></p>
@@ -180,13 +143,18 @@
     <footer class="footer">
       <div class="content has-text-centered">
         <%= if update do %>
-          <%= link to: "https://github.com/Marites-org/Marites/releases",
+          <%= link to: "https://github.com/RaNd250/marites-backend",
               class: "button is-rounded is-text is-small has-text-grey", type: "button",
               target: "_blank", rel: "noopener noreferrer" do %>
             <span class="icon"><i class="mdi mdi-gift"></i></span>
             <strong><%= [gettext("Update available"), ": ", update] %></strong>
           <% end %>
         <% end %>
+        <p class="is-size-7 has-text-grey">
+          <a href="https://github.com/RaNd250/marites-backend" target="_blank" rel="noopener noreferrer" class="has-text-grey">
+            Powered by TeslaMate &mdash; Source (AGPL-3.0)
+          </a>
+        </p>
       </div>
     </footer>
   </body>
