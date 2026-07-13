@@ -112,7 +112,7 @@ export default function Home() {
           letter-spacing: -0.2px;
         }
         .m-cards {
-          display: flex; gap: 20px; flex-wrap: wrap;
+          display: flex; gap: 20px; flex-wrap: wrap; align-items: stretch;
           justify-content: center; width: 100%;
         }
         .m-card {
@@ -201,9 +201,15 @@ export default function Home() {
             display: "flex", flexDirection: "column", alignItems: "center",
             padding: "18px 24px 28px", textAlign: "center",
           }}>
-            <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 22px", lineHeight: 1.65 }}>
+            <p style={{ color: "#e5e7eb", fontSize: 15, fontWeight: 700, letterSpacing: "-0.2px", margin: "0 0 10px" }}>
+              Μία συνδρομή, κάθε συσκευή — εφαρμογή Android, web dashboard &amp; Telegram.
+            </p>
+            <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 10px", lineHeight: 1.65 }}>
               Η εφαρμογή Android για προηγμένη παρακολούθηση Sentry, ιστορικό διαδρομών &amp; φορτίσεων,
               έλεγχο οχήματος και ειδοποιήσεις σε πραγματικό χρόνο — ή χρησιμοποιήστε Web + Telegram, χωρίς εγκατάσταση εφαρμογής.
+            </p>
+            <p style={{ color: "#6b7280", fontSize: 12, fontStyle: "italic", margin: "0 0 22px", padding: "0 20px" }}>
+              &laquo;Marites&raquo;: αργκό των Φιλιππίνων για την κουτσομπόλα της γειτονιάς που τα βλέπει όλα — όπως το Tesla σας.
             </p>
 
             {/* Download cards */}
@@ -233,10 +239,13 @@ export default function Home() {
                     <FeatureItem icon="📅" text="Προγραμματισμένο Sentry & απόκριση συναγερμού" />
                     <FeatureItem icon="✅" text="Όλες οι δυνατότητες" />
                   </div>
+                  <div style={{ color: "#6b7280", fontSize: 11, textAlign: "center", marginTop: "auto" }}>
+                    Δωρεάν για 2 εβδομάδες — ακυρώστε οποτεδήποτε στη δοκιμαστική περίοδο χωρίς καμία χρέωση.
+                  </div>
                   <a
                     href="https://play.google.com/store/apps/details?id=es.marit.app"
                     target="_blank" rel="noopener noreferrer"
-                    style={{ textDecoration: "none", marginTop: "auto" }}
+                    style={{ textDecoration: "none" }}
                   >
                     <div style={{
                       background: "#7c3aed", borderRadius: 8, padding: "12px 0",
@@ -268,6 +277,7 @@ export default function Home() {
                     <FeatureItem icon="🔔" text="Push ειδοποιήσεις Sentry" />
                     <FeatureItem icon="📅" text="Ιστορικό διαδρομών & φορτίσεων (7 ημέρες)" />
                     <FeatureItem icon="✅" text="Δωρεάν, χωρίς συνδρομή" />
+                    <div style={{ color: "#6b7280", fontSize: 11, paddingLeft: 22 }}>Περιέχει διαφημίσεις</div>
                     <MissingItem text="Δεν περιλαμβάνει στατιστικά ή απομακρυσμένες εντολές" />
                   </div>
                   <a
@@ -348,17 +358,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-
-          {/* Name origin */}
-          <p style={{
-            color: "#6b7280", fontSize: 13, lineHeight: 1.65, textAlign: "center",
-            maxWidth: 700, margin: "0 auto 18px", padding: "0 24px",
-          }}>
-            Γιατί το Tesla σας είναι το μεγαλύτερο κουτσομπόλα. Εμπνευσμένο από την αργκό{" "}
-            <b style={{ color: "#e5e7eb" }}>&laquo;Marites&raquo;</b>, η εφαρμογή σας φέρνει κάθε
-            συμβάν Sentry, ενημέρωση φόρτισης και διαδρομή — ώστε να μη χάνετε τίποτα απ&rsquo; όσα
-            έχει να πει το αυτοκίνητό σας.
-          </p>
 
           {/* Footer */}
           <footer style={{
