@@ -24,13 +24,13 @@ A powerful, self-hosted data logger for your Tesla.
 To protect yourself from malicious forks, malware, and data theft, please ensure you only obtain Marites from the official source:
 
 - Official Repository: [https://github.com/Marites-org/Marites](https://github.com/Marites-org/Marites)
-- Official Documentation: [https://docs.Marites.org](https://docs.Marites.org/)
+- Official Website: [https://marit.es](https://marit.es/)
 
 We have received reports of deceptive websites and unofficial mobile apps (e.g. on the App Store) using the Marites name to distribute modified or harmful versions. If you are using a version from another source, your Tesla account credentials and vehicle data may be at risk.
 
 ## Documentation
 
-The documentation is available at [https://docs.Marites.org](https://docs.Marites.org/)
+Marites is a fork of [TeslaMate](https://github.com/teslamate-org/teslamate). Documentation for the inherited functionality (installation, configuration, MQTT integration, Grafana dashboards) is available upstream at [https://docs.teslamate.org](https://docs.teslamate.org/) and largely applies to Marites.
 
 ## Features
 
@@ -51,31 +51,31 @@ The documentation is available at [https://docs.Marites.org](https://docs.Marite
 
 Sample screenshots of bundled dashboards can be seen by clicking the links below.
 
-- [Battery Health](https://docs.Marites.org/docs/screenshots/#battery-health)
-- [Charge Level](https://docs.Marites.org/docs/screenshots/#charge-level)
-- [Charges (Energy added / used)](https://docs.Marites.org/docs/screenshots#charges)
-- [Charge Details](https://docs.Marites.org/docs/screenshots#charge-details)
-- [Charging Stats](https://docs.Marites.org/docs/screenshots#charging-stats)
-- [Database Information](https://docs.Marites.org/docs/screenshots/#database-information)
-- [Drive Stats](https://docs.Marites.org/docs/screenshots#drive-stats)
-- [Drives (Distance / Energy consumed (net))](https://docs.Marites.org/docs/screenshots/#drives)
-- [Drive Details](https://docs.Marites.org/docs/screenshots/#drive-details)
-- [Efficiency (Consumption (net / gross))](https://docs.Marites.org/docs/screenshots#efficiency)
-- [Locations (addresses)](https://docs.Marites.org/docs/screenshots/#location-addresses)
-- [Mileage](https://docs.Marites.org/docs/screenshots/#mileage)
-- [Overview](https://docs.Marites.org/docs/screenshots/#overview)
-- [Projected Range (battery degradation)](https://docs.Marites.org/docs/screenshots#projected-range)
-- [States (see when your car was online or asleep)](https://docs.Marites.org/docs/screenshots#states)
-- [Statistics](https://docs.Marites.org/docs/screenshots/#statistics)
-- [Timeline](https://docs.Marites.org/docs/screenshots/#timeline)
-- [Trip](https://docs.Marites.org/docs/screenshots/#trip)
-- [Updates (History of installed updates)](https://docs.Marites.org/docs/screenshots#updates)
-- [Vampire Drain](https://docs.Marites.org/docs/screenshots#vampire-drain)
-- [Visited (Lifetime driving map)](https://docs.Marites.org/docs/screenshots/#visited-lifetime-driving-map)
+- [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
+- [Charge Level](https://docs.teslamate.org/docs/screenshots/#charge-level)
+- [Charges (Energy added / used)](https://docs.teslamate.org/docs/screenshots#charges)
+- [Charge Details](https://docs.teslamate.org/docs/screenshots#charge-details)
+- [Charging Stats](https://docs.teslamate.org/docs/screenshots#charging-stats)
+- [Database Information](https://docs.teslamate.org/docs/screenshots/#database-information)
+- [Drive Stats](https://docs.teslamate.org/docs/screenshots#drive-stats)
+- [Drives (Distance / Energy consumed (net))](https://docs.teslamate.org/docs/screenshots/#drives)
+- [Drive Details](https://docs.teslamate.org/docs/screenshots/#drive-details)
+- [Efficiency (Consumption (net / gross))](https://docs.teslamate.org/docs/screenshots#efficiency)
+- [Locations (addresses)](https://docs.teslamate.org/docs/screenshots/#location-addresses)
+- [Mileage](https://docs.teslamate.org/docs/screenshots/#mileage)
+- [Overview](https://docs.teslamate.org/docs/screenshots/#overview)
+- [Projected Range (battery degradation)](https://docs.teslamate.org/docs/screenshots#projected-range)
+- [States (see when your car was online or asleep)](https://docs.teslamate.org/docs/screenshots#states)
+- [Statistics](https://docs.teslamate.org/docs/screenshots/#statistics)
+- [Timeline](https://docs.teslamate.org/docs/screenshots/#timeline)
+- [Trip](https://docs.teslamate.org/docs/screenshots/#trip)
+- [Updates (History of installed updates)](https://docs.teslamate.org/docs/screenshots#updates)
+- [Vampire Drain](https://docs.teslamate.org/docs/screenshots#vampire-drain)
+- [Visited (Lifetime driving map)](https://docs.teslamate.org/docs/screenshots/#visited-lifetime-driving-map)
 
 ## Screenshots
 
-Sneak peak into Marites interface and bundled dashboards. See [the docs](https://docs.Marites.org/docs/screenshots) for additional screenshots.
+Sneak peak into Marites interface and bundled dashboards. See [the docs](https://docs.teslamate.org/docs/screenshots) for additional screenshots.
 
 ![Web Interface](/website/static/screenshots/web_interface.png)
 

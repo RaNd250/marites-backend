@@ -166,7 +166,7 @@ We believe this step is necessary to protect the project from exploitation and t
 ## [2.2.0] - 2025-11-06
 
 As always, there have been many improvements. We now support a proxy for the OpenStreetMap API. If you live in a geo-blocked location, this could simplify your setup. Your tokens are now more secure.
-We use the latest dependencies and support PostgreSQL 18 (To update, back up your data and follow [the guide](https://docs.Marites.org/docs/maintenance/upgrading_postgres) **Please note: Volume mounts have changed in PostgreSQL18, see point 4 of the guide.**).
+We use the latest dependencies and support PostgreSQL 18 (To update, back up your data and follow [the guide](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) **Please note: Volume mounts have changed in PostgreSQL18, see point 4 of the guide.**).
 We also avoid memory bloat on misconfigured Docker hosts. If your host has limited hardware, this will greatly improve your experience.
 The dashboards have been improved in terms of performance, and all dashboards now function as expected when set to miles.
 
@@ -368,10 +368,10 @@ Enjoy it.
 
 **This is a breaking change release:** Marites uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. We now require PostgreSQL 16.7 or 17.3 or higher as we are upgrading the bundled earthdistance extension to v1.2. Marites will now fail to start if you are using an older version. Ensure to upgrade your database before upgrading Marites. To upgrade PostgreSQL, you need to follow these instructions:
 
-- [Backup your data](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
-- [Upgrade PostgreSQL to postgres:17](https://docs.Marites.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
-- [Upgrade Marites to this version](https://docs.Marites.org/docs/upgrading)
-- [Backup your data after the upgrade](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
+- [Backup your data](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
+- [Upgrade PostgreSQL to postgres:17](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
+- [Upgrade Marites to this version](https://docs.teslamate.org/docs/upgrading)
+- [Backup your data after the upgrade](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
 
 **Note for user which revoked permissions:** If the SUPERUSER privilege has been revoked after the initial (manual) installation, it must be temporarily granted for pending earthdistance migrations to succeed. The privilege can then be safely revoked.
 
@@ -623,10 +623,10 @@ As always, lots of improvements. The focus has been on performance improvements,
 
 **Regarding PostgreSQL 17:** Marites uses PostgreSQL as database, this is an external dependency and needs to be updated by yourself. Although Marites currently runs fine with PostgreSQL 14+ we strongly recommend upgrading to the latest supported version. We recommend that you do this as follows:
 
-- [Backup your data](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
-- [Upgrade Marites to this version](https://docs.Marites.org/docs/upgrading)
-- [Backup your data after the upgrade](https://docs.Marites.org/docs/maintenance/backup_restore#backup)
-- [Upgrade PostgreSQL to postgres:17](https://docs.Marites.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
+- [Backup your data](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
+- [Upgrade Marites to this version](https://docs.teslamate.org/docs/upgrading)
+- [Backup your data after the upgrade](https://docs.teslamate.org/docs/maintenance/backup_restore#backup)
+- [Upgrade PostgreSQL to postgres:17](https://docs.teslamate.org/docs/maintenance/upgrading_postgres) (Yes, you will have to erase your data, which is why you need your backup in the first place.)
 
 **Additional info:** In some very rare cases with very old installations of Marites (from 2019) we have observed performance issues due to missing indexes. These should normally be added with our automatic migrations. If you think your installation may be missing some indexes, see #4201 for the corrective SQL command.
 
@@ -754,12 +754,12 @@ As always with many improvements. Cleaner LFP battery handling, 100x speed impro
 
 ### New features
 
-- Track open/close states for individual doors (#3962 - @SaswatPadhi), new MQTT values see [documentation](https://docs.Marites.org/docs/integrations/mqtt)
+- Track open/close states for individual doors (#3962 - @SaswatPadhi), new MQTT values see [documentation](https://docs.teslamate.org/docs/integrations/mqtt)
 - Allow Fleet API users to change client_id (#3984 - @jlestel)
 - Customize intervals between vehicle_data calls (#3940 - @jlestel)
 - feat: Create NixOS module (#3998 - @scottbot95)
 - feat: Add ability to enable and disable data collection for cars (#3993 - @mark3-dev)
-- publish center_display_state to mqtt (#3813 - @Atrox), new MQTT values see [documentation](https://docs.Marites.org/docs/integrations/mqtt)
+- publish center_display_state to mqtt (#3813 - @Atrox), new MQTT values see [documentation](https://docs.teslamate.org/docs/integrations/mqtt)
 - feat: add LFP Battery setting for car settings (#4007 -@cwanja)
 - Add icon to summary when Sentry Mode is triggered and recording (#4043 -@kolaCZek)
 
@@ -1034,7 +1034,7 @@ same as 1.29.0 but reverted: "Dynamic endpoints and token to use official Tesla 
 ### Configure Timezone Setting for Accurate Local Time Display
 
 To ensure time-related features display accurately in your local timezone, configure the TZ environment variable.
-Detailed instructions are available in our [configuration guide](https://docs.Marites.org/docs/configuration/environment_variables/).
+Detailed instructions are available in our [configuration guide](https://docs.teslamate.org/docs/configuration/environment_variables/).
 
 ## [1.28.2] - 2023-11-27
 
@@ -1219,7 +1219,7 @@ Note: Marites moved to the new @Marites-org organization.
 
 To ensure that the Tesla API tokens are stored securely, **an encryption key must be provided via the `ENCRYPTION_KEY` environment variable**.
 
-If you use a `docker-compose.yml` file to run Marites, add a line with the `ENCRYPTION_KEY` to the `environment` section or check out the updated installation guides on [docs.Marites.org](https://docs.Marites.org):
+If you use a `docker-compose.yml` file to run Marites, add a line with the `ENCRYPTION_KEY` to the `environment` section or check out the updated installation guides on [docs.teslamate.org](https://docs.teslamate.org):
 
 ```yaml
 services:
@@ -1357,7 +1357,7 @@ Disable anonymous logins to Grafana by default (when using the `Marites/grafana`
 - The first time you visit Grafana, you will be asked to log in. Use the default user `admin` with the password `admin`. After successful login, you will be prompted to change the password.
 - To allow anonymous logins set the environment variable of the Grafana image `GF_AUTH_ANONYMOUS_ENABLED` to `true` (use only if your Grafana instance is not exposed to the internet!)
 
-> This change only affects users who followed the [basic Docker installation guide](https://docs.Marites.org/docs/installation/docker) which, as mentioned in the guide, is intended for home network use only and not for exposure to the internet. Users who followed one of the [advanced installation guides](https://docs.Marites.org/docs/guides/traefik) are not affected as their Grafana instances always had anonymous logins disabled.
+> This change only affects users who followed the [basic Docker installation guide](https://docs.teslamate.org/docs/installation/docker) which, as mentioned in the guide, is intended for home network use only and not for exposure to the internet. Users who followed one of the [advanced installation guides](https://docs.teslamate.org/docs/guides/traefik) are not affected as their Grafana instances always had anonymous logins disabled.
 
 ## [1.25.0] - 2021-11-12
 
@@ -1660,7 +1660,7 @@ Additional:
 
 #### Other
 
-- Allow to use non-standard MQTT ports (via [MQTT_PORT](https://docs.Marites.org/docs/configuration/environment_variables))
+- Allow to use non-standard MQTT ports (via [MQTT_PORT](https://docs.teslamate.org/docs/configuration/environment_variables))
 - Refactoring: Use built-in Ecto enum type
 - Guard against unexpected MFA errors
 
@@ -1690,9 +1690,9 @@ Additional:
 
 - Add support for Tesla’s new authentication process (two-factor authentication)
 - Optimize TeslaFi CSV file import: reduced memory usage and increased performance
-- Require [Elixir v1.11](https://docs.Marites.org/docs/installation/debian#requirements)
-- Allow to connect to Postgres via IPv6 (via [DATABASE_IPV6](https://docs.Marites.org/docs/configuration/environment_variables))
-- Allow to connect to MQTT broker via IPv6 (via [MQTT_IPV6](https://docs.Marites.org/docs/configuration/environment_variables))
+- Require [Elixir v1.11](https://docs.teslamate.org/docs/installation/debian#requirements)
+- Allow to connect to Postgres via IPv6 (via [DATABASE_IPV6](https://docs.teslamate.org/docs/configuration/environment_variables))
+- Allow to connect to MQTT broker via IPv6 (via [MQTT_IPV6](https://docs.teslamate.org/docs/configuration/environment_variables))
 - Improve detection of whether the vehicle is plugged in during cold weather (+ fix [#1154](https://github.com/adriankumpf/Marites/pull/1154) by [virtualm2000](https://github.com/virtualm2000))
 - Use connection pooling for SRTM downloads
 - Optimize Docker layer caching to speed up image build times
@@ -1789,7 +1789,7 @@ Additional:
 - Update HomeAssistant documentation ([#705](https://github.com/adriankumpf/Marites/pull/705) by [ngardiner](https://github.com/ngardiner))
 - TeslaFi Import: Clarify steps 3 and 4 about emptying the import folder ([#703](https://github.com/adriankumpf/Marites/pull/703) by [ramonsmits](https://github.com/ramonsmits))
 - Update Upgrade documentation ([#790](https://github.com/adriankumpf/Marites/pull/790) by [roadrash2108](https://github.com/roadrash2108))
-- Add a page that lists projects that use Marites: [docs.Marites.org/docs/projects](https://docs.Marites.org/docs/projects)
+- Add a page that lists projects that use Marites: [docs.teslamate.org/docs/projects](https://docs.teslamate.org/docs/projects)
 - An note about moving the backup file ([#813](https://github.com/adriankumpf/Marites/pull/813) by [traviscollins](https://github.com/traviscollins))
 - Add `-T` flag to backup command ([#851](https://github.com/adriankumpf/Marites/pull/851) by [acemtp](https://github.com/acemtp))
 
@@ -1933,7 +1933,7 @@ As the first and only Tesla logging app out there, Marites now use the Tesla str
 
 #### Documentation
 
-The docs were revised (once again). You can find them at **[docs.Marites.org](https://docs.Marites.org)**.
+The docs were revised (once again). You can find them at **[docs.teslamate.org](https://docs.teslamate.org)**.
 
 - Add portainer guide to the documentation ([#581](https://github.com/adriankumpf/Marites/pull/581) by [DrMichael](https://github.com/DrMichael))
 - Improve Apache2 guide ([#570](https://github.com/adriankumpf/Marites/pull/570) by [DrMichael](https://github.com/DrMichael))
