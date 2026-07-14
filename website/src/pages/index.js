@@ -189,7 +189,7 @@ export default function Home() {
                 mari<span style={{ color: "#e31937" }}>t.es</span>
               </span>
             </div>
-            <span className="m-tagline">Never Miss What Your Tesla Sees.</span>
+            <span className="m-tagline">Never miss a Sentry event again.</span>
             <LangSwitch />
           </header>
 
@@ -198,9 +198,6 @@ export default function Home() {
             display: "flex", flexDirection: "column", alignItems: "center",
             padding: "18px 24px 28px", textAlign: "center",
           }}>
-            <p style={{ color: "#e5e7eb", fontSize: 15, fontWeight: 700, letterSpacing: "-0.2px", margin: "0 0 10px" }}>
-              One subscription, every device — Android app, web dashboard &amp; Telegram.
-            </p>
             <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 10px", lineHeight: 1.65 }}>
               The Android app for advanced sentry monitoring, drive &amp; charge history,
               vehicle control and real-time alerts — or use Web + Telegram, no app to install.
@@ -337,10 +334,10 @@ export default function Home() {
           <div className="m-page">
             <div className="m-features">
               {[
-                { icon: "📡", title: "Real-time telemetry", body: "Live status, battery and location." },
+                { icon: "📡", title: "Real-time telemetry", body: "Know exactly what your Tesla is doing." },
                 { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts on any activity." },
-                { icon: "🗺", title: "Drive history", body: "Every trip with route, energy and stats." },
-                { icon: "⚡", title: "Charge tracking", body: "Cost, energy and time per session." },
+                { icon: "🗺", title: "Drive history", body: "Every drive on a beautiful interactive map." },
+                { icon: "⚡", title: "Charge tracking", body: "Understand every charging session." },
                 { icon: "🔔", title: "Alarm response", body: "Auto honk &amp; flash when alarm triggers." },
                 { icon: "📅", title: "Scheduling", body: "Sentry on a schedule you control." },
               ].map(({ icon, title, body }) => (

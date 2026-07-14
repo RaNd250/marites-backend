@@ -192,7 +192,7 @@ export default function Home() {
                 mari<span style={{ color: "#e31937" }}>t.es</span>
               </span>
             </div>
-            <span className="m-tagline">Παρακολουθήστε το Tesla σας σε πραγματικό χρόνο.</span>
+            <span className="m-tagline">Μην χάσετε ποτέ ξανά ένα συμβάν Sentry.</span>
             <LangSwitch />
           </header>
 
@@ -201,9 +201,6 @@ export default function Home() {
             display: "flex", flexDirection: "column", alignItems: "center",
             padding: "18px 24px 28px", textAlign: "center",
           }}>
-            <p style={{ color: "#e5e7eb", fontSize: 15, fontWeight: 700, letterSpacing: "-0.2px", margin: "0 0 10px" }}>
-              Μία συνδρομή, κάθε συσκευή — εφαρμογή Android, web dashboard &amp; Telegram.
-            </p>
             <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 1100, width: "100%", padding: "0 20px", boxSizing: "border-box", margin: "0 0 10px", lineHeight: 1.65 }}>
               Η εφαρμογή Android για προηγμένη παρακολούθηση Sentry, ιστορικό διαδρομών &amp; φορτίσεων,
               έλεγχο οχήματος και ειδοποιήσεις σε πραγματικό χρόνο — ή χρησιμοποιήστε Web + Telegram, χωρίς εγκατάσταση εφαρμογής.
@@ -341,10 +338,10 @@ export default function Home() {
           <div className="m-page">
             <div className="m-features">
               {[
-                { icon: "📡", title: "Τηλεμετρία σε πραγματικό χρόνο", body: "Ζωντανή κατάσταση, μπαταρία και τοποθεσία." },
+                { icon: "📡", title: "Τηλεμετρία σε πραγματικό χρόνο", body: "Μάθετε τι ακριβώς κάνει το Tesla σας." },
                 { icon: "🛡", title: "Παρακολούθηση Sentry", body: "Άμεσες push ειδοποιήσεις σε κάθε δραστηριότητα." },
-                { icon: "🗺", title: "Ιστορικό διαδρομών", body: "Κάθε διαδρομή με πορεία, ενέργεια και στατιστικά." },
-                { icon: "⚡", title: "Παρακολούθηση φόρτισης", body: "Κόστος, ενέργεια και διάρκεια ανά φόρτιση." },
+                { icon: "🗺", title: "Ιστορικό διαδρομών", body: "Κάθε διαδρομή σε έναν όμορφο διαδραστικό χάρτη." },
+                { icon: "⚡", title: "Παρακολούθηση φόρτισης", body: "Κατανοήστε κάθε συνεδρία φόρτισης." },
                 { icon: "🔔", title: "Απόκριση συναγερμού", body: "Αυτόματη κόρνα &amp; φώτα όταν χτυπήσει ο συναγερμός." },
                 { icon: "📅", title: "Προγραμματισμός", body: "Sentry στο πρόγραμμα που ορίζετε εσείς." },
               ].map(({ icon, title, body }) => (
