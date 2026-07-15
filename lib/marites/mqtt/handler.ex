@@ -14,6 +14,8 @@ defmodule Marites.Mqtt.Handler do
     "VehicleSpeed"       => :speed,
     "Odometer"           => :odometer,
     "RatedRange"         => :rated_battery_range,
+    "EstBatteryRange"    => :est_battery_range,
+    "IdealBatteryRange"  => :ideal_battery_range,
     "InsideTemp"         => :inside_temp,
     "OutsideTemp"        => :outside_temp,
     "SentryMode"         => :sentry_mode
@@ -78,7 +80,7 @@ defmodule Marites.Mqtt.Handler do
     end
   end
 
-  defp decode_value(field, payload) when field in [:soc, :speed, :odometer, :inside_temp, :outside_temp, :rated_battery_range] do
+  defp decode_value(field, payload) when field in [:soc, :speed, :odometer, :inside_temp, :outside_temp, :rated_battery_range, :est_battery_range, :ideal_battery_range] do
     case Jason.decode(payload) do
       {:ok, val} when is_number(val) -> {:ok, val}
       _ -> :error
