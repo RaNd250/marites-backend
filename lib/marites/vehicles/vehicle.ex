@@ -1802,8 +1802,10 @@ defmodule Marites.Vehicles.Vehicle do
       {:sentry_mode, val}, acc when is_boolean(val) and acc.vehicle_state != nil ->
         %{acc | vehicle_state: %{acc.vehicle_state | sentry_mode: val}}
 
+      # Fleet Telemetry has no separate UsableBatteryLevel field; Soc is the
+      # BMS usable state of charge, so it feeds both columns.
       {:soc, val}, acc when is_number(val) and acc.charge_state != nil ->
-        %{acc | charge_state: %{acc.charge_state | battery_level: round(val)}}
+        %{acc | charge_state: %{acc.charge_state | battery_level: round(val), usable_battery_level: round(val)}}
 
       {:shift_state, val}, acc when is_binary(val) and acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | shift_state: val}}
@@ -1821,6 +1823,14 @@ defmodule Marites.Vehicles.Vehicle do
       # create_position converts via Convert.miles_to_km/2 downstream.
       {:rated_battery_range, val}, acc when is_number(val) and acc.charge_state != nil ->
         %{acc | charge_state: %{acc.charge_state | battery_range: val}}
+
+      # Est/IdealBatteryRange also arrive in MILES (proto fields 40/41);
+      # create_position converts to km downstream like battery_range.
+      {:est_battery_range, val}, acc when is_number(val) and acc.charge_state != nil ->
+        %{acc | charge_state: %{acc.charge_state | est_battery_range: val}}
+
+      {:ideal_battery_range, val}, acc when is_number(val) and acc.charge_state != nil ->
+        %{acc | charge_state: %{acc.charge_state | ideal_battery_range: val}}
 
       {:inside_temp, val}, acc when is_number(val) and acc.climate_state != nil ->
         %{acc | climate_state: %{acc.climate_state | inside_temp: val}}

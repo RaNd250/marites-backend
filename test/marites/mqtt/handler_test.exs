@@ -16,6 +16,14 @@ defmodule Marites.Mqtt.HandlerTest do
     assert {:ok, :rated_battery_range, 250.5} = Handler.parse_payload("RatedRange", "250.5")
   end
 
+  # Phase 1 battery-health roadmap: EstBatteryRange/IdealBatteryRange were
+  # never in the field map, so est_battery_range_km/ideal_battery_range_km
+  # stayed NULL for all FT-era rows despite the DB columns already existing.
+  test "parse_payload/2 decodes EstBatteryRange and IdealBatteryRange as bare numbers (miles)" do
+    assert {:ok, :est_battery_range, 268.0} = Handler.parse_payload("EstBatteryRange", "268.0")
+    assert {:ok, :ideal_battery_range, 315.5} = Handler.parse_payload("IdealBatteryRange", "315.5")
+  end
+
   test "parse_payload/2 decodes temps and Location" do
     assert {:ok, :inside_temp, 21.5} = Handler.parse_payload("InsideTemp", "21.5")
 
