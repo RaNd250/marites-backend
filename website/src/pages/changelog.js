@@ -219,7 +219,7 @@ export default function Changelog() {
               <li><b>Stats marked Beta</b> &mdash; the estimated figures are still being fine-tuned.</li>
               <li><b>Refreshed logo.</b></li>
               <li><b>Predicted range.</b> Stats now estimates your real-world range from your driving history and the current temperature.</li>
-              <li><b>Battery health &amp; phantom drain.</b> Stats shows capacity retention over time and how much battery you lose while parked &mdash; matching the Core app.</li>
+              <li><b>Battery health &amp; <a href="/phantom-drain/">phantom drain</a>.</b> Stats shows capacity retention over time and how much battery you lose while parked &mdash; matching the Core app.</li>
               <li><b>Charging cost &amp; tariff.</b> Set your electricity price (with an optional night rate) in the new Settings page and see what every charge costs.</li>
               <li><b>Units &amp; time format.</b> Choose metric or imperial and 12 or 24-hour time in Settings.</li>
               <li><b>Driving-style trip maps.</b> Drive routes are coloured by hard acceleration and braking, with a count of each.</li>
