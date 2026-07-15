@@ -40,7 +40,7 @@ const LangSwitch = () => (
   <div style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
     <span style={{ color: "#fff" }}>EN</span>
     <span style={{ color: "#374151" }}>|</span>
-    <a href="/el/faq/" lang="el" hrefLang="el" style={{ color: "#6b7280", textDecoration: "none" }}>ΕΛ</a>
+    <a href="/el/faq/" lang="el" hrefLang="el" style={{ color: "#6b7280", textDecoration: "none" }} onClick={() => { try { localStorage.setItem("marites_lang_choice", "el"); } catch {} }}>ΕΛ</a>
   </div>
 );
 
