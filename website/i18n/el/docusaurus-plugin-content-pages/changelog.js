@@ -22,7 +22,7 @@ const Pill = ({ color, children }) => (
 
 const LangSwitch = () => (
   <div style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
-    <a href="/changelog/" lang="en" hrefLang="en" style={{ color: "#6b7280", textDecoration: "none" }}>EN</a>
+    <a href="/changelog/" lang="en" hrefLang="en" style={{ color: "#6b7280", textDecoration: "none" }} onClick={() => { try { localStorage.setItem("marites_lang_choice", "en"); } catch {} }}>EN</a>
     <span style={{ color: "#374151" }}>|</span>
     <span style={{ color: "#fff" }}>ΕΛ</span>
   </div>
