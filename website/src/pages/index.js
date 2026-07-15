@@ -307,7 +307,7 @@ export default function Home() {
                     <FeatureItem icon="🌐" text="Full web dashboard — any device" />
                     <FeatureItem icon="📍" text="Drives &amp; live route maps" />
                     <FeatureItem icon="⚡" text="Charge history &amp; stats" />
-                    <FeatureItem icon="📊" text="Battery health &amp; phantom drain" />
+                    <FeatureItem icon="📊" text={<>Battery health &amp; <a href="/phantom-drain/" style={{ color: "inherit" }}>phantom drain</a></>} />
                     <FeatureItem icon="💬" text="Sentry alerts on Telegram (with location)" />
                     <FeatureItem icon="🍏" text="iPhone, desktop — no app to install" />
                   </div>
