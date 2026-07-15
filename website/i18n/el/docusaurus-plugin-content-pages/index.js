@@ -230,7 +230,7 @@ export default function Home() {
                     <FeatureItem icon="📍" text="Ιστορικό διαδρομών & ζωντανός χάρτης" />
                     <FeatureItem icon="⚡" text="Ιστορικό & στατιστικά φόρτισης" />
                     <FeatureItem icon="🛡" text="Έλεγχος Sentry mode & ειδοποιήσεις" />
-                    <FeatureItem icon="📊" text="Battery Health & στατιστικά" />
+                    <FeatureItem icon="📊" text={<>Battery Health &amp; <a href="/el/phantom-drain/" style={{ color: "inherit" }}>phantom drain</a></>} />
                     <FeatureItem icon="🔑" text="Κόρνα, φώτα & εντολές οχήματος" />
                     <FeatureItem icon="🔔" text="Push ειδοποιήσεις" />
                     <FeatureItem icon="📅" text="Προγραμματισμένο Sentry & απόκριση συναγερμού" />

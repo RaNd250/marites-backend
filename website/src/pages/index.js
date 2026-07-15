@@ -227,7 +227,7 @@ export default function Home() {
                     <FeatureItem icon="📍" text="Drive history &amp; live map" />
                     <FeatureItem icon="⚡" text="Charge history &amp; stats" />
                     <FeatureItem icon="🛡" text="Sentry mode control &amp; alerts" />
-                    <FeatureItem icon="📊" text="Battery health &amp; statistics" />
+                    <FeatureItem icon="📊" text={<>Battery health &amp; <a href="/phantom-drain/" style={{ color: "inherit" }}>phantom drain</a></>} />
                     <FeatureItem icon="🔑" text="Honk, flash &amp; vehicle commands" />
                     <FeatureItem icon="🔔" text="Push notifications" />
                     <FeatureItem icon="📅" text="Scheduled sentry &amp; alarm response" />
