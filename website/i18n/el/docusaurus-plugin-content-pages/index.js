@@ -311,7 +311,7 @@ export default function Home() {
                     <FeatureItem icon="🌐" text="Πλήρες dashboard μέσω browser — σε κάθε συσκευή" />
                     <FeatureItem icon="📍" text="Διαδρομές & Ζωντανός χάρτης διαδρομής" />
                     <FeatureItem icon="⚡" text="Ιστορικό & στατιστικά φόρτισης" />
-                    <FeatureItem icon="📊" text="Υγεία μπαταρίας & phantom drain" />
+                    <FeatureItem icon="📊" text={<>Υγεία μπαταρίας &amp; <a href="/el/phantom-drain/" style={{ color: "inherit" }}>phantom drain</a></>} />
                     <FeatureItem icon="💬" text="Ειδοποιήσεις Sentry στο Telegram (με τοποθεσία)" />
                     <FeatureItem icon="🍏" text="iPhone και υπολογιστής — χωρίς εγκατάσταση εφαρμογής" />
                   </div>
