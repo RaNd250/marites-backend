@@ -192,7 +192,7 @@ export default function Home() {
                 mari<span style={{ color: "#e31937" }}>t.es</span>
               </span>
             </div>
-            <span className="m-tagline">Μην χάσετε ποτέ ξανά ένα συμβάν Sentry.</span>
+            <span className="m-tagline">Μην ξαναχάσετε κανένα συμβάν Sentry.</span>
             <LangSwitch />
           </header>
 
