@@ -181,6 +181,9 @@ export default function Changelog() {
           </Section>
 
           <Section id="lite" color={C.green} title="Lite app (Android)">
+            <Rel version="0.1.61" date="July 2026" color={C.green}>
+              <li><b>Extend your alerts.</b> Keeping Sentry alerts active now takes a quick in-app check-in: open Lite and tap <b>Extend</b>, holding for about 8 seconds, at least every 48 hours.</li>
+            </Rel>
             <Rel version="0.1.58" date="July 2026" color={C.green}>
               <li><b>Ad moved above the fold.</b> The banner ad now sits right under the Sentry toggle, so it&#8217;s always visible without scrolling.</li>
               <li><b>Open-source licenses moved</b> into the Settings dialog, under a new About section.</li>
@@ -212,6 +215,12 @@ export default function Changelog() {
           </Section>
 
           <Section id="web" color={C.red} title="Web dashboard (app.marit.es)">
+            <Rel version="" date="July 2026" color={C.red}>
+              <li><b>Efficiency per trip.</b> Drives now show kWh/100km alongside distance and energy used.</li>
+              <li><b>Cabin &amp; outside temperature per trip.</b> Each drive now shows average inside and outside temperature.</li>
+              <li><b>Fixed drive sorting.</b> Sorting the Drives list (e.g. by Max speed) now actually re-orders what you see, not just the export.</li>
+              <li><b>Charging complete alerts.</b> Get a push notification (and Telegram, if connected) when a charging session ends &mdash; toggle it under Settings &rarr; Alerts. Available on the web dashboard and Core app.</li>
+            </Rel>
             <Rel version="" date="June 2026" color={C.red}>
               <li><b>Energy used per trip.</b> Each drive now shows the kWh it used, estimated from your charging history.</li>
               <li><b>Charging status at a glance.</b> The dashboard now shows when your car is charging, with live power.</li>
