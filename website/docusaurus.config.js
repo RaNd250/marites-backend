@@ -32,7 +32,7 @@ module.exports = {
       {
         name: "keywords",
         content:
-          "tesla sentry alerts, tesla companion app android, tesla drive history, tesla charge tracking, sentry mode notifications, tesla fleet telemetry",
+          "tesla security companion, tesla sentry alerts, tesla companion app android, tesla drive history, tesla charge tracking, sentry mode notifications, tesla fleet telemetry",
       },
     ],
     navbar: {
