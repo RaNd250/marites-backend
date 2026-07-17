@@ -11,6 +11,7 @@ const structuredData = {
       name: "marit.es",
       url: "https://marit.es/",
       logo: "https://marit.es/img/icon-512.png",
+      description: "Tesla Security Companion — Sentry alerts, drive history, charge tracking and vehicle control.",
       sameAs: [
         "https://github.com/RaNd250/marites",
         "https://play.google.com/store/apps/details?id=es.marit.app",
@@ -92,8 +93,8 @@ const MissingItem = ({ text }) => (
 export default function Home() {
   return (
     <Layout
-      title="Tesla Sentry Alerts, Drive History & Charge Tracking for Android"
-      description="Never miss what your Tesla sees. Real-time sentry alerts, drive history, charge tracking and vehicle commands for Android — marit.es Core and Lite."
+      title="Tesla Security Companion — Sentry Alerts, Drive History & Charge Tracking for Android"
+      description="marit.es is your Tesla Security Companion. Never miss what your Tesla sees — real-time sentry alerts, drive history, charge tracking and vehicle commands for Android — marit.es Core and Lite."
       noFooter
     >
       <Head>
