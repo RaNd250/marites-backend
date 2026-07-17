@@ -11,6 +11,11 @@ const structuredData = {
       name: "marit.es",
       url: "https://marit.es/",
       logo: "https://marit.es/img/icon-512.png",
+      sameAs: [
+        "https://github.com/RaNd250/marites",
+        "https://play.google.com/store/apps/details?id=es.marit.app",
+        "https://play.google.com/store/apps/details?id=es.marit.lite",
+      ],
     },
     {
       "@type": "WebSite",
@@ -172,8 +177,8 @@ export default function Home() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          opacity: 0.12,
-          filter: "blur(32px)",
+          opacity: 0.45,
+          filter: "blur(10px)",
           transform: "scale(1.05)",
           pointerEvents: "none",
           zIndex: 0,
