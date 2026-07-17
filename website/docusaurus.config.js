@@ -62,6 +62,20 @@ module.exports = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
+        sitemap: {
+          // privacy/ and terms/ are static HTML deployed outside the Docusaurus
+          // build (see deploy_website.sh), so the sitemap plugin never sees
+          // their routes — add them manually.
+          async createSitemapItems(params) {
+            const { defaultCreateSitemapItems, ...rest } = params;
+            const items = await defaultCreateSitemapItems(rest);
+            items.push(
+              { url: "https://marit.es/privacy/", changefreq: "monthly", priority: 0.3 },
+              { url: "https://marit.es/terms/", changefreq: "monthly", priority: 0.3 },
+            );
+            return items;
+          },
+        },
       },
     ],
   ],
