@@ -15,6 +15,8 @@ const structuredData = {
         "https://github.com/RaNd250/marites",
         "https://play.google.com/store/apps/details?id=es.marit.app",
         "https://play.google.com/store/apps/details?id=es.marit.lite",
+        "https://www.facebook.com/maritesapp",
+        "https://www.instagram.com/maritesapp",
       ],
     },
     {
