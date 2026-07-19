@@ -125,6 +125,7 @@ export default function Home() {
           background: #111113; border-radius: 14px;
           padding: 24px 24px 20px;
           display: flex; flex-direction: column; gap: 14px;
+          text-align: left;
         }
         .m-features {
           display: grid;
@@ -191,12 +192,12 @@ export default function Home() {
 
           {/* Header */}
           <header className="m-header">
-            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0, textDecoration: "none" }}>
               <img src="/img/logo.png" alt="marit.es" style={{ width: 34, height: 34, borderRadius: 6 }} />
               <span style={{ color: "#fff", fontWeight: 800, fontSize: 17, letterSpacing: "-0.3px" }}>
                 mari<span style={{ color: "#e31937" }}>t.es</span>
               </span>
-            </div>
+            </a>
             <span className="m-tagline">Never miss a Sentry event again.</span>
             <LangSwitch />
           </header>
@@ -343,11 +344,12 @@ export default function Home() {
             <div className="m-features">
               {[
                 { icon: "📡", title: "Real-time telemetry", body: "Know exactly what your Tesla is doing." },
-                { icon: "🛡", title: "Sentry monitoring", body: "Instant push alerts on any activity." },
-                { icon: "🗺", title: "Drive history", body: "Every drive on a beautiful interactive map." },
+                { icon: "🛡", title: "Sentry monitoring", body: "Instant push or Telegram alerts on any activity." },
+                { icon: "🗺", title: "Drive history", body: "Advanced drive history with consumption and stats." },
                 { icon: "⚡", title: "Charge tracking", body: "Understand every charging session." },
-                { icon: "🔔", title: "Alarm response", body: "Auto honk &amp; flash when alarm triggers." },
+                { icon: "🔔", title: "Customizable alarms", body: "Choose exactly how your Tesla responds when Sentry triggers." },
                 { icon: "📅", title: "Scheduling", body: "Sentry on a schedule you control." },
+                { icon: "🔒", title: "Privacy first", body: "We never see your Tesla password &mdash; login happens on Tesla&#39;s own page. No data sold, official Fleet API only." },
               ].map(({ icon, title, body }) => (
                 <div key={title} className="m-feature-card">
                   <span style={{ fontSize: 22, flexShrink: 0 }}>{icon}</span>

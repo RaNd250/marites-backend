@@ -216,6 +216,17 @@ export default function Changelog() {
 
           <Section id="web" color={C.red} title="Web dashboard (app.marit.es)">
             <Rel version="" date="July 2026" color={C.red}>
+              <li><b>Overview dashboard.</b> New at-a-glance page summarising recent drives, charges and battery status.</li>
+              <li><b>Battery health: ideal vs rated range.</b> A new chart tracks your ideal (100% SoC) range alongside rated range over time.</li>
+              <li><b>Vampire drain table.</b> Day-by-day standby battery loss in one table.</li>
+              <li><b>Drive efficiency score.</b> Each drive gets a temperature-normalised efficiency score (Good/Fair/Poor) with an honest tip when a trip used more energy than usual.</li>
+              <li><b>Charging cost by month.</b> Stats now charts your monthly charging cost and kWh.</li>
+              <li><b>Home vs public charging.</b> Charges are tagged Home or Public automatically.</li>
+              <li><b>Forgot to plug in?</b> Optional alert (Settings &rarr; Alerts) when your car is parked at home with low battery and not charging.</li>
+              <li><b>Route minimap in PDF exports.</b> Drive PDF exports now include a small map of the route.</li>
+              <li><b>FSD km &amp; charging Amps/Watts.</b> Drives show FSD-driven distance (HW4 cars) and charges show average Amps/Watts.</li>
+            </Rel>
+            <Rel version="" date="July 2026" color={C.red}>
               <li><b>Efficiency per trip.</b> Drives now show kWh/100km alongside distance and energy used.</li>
               <li><b>Cabin &amp; outside temperature per trip.</b> Each drive now shows average inside and outside temperature.</li>
               <li><b>Fixed drive sorting.</b> Sorting the Drives list (e.g. by Max speed) now actually re-orders what you see, not just the export.</li>
