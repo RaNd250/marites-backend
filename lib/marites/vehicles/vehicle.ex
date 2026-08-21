@@ -1841,6 +1841,18 @@ defmodule Marites.Vehicles.Vehicle do
       {:location, %{latitude: lat, longitude: lng}}, acc when acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | latitude: lat, longitude: lng}}
 
+      {:tpms_pressure_fl, val}, acc when is_number(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | tpms_pressure_fl: val}}
+
+      {:tpms_pressure_fr, val}, acc when is_number(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | tpms_pressure_fr: val}}
+
+      {:tpms_pressure_rl, val}, acc when is_number(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | tpms_pressure_rl: val}}
+
+      {:tpms_pressure_rr, val}, acc when is_number(val) and acc.vehicle_state != nil ->
+        %{acc | vehicle_state: %{acc.vehicle_state | tpms_pressure_rr: val}}
+
       _, acc ->
         acc
     end)
