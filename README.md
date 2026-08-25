@@ -1,5 +1,7 @@
 # Marites
 
+**Backend engine for [marit.es](https://marit.es)** — Tesla Sentry alerts, drive history, charging and battery health tracking, available as Android apps (Core and Lite) and a web dashboard, all at [marit.es](https://marit.es). This repository is the open-source (AGPL-3.0) data engine that powers it.
+
 [![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](https://github.com/Marites-org/Marites/blob/main/LICENSE)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10859/badge)](https://www.bestpractices.dev/projects/10859)
 [![CI](https://github.com/Marites-org/Marites/actions/workflows/devops.yml/badge.svg)](https://github.com/Marites-org/Marites/actions/workflows/devops.yml)
