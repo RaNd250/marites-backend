@@ -10,6 +10,7 @@ for app <- Application.spec(:marites, :applications) do
 end
 
 Marites.Repo.start_link()
+Marites.Vault.start_link([])
 Phoenix.PubSub.Supervisor.start_link(name: Marites.PubSub)
 
 assert_timeout = String.to_integer(System.get_env("ELIXIR_ASSERT_TIMEOUT") || "300")

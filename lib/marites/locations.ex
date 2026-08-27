@@ -9,7 +9,7 @@ defmodule Marites.Locations do
   import Marites.CustomExpressions
 
   alias __MODULE__.{Address, Geocoder, GeoFence}
-  alias Marites.Log.{Drive, ChargingProcess}
+  alias Marites.Log.{Drive, ChargingProcess, Position}
   alias Marites.Settings.GlobalSettings
   alias Marites.{Repo, Settings}
 
@@ -125,38 +125,92 @@ defmodule Marites.Locations do
     |> Map.values()
   end
 
+  # positions.latitude/longitude are Cloak-encrypted (opaque bytea to
+  # Postgres) since the encryption-at-rest migration — this used to be one
+  # raw SQL UPDATE...FROM per module, doing the whole "find rows near this
+  # geofence, then re-pick each one's globally-nearest geofence" dance with
+  # ll_to_earth/earth_distance directly against positions.latitude/longitude.
+  # That's no longer possible in SQL (the column is opaque bytes to
+  # Postgres), so this now: 1) fetches candidate rows' positions through
+  # Ecto (transparently decrypted), 2) filters to ones within this
+  # geofence's radius in Elixir, 3) for each, re-picks the globally-nearest
+  # geofence (excluding except_id) the same way, 4) writes the result back
+  # with a plain per-row update_all. N+1 on the writes, but this only runs
+  # on admin geofence create/update/delete — not a hot path.
   defp apply_geofence(%GeoFence{latitude: lat, longitude: lng, radius: r}, opts \\ []) do
     except_id = Keyword.get(opts, :except) || -1
-    args = [lat, lng, r, except_id]
+    center = {to_float(lat), to_float(lng)}
+    radius = to_float(r) || 0.0
 
-    q = fn module, geofence_field, position_field ->
-      """
-        UPDATE #{module.__schema__(:source)} m
-        SET #{geofence_field} = (
-          SELECT id
-          FROM geofences g
-          WHERE
-            earth_box(ll_to_earth(g.latitude, g.longitude), g.radius) @> ll_to_earth(p.latitude, p.longitude) AND
-            earth_distance(ll_to_earth(g.latitude, g.longitude), ll_to_earth(latitude, p.longitude)) < g.radius AND
-            g.id != $4
-          ORDER BY
-            earth_distance(ll_to_earth(g.latitude, g.longitude), ll_to_earth(latitude, p.longitude)) ASC
-          LIMIT 1
-        )
-        FROM positions p
-        WHERE
-          m.#{position_field} = p.id AND
-          earth_box(ll_to_earth($1::numeric, $2::numeric), $3) @> ll_to_earth(p.latitude, p.longitude) AND
-          earth_distance(ll_to_earth($1::numeric, $2::numeric), ll_to_earth(latitude, p.longitude)) < $3
-      """
-    end
-
-    Drive |> q.(:start_geofence_id, :start_position_id) |> Repo.query!(args)
-    Drive |> q.(:end_geofence_id, :end_position_id) |> Repo.query!(args)
-    ChargingProcess |> q.(:geofence_id, :position_id) |> Repo.query!(args)
+    reassign_nearby_positions(Drive, :start_position_id, :start_geofence_id, center, radius, except_id)
+    reassign_nearby_positions(Drive, :end_position_id, :end_geofence_id, center, radius, except_id)
+    reassign_nearby_positions(ChargingProcess, :position_id, :geofence_id, center, radius, except_id)
 
     :ok
   end
+
+  defp reassign_nearby_positions(module, position_field, geofence_field, center, radius, except_id) do
+    candidates =
+      from(m in module,
+        join: p in Position, on: field(m, ^position_field) == p.id,
+        select: {m.id, p.latitude, p.longitude}
+      )
+      |> Repo.all()
+      |> Enum.filter(fn {_id, plat, plng} ->
+        plat != nil and plng != nil and
+          distance_m(center, {to_float(plat), to_float(plng)}) < radius
+      end)
+
+    if candidates != [] do
+      other_geofences =
+        from(g in GeoFence,
+          where: g.id != ^except_id,
+          select: %{id: g.id, latitude: g.latitude, longitude: g.longitude, radius: g.radius}
+        )
+        |> Repo.all()
+
+      Enum.each(candidates, fn {id, plat, plng} ->
+        new_geofence_id =
+          nearest_geofence_id(other_geofences, {to_float(plat), to_float(plng)})
+
+        from(m in module, where: m.id == ^id)
+        |> Repo.update_all(set: [{geofence_field, new_geofence_id}])
+      end)
+    end
+  end
+
+  defp nearest_geofence_id(geofences, point) do
+    geofences
+    |> Enum.map(fn g ->
+      {g.id, distance_m(point, {to_float(g.latitude), to_float(g.longitude)}), to_float(g.radius) || 0.0}
+    end)
+    |> Enum.filter(fn {_id, d, r} -> d < r end)
+    |> Enum.min_by(fn {_id, d, _r} -> d end, fn -> nil end)
+    |> case do
+      {id, _d, _r} -> id
+      nil -> nil
+    end
+  end
+
+  @doc "Haversine distance in meters between two {lat, lng} float tuples."
+  def distance_m({lat1, lon1}, {lat2, lon2}) do
+    r = 6_371_000.0
+    dlat = deg2rad(lat2 - lat1)
+    dlon = deg2rad(lon2 - lon1)
+
+    a =
+      :math.sin(dlat / 2) * :math.sin(dlat / 2) +
+        :math.cos(deg2rad(lat1)) * :math.cos(deg2rad(lat2)) *
+          :math.sin(dlon / 2) * :math.sin(dlon / 2)
+
+    2 * r * :math.atan2(:math.sqrt(a), :math.sqrt(1 - a))
+  end
+
+  defp deg2rad(d), do: d * :math.pi() / 180.0
+
+  defp to_float(nil), do: nil
+  defp to_float(%Decimal{} = d), do: Decimal.to_float(d)
+  defp to_float(n) when is_number(n), do: n / 1
 
   ## GeoFence
 
@@ -217,15 +271,26 @@ defmodule Marites.Locations do
     GeoFence.changeset(geofence, attrs)
   end
 
-  alias Marites.Log.ChargingProcess
+  def count_charging_processes_without_costs(%{latitude: lat, longitude: lng, radius: radius}) do
+    center = {to_float(lat), to_float(lng)}
+    radius = to_float(radius) || 0.0
 
-  def count_charging_processes_without_costs(%{latitude: _, longitude: _, radius: _} = geofence) do
-    Repo.one(
-      from c in ChargingProcess,
-        select: count(),
-        join: p in assoc(c, :position),
-        where: is_nil(c.cost) and within_geofence?(p, geofence, :right)
+    # positions.latitude/longitude are Cloak-encrypted (opaque bytea to
+    # Postgres) — can't feed them into SQL-side ll_to_earth/earth_distance
+    # (that's what within_geofence?(:right) used to do here). Fetch the
+    # already-decrypted position through Ecto instead and do the same
+    # Haversine-radius check in Elixir, matching the marites-api precedent
+    # (MaritesAPI.ChargeClassifier.distance_m/2).
+    from(c in ChargingProcess,
+      join: p in assoc(c, :position),
+      where: is_nil(c.cost),
+      select: {c.id, p.latitude, p.longitude}
     )
+    |> Repo.all()
+    |> Enum.count(fn {_id, plat, plng} ->
+      plat != nil and plng != nil and
+        distance_m(center, {to_float(plat), to_float(plng)}) < radius
+    end)
   end
 
   def calculate_charge_costs(%GeoFence{id: id}) do
