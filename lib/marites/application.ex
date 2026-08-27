@@ -23,6 +23,7 @@ defmodule Marites.Application do
       nil ->
         [
           Marites.Repo,
+          Marites.Vault,
           {Finch, name: Marites.HTTP},
           Marites.Updater,
           {Phoenix.PubSub, name: Marites.PubSub},
@@ -37,6 +38,7 @@ defmodule Marites.Application do
       import_directory ->
         [
           Marites.Repo,
+          Marites.Vault,
           {Finch, name: Marites.HTTP},
           Marites.Updater,
           {Phoenix.PubSub, name: Marites.PubSub},

@@ -6,8 +6,20 @@ defmodule Marites.Log.Position do
 
   schema "positions" do
     field :date, :utc_datetime_usec
-    field :latitude, :decimal, read_after_writes: true
-    field :longitude, :decimal, read_after_writes: true
+    # Encrypted at rest (Cloak.Ecto, AES-256-GCM) — same mechanism marites-api
+    # uses for TeslaToken. Stored as an encrypted :binary column; Ecto
+    # transparently dumps/loads it, so struct access still yields a plain
+    # %Decimal{} everywhere. read_after_writes: true KEPT (still needed,
+    # for a different reason than before): Marites.Vault.Encrypted.Decimal
+    # rounds to 6 decimal places in before_encrypt/1 to preserve the
+    # precision the old plain numeric(8,6)/(9,6) columns enforced, but that
+    # rounding only happens to the bytes written to disk — without
+    # read_after_writes, Repo.insert would return the struct with the
+    # caller's original unrounded in-memory value instead of reflecting
+    # what's actually stored. See the migration that renamed the old
+    # plaintext columns to *_plain before backfilling these.
+    field :latitude, Marites.Vault.Encrypted.Decimal, read_after_writes: true
+    field :longitude, Marites.Vault.Encrypted.Decimal, read_after_writes: true
     field :elevation, :integer
 
     field :speed, :integer
