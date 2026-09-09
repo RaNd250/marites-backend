@@ -6,9 +6,9 @@ defmodule MaritesWeb.CarController do
 
   alias Marites.{Log, Vehicles}
 
-  plug :redirect_if_importing when action in [:index]
-  plug :fetch_signed_in when action in [:index]
-  plug :redirect_unless_signed_in when action in [:index]
+  plug :redirect_if_importing when action in [:index, :suspend_logging, :resume_logging]
+  plug :fetch_signed_in when action in [:index, :suspend_logging, :resume_logging]
+  plug :redirect_unless_signed_in when action in [:index, :suspend_logging, :resume_logging]
 
   action_fallback MaritesWeb.FallbackController
 
