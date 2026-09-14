@@ -2,11 +2,11 @@
 
 **Backend engine for [marit.es](https://marit.es)** — Tesla Sentry alerts, drive history, charging and battery health tracking, available as Android apps (Core and Lite) and a web dashboard, all at [marit.es](https://marit.es). This repository is the open-source (AGPL-3.0) data engine that powers it.
 
-[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](https://github.com/RaNd250/marites-backend/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](https://github.com/Marites-org/Marites/blob/main/LICENSE)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10859/badge)](https://www.bestpractices.dev/projects/10859)
-[![CI](https://github.com/RaNd250/marites-backend/actions/workflows/devops.yml/badge.svg)](https://github.com/RaNd250/marites-backend/actions/workflows/devops.yml)
-[![Publish Docker images](https://github.com/RaNd250/marites-backend/actions/workflows/buildx.yml/badge.svg)](https://github.com/RaNd250/marites-backend/actions/workflows/buildx.yml)
-[![Coverage](https://coveralls.io/repos/github/RaNd250/marites-backend/badge.svg?branch=main)](https://coveralls.io/github/RaNd250/marites-backend?branch=main)
+[![CI](https://github.com/Marites-org/Marites/actions/workflows/devops.yml/badge.svg)](https://github.com/Marites-org/Marites/actions/workflows/devops.yml)
+[![Publish Docker images](https://github.com/Marites-org/Marites/actions/workflows/buildx.yml/badge.svg)](https://github.com/Marites-org/Marites/actions/workflows/buildx.yml)
+[![Coverage](https://coveralls.io/repos/github/Marites-org/Marites/badge.svg?branch=main)](https://coveralls.io/github/Marites-org/Marites?branch=main)
 [![current version](https://img.shields.io/docker/v/Marites/Marites/latest)](https://hub.docker.com/r/Marites/Marites)
 [![docker image size](https://img.shields.io/docker/image-size/Marites/Marites/latest)](https://hub.docker.com/r/Marites/Marites)
 [![docker pulls](https://img.shields.io/docker/pulls/Marites/Marites?color=%23099cec)](https://hub.docker.com/r/Marites/Marites)
@@ -25,7 +25,7 @@ A powerful, self-hosted data logger for your Tesla.
 
 To protect yourself from malicious forks, malware, and data theft, please ensure you only obtain Marites from the official source:
 
-- Official Repository: [https://github.com/RaNd250/marites-backend](https://github.com/RaNd250/marites-backend)
+- Official Repository: [https://github.com/Marites-org/Marites](https://github.com/Marites-org/Marites)
 - Official Website: [https://marit.es](https://marit.es/)
 
 We have received reports of deceptive websites and unofficial mobile apps (e.g. on the App Store) using the Marites name to distribute modified or harmful versions. If you are using a version from another source, your Tesla account credentials and vehicle data may be at risk.
@@ -95,7 +95,7 @@ This license is designed to ensure that Marites remains free and open for everyo
 - Universal Access to Source: This requirement applies regardless of how you provide the software to others—whether you distribute it as a downloadable application (e.g., in an App Store), as a pre-packaged image, or provide access to its functionality via a network service (SaaS).
 - No Closed-Source Derivatives: We do not permit the use of Marites or its components in closed-source commercial products. If your software interacts with or relies on Marites, it must be open-source. If you build upon this project, you are expected to contribute back to the community.
 
-For the full legal terms, please refer to the [LICENSE](https://github.com/RaNd250/marites-backend/blob/main/LICENSE) file.
+For the full legal terms, please refer to the [LICENSE](https://github.com/Marites-org/Marites/blob/main/LICENSE) file.
 
 Key Requirements:
 
@@ -103,16 +103,18 @@ Key Requirements:
 - No "Closed" Forks: This license ensures that improvements made by commercial entities or third parties remain open to the entire community.
 - Attribution: You must keep all original copyright notices and license information intact.
 
-**Trademark Policy**: The use of the Marites name and logo is governed by our [Trademark Policy](https://github.com/RaNd250/marites-backend/blob/main/TRADEMARK.md).
+**Trademark Policy**: The use of the Marites name and logo is governed by our [Trademark Policy](https://github.com/Marites-org/Marites/blob/main/TRADEMARK.md).
+
+**Contributions:** All contributors must sign our [Contributor License Agreement](https://github.com/Marites-org/legal/blob/main/CLA.md). This is handled via cla-assistant.io automatically on first PR and does not take long. **Why do we need this?** It guarantees that Marites will **always remain Free Software** (AGPL-3.0) and allows the [Marites-org](https://github.com/Marites-org) to legally defend the project against license violations.
 
 ## Star History
 
 <!-- markdownlint-disable MD033 -->
-<a href="https://www.star-history.com/#RaNd250/marites-backend&type=date&legend=top-left">
+<a href="https://www.star-history.com/#Marites-org/Marites&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=RaNd250/marites-backend&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=RaNd250/marites-backend&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=RaNd250/marites-backend&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Marites-org/Marites&type=date&legend=top-left" />
  </picture>
 </a>
 <!-- markdownlint-enable MD033 -->
@@ -121,4 +123,4 @@ Key Requirements:
 
 - Initial Author: Adrian Kumpf
 - List of Contributors:
-- [![Marites Contributors](https://contrib.rocks/image?repo=RaNd250/marites-backend)](https://github.com/RaNd250/marites-backend/graphs/contributors)
+- [![Marites Contributors](https://contrib.rocks/image?repo=Marites-org/Marites)](https://github.com/Marites-org/Marites/graphs/contributors)

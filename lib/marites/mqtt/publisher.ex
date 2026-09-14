@@ -32,21 +32,45 @@ defmodule Marites.Mqtt.Publisher do
   def handle_call({:publish, topic, msg, opts}, from, %State{client_id: id, refs: refs} = state) do
     opts = Keyword.put_new(opts, :timeout, round(@timeout * 0.95))
 
+    # A publish failure is a broker or connection problem, not a bug in this
+    # process. Returning it lets the caller decide; matching on it would take
+    # the Publisher down and, with it, every caller blocked in publish/3 -- and
+    # would drop the refs of the QoS>0 publishes still awaiting acknowledgement.
     case Keyword.get(opts, :qos, 0) do
       0 ->
-        :ok = Tortoise311.publish(id, topic, msg, opts)
-        {:reply, :ok, state}
+        case Tortoise311.publish(id, topic, msg, opts) do
+          :ok ->
+            {:reply, :ok, state}
+
+          {:error, reason} = error ->
+            Logger.warning("MQTT publish to #{topic} failed: #{inspect(reason)}")
+            {:reply, error, state}
+        end
 
       _ ->
-        {:ok, ref} = Tortoise311.publish(id, topic, msg, opts)
-        {:noreply, %State{state | refs: Map.put(refs, ref, from)}}
+        case Tortoise311.publish(id, topic, msg, opts) do
+          {:ok, ref} ->
+            {:noreply, %State{state | refs: Map.put(refs, ref, from)}}
+
+          {:error, reason} = error ->
+            Logger.warning("MQTT publish to #{topic} failed: #{inspect(reason)}")
+            {:reply, error, state}
+        end
     end
   end
 
   @impl true
   def handle_info({{Tortoise311, id}, ref, result}, %State{client_id: id, refs: refs} = state) do
-    {from, refs} = Map.pop(refs, ref)
-    GenServer.reply(from, result)
-    {:noreply, %State{state | refs: refs}}
+    # An unknown ref means the caller is already gone -- it timed out, or this
+    # process restarted while the publish was in flight. Dropping it is correct;
+    # GenServer.reply/2 with a nil `from` would raise.
+    case Map.pop(refs, ref) do
+      {nil, refs} ->
+        {:noreply, %State{state | refs: refs}}
+
+      {from, refs} ->
+        GenServer.reply(from, result)
+        {:noreply, %State{state | refs: refs}}
+    end
   end
 end
