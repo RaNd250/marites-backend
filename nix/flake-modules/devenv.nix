@@ -40,7 +40,6 @@
           with pkgs; [
             elixir
             elixir-ls
-            node2nix
             nodejs
             prefetch-npm-deps
             # for dashboard scripts
