@@ -56,6 +56,7 @@ defmodule Marites.MixProject do
       {:gettext, "~> 1.0", override: true},
       {:jason, "~> 1.4"},
       {:meck, "~> 1.2", only: :test, override: true},
+      {:lazy_html, ">= 0.1.0", only: :test},
       {:mock, "~> 0.3", only: :test},
       {:nimble_csv, "~> 1.3"},
       {:phoenix, "~> 1.8.9"},
