@@ -478,7 +478,13 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
 
     stream(
       name,
-      %{shift_state: "P", speed: 0, power: 0, elevation: 50, time: DateTime.add(now, 3, :millisecond)}
+      %{
+        shift_state: "P",
+        speed: 0,
+        power: 0,
+        elevation: 50,
+        time: DateTime.add(now, 3, :millisecond)
+      }
     )
 
     refute_receive _

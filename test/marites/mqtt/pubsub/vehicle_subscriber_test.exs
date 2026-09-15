@@ -256,8 +256,7 @@ defmodule Marites.Mqtt.PubSub.VehicleSubscriberTest do
                      [retain: true, qos: 1]}}
 
     assert_receive {MqttPublisherMock,
-                    {:publish, "Marites/account_0/cars/0/state", "online",
-                     [retain: true, qos: 1]}}
+                    {:publish, "Marites/account_0/cars/0/state", "online", [retain: true, qos: 1]}}
 
     # Always published
     for key <- [

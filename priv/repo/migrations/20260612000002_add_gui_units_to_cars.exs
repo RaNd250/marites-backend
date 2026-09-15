@@ -1,5 +1,6 @@
 defmodule Marites.Repo.Migrations.AddGuiUnitsToCars do
   use Ecto.Migration
+
   def change do
     alter table(:cars) do
       add_if_not_exists :gui_distance_units, :string, null: true

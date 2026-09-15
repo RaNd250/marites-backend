@@ -33,7 +33,8 @@ defmodule TeslaApi.Auth do
 
     case Tesla.get("#{base}#{path}/userinfo",
            headers: [{"authorization", "Bearer #{access_token}"}],
-           middleware: [Tesla.Middleware.JSON]) do
+           middleware: [Tesla.Middleware.JSON]
+         ) do
       {:ok, %{status: 200, body: body}} -> {:ok, body}
       {:ok, %{status: status}} -> {:error, "userinfo returned #{status}"}
       {:error, reason} -> {:error, reason}

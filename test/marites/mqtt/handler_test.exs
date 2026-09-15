@@ -21,7 +21,9 @@ defmodule Marites.Mqtt.HandlerTest do
   # stayed NULL for all FT-era rows despite the DB columns already existing.
   test "parse_payload/2 decodes EstBatteryRange and IdealBatteryRange as bare numbers (miles)" do
     assert {:ok, :est_battery_range, 268.0} = Handler.parse_payload("EstBatteryRange", "268.0")
-    assert {:ok, :ideal_battery_range, 315.5} = Handler.parse_payload("IdealBatteryRange", "315.5")
+
+    assert {:ok, :ideal_battery_range, 315.5} =
+             Handler.parse_payload("IdealBatteryRange", "315.5")
   end
 
   test "parse_payload/2 decodes temps and Location" do
@@ -43,8 +45,11 @@ defmodule Marites.Mqtt.HandlerTest do
   end
 
   test "parse_payload/2 decodes sentry threat states as armed (Aware/Panic)" do
-    assert {:ok, :sentry_mode, true} = Handler.parse_payload("SentryMode", ~s("SentryModeStateAware"))
-    assert {:ok, :sentry_mode, true} = Handler.parse_payload("SentryMode", ~s("SentryModeStatePanic"))
+    assert {:ok, :sentry_mode, true} =
+             Handler.parse_payload("SentryMode", ~s("SentryModeStateAware"))
+
+    assert {:ok, :sentry_mode, true} =
+             Handler.parse_payload("SentryMode", ~s("SentryModeStatePanic"))
   end
 
   test "parse_payload/2 skips DetailedChargeStateUnknown (never clobber known state)" do

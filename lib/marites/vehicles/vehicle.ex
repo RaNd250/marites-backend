@@ -57,7 +57,7 @@ defmodule Marites.Vehicles.Vehicle do
     case config do
       %VehicleConfig{
         car_type: type,
-        trim_badging: trim_badging,
+        trim_badging: trim_badging
       } ->
         trim_badging =
           with str when is_binary(str) <- trim_badging do
@@ -102,7 +102,7 @@ defmodule Marites.Vehicles.Vehicle do
            model: model,
            name: name,
            trim_badging: trim_badging,
-           marketing_name: marketing_name,
+           marketing_name: marketing_name
          }}
 
       nil ->
@@ -388,7 +388,8 @@ defmodule Marites.Vehicles.Vehicle do
              ]}
 
           _ ->
-            {:keep_state, data, [broadcast_fetch(false), schedule_fetch(idle_interval(data), data)]}
+            {:keep_state, data,
+             [broadcast_fetch(false), schedule_fetch(idle_interval(data), data)]}
         end
 
       {:error, :not_signed_in} ->
@@ -421,7 +422,9 @@ defmodule Marites.Vehicles.Vehicle do
 
       {:error, :account_disabled} ->
         Logger.warning("Account disabled / EXCEEDED_LIMIT — suspending polling for 1 hour",
-          car_id: data.car.id)
+          car_id: data.car.id
+        )
+
         {:keep_state, data,
          [broadcast_fetch(false), broadcast_summary(), schedule_fetch(60, :minutes, data)]}
 
@@ -1241,6 +1244,7 @@ defmodule Marites.Vehicles.Vehicle do
   def handle_event(:internal, {:update, {state, _}}, {state, interval}, data)
       when state in [:asleep, :offline] do
     next_interval = min(interval * 2, @max_asleep_interval)
+
     {:next_state, {state, next_interval}, data,
      [schedule_fetch(next_interval, data), broadcast_summary()]}
   end
@@ -1259,17 +1263,29 @@ defmodule Marites.Vehicles.Vehicle do
      {:next_event, :internal, event}}
   end
 
-  def handle_event(:cast, {:fleet_telemetry, fields}, {dormant, _interval}, %Data{last_response: vehicle} = data)
+  def handle_event(
+        :cast,
+        {:fleet_telemetry, fields},
+        {dormant, _interval},
+        %Data{last_response: vehicle} = data
+      )
       when dormant in [:asleep, :offline] and vehicle != nil do
     updated = apply_fleet_fields(vehicle, fields)
+
     {:next_state, :start,
      %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      {:next_event, :internal, :fetch}}
   end
 
-  def handle_event(:cast, {:fleet_telemetry, fields}, _state, %Data{last_response: vehicle} = data)
+  def handle_event(
+        :cast,
+        {:fleet_telemetry, fields},
+        _state,
+        %Data{last_response: vehicle} = data
+      )
       when vehicle != nil do
     updated = apply_fleet_fields(vehicle, fields)
+
     {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      broadcast_summary()}
   end
@@ -1281,7 +1297,9 @@ defmodule Marites.Vehicles.Vehicle do
       climate_state: %Climate{},
       vehicle_state: %VehicleState{}
     }
+
     updated = apply_fleet_fields(blank, fields)
+
     {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      broadcast_summary()}
   end
@@ -1349,7 +1367,9 @@ defmodule Marites.Vehicles.Vehicle do
     end
   end
 
-  defp fetch(%Data{car: car, deps: deps, polling_mode: polling_mode}, expected_state: expected_state) do
+  defp fetch(%Data{car: car, deps: deps, polling_mode: polling_mode},
+         expected_state: expected_state
+       ) do
     reachable? =
       case expected_state do
         :online -> true
@@ -1805,7 +1825,14 @@ defmodule Marites.Vehicles.Vehicle do
       # Fleet Telemetry has no separate UsableBatteryLevel field; Soc is the
       # BMS usable state of charge, so it feeds both columns.
       {:soc, val}, acc when is_number(val) and acc.charge_state != nil ->
-        %{acc | charge_state: %{acc.charge_state | battery_level: round(val), usable_battery_level: round(val)}}
+        %{
+          acc
+          | charge_state: %{
+              acc.charge_state
+              | battery_level: round(val),
+                usable_battery_level: round(val)
+            }
+        }
 
       {:shift_state, val}, acc when is_binary(val) and acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | shift_state: val}}
@@ -1880,6 +1907,7 @@ defmodule Marites.Vehicles.Vehicle do
 
   defp schedule_fetch(n, unit, %Data{last_fleet_event_at: ts}) when not is_nil(ts) do
     age = DateTime.diff(DateTime.utc_now(), ts, :second)
+
     if age < 300 do
       # Fleet telemetry is active — cap REST polling at 15 min
       {:state_timeout, fetch_timeout(15, :minutes), :fetch}

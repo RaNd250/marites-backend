@@ -545,8 +545,10 @@ defmodule Marites.ImportTest do
                 action: :insert,
                 changes: %{date: ~U[2017-12-01 13:36:14.000000Z]},
                 errors: [
-                  latitude: {"is invalid", [type: Marites.Vault.Encrypted.Decimal, validation: :cast]},
-                  longitude: {"is invalid", [type: Marites.Vault.Encrypted.Decimal, validation: :cast]}
+                  latitude:
+                    {"is invalid", [type: Marites.Vault.Encrypted.Decimal, validation: :cast]},
+                  longitude:
+                    {"is invalid", [type: Marites.Vault.Encrypted.Decimal, validation: :cast]}
                 ],
                 data: %Log.Position{},
                 valid?: false

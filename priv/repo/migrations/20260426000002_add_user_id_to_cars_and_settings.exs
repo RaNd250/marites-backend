@@ -9,7 +9,7 @@ defmodule Marites.Repo.Migrations.AddUserIdToCarsAndSettings do
     create index(:cars, [:user_id])
 
     alter table(:notification_settings) do
-      add :user_id,  references(:users, on_delete: :delete_all)
+      add :user_id, references(:users, on_delete: :delete_all)
       add :delivery, :string, null: false, default: "push"
     end
 

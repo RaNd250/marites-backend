@@ -19,7 +19,9 @@ defmodule Marites.Repo.Migrations.AddActiveTimeStateToChargingProcesses do
   # in memory before the restart.
   def up do
     execute "ALTER TABLE charging_processes ADD COLUMN IF NOT EXISTS active_time_seconds double precision"
+
     execute "ALTER TABLE charging_processes ADD COLUMN IF NOT EXISTS active_last_sample_at timestamptz"
+
     execute "ALTER TABLE charging_processes ADD COLUMN IF NOT EXISTS active_last_sample_active boolean"
   end
 
