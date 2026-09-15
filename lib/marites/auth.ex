@@ -16,4 +16,7 @@ defmodule Marites.Auth do
 
   # Token sign-in is now handled by marites-api; this delegate is a no-op for the engine UI.
   def sign_in(_tokens), do: :ok
+
+  # Returns true: tokens are stored/managed by marites-api, not in the engine's vault.
+  def can_decrypt_tokens?, do: true
 end

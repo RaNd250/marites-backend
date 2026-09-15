@@ -2,7 +2,7 @@ defmodule MaritesWeb.SignInLive.Index do
   use MaritesWeb, :live_view
 
   import Core.Dependency, only: [call: 3]
-  alias Marites.Auth
+  alias Marites.{Auth, Api}
 
   on_mount {MaritesWeb.InitAssigns, :locale}
 
@@ -49,14 +49,22 @@ defmodule MaritesWeb.SignInLive.Index do
     case result do
       :ok ->
         Process.sleep(250)
-        {:noreply, issue_marites_session(socket)}
+        {:noreply, redirect_to_carlive(socket)}
 
-      {:error, reason} ->
+      {:error, %TeslaApi.Error{} = e} ->
         message =
-          case reason do
-            :token_refresh -> gettext("Tokens are invalid")
-            :account_locked -> gettext("Your Tesla account is locked due to too many failed sign in attempts. To unlock your account, reset your password")
-            _ -> inspect(reason)
+          case e.reason do
+            :token_refresh ->
+              gettext("Tokens are invalid")
+
+            :account_locked ->
+              gettext(
+                "Your Tesla account is locked due to too many failed sign in attempts. " <>
+                  "To unlock your account, reset your password"
+              )
+
+            _ ->
+              Exception.message(e)
           end
 
         {:noreply, assign(socket, error: message, task: nil)}
@@ -66,11 +74,11 @@ defmodule MaritesWeb.SignInLive.Index do
   defp get_api(socket) do
     case get_connect_params(socket) do
       %{api: api} -> api
-      _ -> Auth
+      _ -> Api
     end
   end
 
-  defp issue_marites_session(socket) do
+  defp redirect_to_carlive(socket) do
     socket
     |> put_flash(:success, gettext("Signed in successfully"))
     |> redirect(to: Routes.car_path(socket, :index))
