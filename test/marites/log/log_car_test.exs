@@ -31,7 +31,7 @@ defmodule Marites.LogCarTest do
     vid: nil,
     name: 1,
     trim_badging: 2,
-    vin: 3,
+    vin: 3
   }
 
   def car_fixture(attrs \\ %{}) do

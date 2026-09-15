@@ -142,17 +142,48 @@ defmodule Marites.Locations do
     center = {to_float(lat), to_float(lng)}
     radius = to_float(r) || 0.0
 
-    reassign_nearby_positions(Drive, :start_position_id, :start_geofence_id, center, radius, except_id)
-    reassign_nearby_positions(Drive, :end_position_id, :end_geofence_id, center, radius, except_id)
-    reassign_nearby_positions(ChargingProcess, :position_id, :geofence_id, center, radius, except_id)
+    reassign_nearby_positions(
+      Drive,
+      :start_position_id,
+      :start_geofence_id,
+      center,
+      radius,
+      except_id
+    )
+
+    reassign_nearby_positions(
+      Drive,
+      :end_position_id,
+      :end_geofence_id,
+      center,
+      radius,
+      except_id
+    )
+
+    reassign_nearby_positions(
+      ChargingProcess,
+      :position_id,
+      :geofence_id,
+      center,
+      radius,
+      except_id
+    )
 
     :ok
   end
 
-  defp reassign_nearby_positions(module, position_field, geofence_field, center, radius, except_id) do
+  defp reassign_nearby_positions(
+         module,
+         position_field,
+         geofence_field,
+         center,
+         radius,
+         except_id
+       ) do
     candidates =
       from(m in module,
-        join: p in Position, on: field(m, ^position_field) == p.id,
+        join: p in Position,
+        on: field(m, ^position_field) == p.id,
         select: {m.id, p.latitude, p.longitude}
       )
       |> Repo.all()
@@ -182,7 +213,8 @@ defmodule Marites.Locations do
   defp nearest_geofence_id(geofences, point) do
     geofences
     |> Enum.map(fn g ->
-      {g.id, distance_m(point, {to_float(g.latitude), to_float(g.longitude)}), to_float(g.radius) || 0.0}
+      {g.id, distance_m(point, {to_float(g.latitude), to_float(g.longitude)}),
+       to_float(g.radius) || 0.0}
     end)
     |> Enum.filter(fn {_id, d, r} -> d < r end)
     |> Enum.min_by(fn {_id, d, _r} -> d end, fn -> nil end)

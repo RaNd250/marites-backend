@@ -6,23 +6,23 @@ defmodule Marites.Mqtt.Handler do
   alias Marites.{Log, Vehicles}
 
   @field_map %{
-    "Soc"                => :soc,
-    "Location"           => :location,
-    "ShiftState"         => :shift_state,
-    "Gear"               => :shift_state,
+    "Soc" => :soc,
+    "Location" => :location,
+    "ShiftState" => :shift_state,
+    "Gear" => :shift_state,
     "DetailedChargeState" => :charge_state,
-    "VehicleSpeed"       => :speed,
-    "Odometer"           => :odometer,
-    "RatedRange"         => :rated_battery_range,
-    "EstBatteryRange"    => :est_battery_range,
-    "IdealBatteryRange"  => :ideal_battery_range,
-    "InsideTemp"         => :inside_temp,
-    "OutsideTemp"        => :outside_temp,
-    "SentryMode"         => :sentry_mode,
-    "TpmsPressureFl"     => :tpms_pressure_fl,
-    "TpmsPressureFr"     => :tpms_pressure_fr,
-    "TpmsPressureRl"     => :tpms_pressure_rl,
-    "TpmsPressureRr"     => :tpms_pressure_rr
+    "VehicleSpeed" => :speed,
+    "Odometer" => :odometer,
+    "RatedRange" => :rated_battery_range,
+    "EstBatteryRange" => :est_battery_range,
+    "IdealBatteryRange" => :ideal_battery_range,
+    "InsideTemp" => :inside_temp,
+    "OutsideTemp" => :outside_temp,
+    "SentryMode" => :sentry_mode,
+    "TpmsPressureFl" => :tpms_pressure_fl,
+    "TpmsPressureFr" => :tpms_pressure_fr,
+    "TpmsPressureRl" => :tpms_pressure_rl,
+    "TpmsPressureRr" => :tpms_pressure_rr
   }
 
   @impl true
@@ -49,6 +49,7 @@ defmodule Marites.Mqtt.Handler do
           {:ok, field_atom, value} -> dispatch(vin, field_atom, value)
           :skip -> :ok
         end
+
       :skip ->
         :ok
     end
@@ -84,7 +85,21 @@ defmodule Marites.Mqtt.Handler do
     end
   end
 
-  defp decode_value(field, payload) when field in [:soc, :speed, :odometer, :inside_temp, :outside_temp, :rated_battery_range, :est_battery_range, :ideal_battery_range, :tpms_pressure_fl, :tpms_pressure_fr, :tpms_pressure_rl, :tpms_pressure_rr] do
+  defp decode_value(field, payload)
+       when field in [
+              :soc,
+              :speed,
+              :odometer,
+              :inside_temp,
+              :outside_temp,
+              :rated_battery_range,
+              :est_battery_range,
+              :ideal_battery_range,
+              :tpms_pressure_fl,
+              :tpms_pressure_fr,
+              :tpms_pressure_rl,
+              :tpms_pressure_rr
+            ] do
     case Jason.decode(payload) do
       {:ok, val} when is_number(val) -> {:ok, val}
       _ -> :error
@@ -94,11 +109,11 @@ defmodule Marites.Mqtt.Handler do
   # SentryMode arrives as "SentryModeStateOn" / "SentryModeStateOff"
   defp decode_value(:sentry_mode, payload) do
     case Jason.decode(payload) do
-      {:ok, "SentryModeStateOn"}    -> {:ok, true}
-      {:ok, "SentryModeStateArmed"}  -> {:ok, true}
-      {:ok, "SentryModeStateAware"}  -> {:ok, true}
-      {:ok, "SentryModeStatePanic"}  -> {:ok, true}
-      {:ok, "SentryModeStateOff"}    -> {:ok, false}
+      {:ok, "SentryModeStateOn"} -> {:ok, true}
+      {:ok, "SentryModeStateArmed"} -> {:ok, true}
+      {:ok, "SentryModeStateAware"} -> {:ok, true}
+      {:ok, "SentryModeStatePanic"} -> {:ok, true}
+      {:ok, "SentryModeStateOff"} -> {:ok, false}
       {:ok, val} when is_boolean(val) -> {:ok, val}
       _ -> :error
     end
@@ -114,7 +129,7 @@ defmodule Marites.Mqtt.Handler do
       {:ok, "ShiftStateP"} -> {:ok, "P"}
       {:ok, "ShiftStateUnknown"} -> {:ok, nil}
       {:ok, "ShiftStateInvalid"} -> {:ok, nil}
-      {:ok, "ShiftStateSNA"}     -> {:ok, nil}
+      {:ok, "ShiftStateSNA"} -> {:ok, nil}
       {:ok, val} when is_binary(val) -> {:ok, val}
       _ -> :error
     end
@@ -123,13 +138,13 @@ defmodule Marites.Mqtt.Handler do
   # DetailedChargeState arrives as "DetailedChargeStateCharging" etc.
   defp decode_value(:charge_state, payload) do
     case Jason.decode(payload) do
-      {:ok, "DetailedChargeStateUnknown"}      -> :error
-      {:ok, "DetailedChargeStateCharging"}     -> {:ok, "Charging"}
-      {:ok, "DetailedChargeStateComplete"}     -> {:ok, "Complete"}
-      {:ok, "DetailedChargeStateStopped"}      -> {:ok, "Stopped"}
-      {:ok, "DetailedChargeStateStarting"}     -> {:ok, "Starting"}
+      {:ok, "DetailedChargeStateUnknown"} -> :error
+      {:ok, "DetailedChargeStateCharging"} -> {:ok, "Charging"}
+      {:ok, "DetailedChargeStateComplete"} -> {:ok, "Complete"}
+      {:ok, "DetailedChargeStateStopped"} -> {:ok, "Stopped"}
+      {:ok, "DetailedChargeStateStarting"} -> {:ok, "Starting"}
       {:ok, "DetailedChargeStateDisconnected"} -> {:ok, "Disconnected"}
-      {:ok, "DetailedChargeStateNoPower"}      -> {:ok, "NoPower"}
+      {:ok, "DetailedChargeStateNoPower"} -> {:ok, "NoPower"}
       {:ok, val} when is_binary(val) -> {:ok, val}
       _ -> :error
     end

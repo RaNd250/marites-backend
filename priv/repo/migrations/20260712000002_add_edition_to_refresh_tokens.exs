@@ -5,6 +5,7 @@ defmodule Marites.Repo.Migrations.AddEditionToRefreshTokens do
   # existed; treated as unknown, never matches an edition-specific check).
   def up do
     execute "ALTER TABLE refresh_tokens ADD COLUMN IF NOT EXISTS edition varchar(10)"
+
     execute "CREATE INDEX IF NOT EXISTS refresh_tokens_user_edition_index ON refresh_tokens (user_id, edition) WHERE superseded_at IS NULL"
   end
 

@@ -6,10 +6,10 @@ defmodule Marites.Log.Car do
   alias Marites.Settings.CarSettings
 
   schema "cars" do
-    field :name,           :string
-    field :efficiency,     :float
-    field :model,          :string
-    field :trim_badging,   :string
+    field :name, :string
+    field :efficiency, :float
+    field :model, :string
+    field :trim_badging, :string
     field :marketing_name, :string
 
     field :eid, :integer

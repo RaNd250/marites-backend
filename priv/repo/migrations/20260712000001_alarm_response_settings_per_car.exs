@@ -13,7 +13,9 @@ defmodule Marites.Repo.Migrations.AlarmResponseSettingsPerCar do
   def up do
     # Regularize API-owned columns so the backfill below can copy them.
     execute "ALTER TABLE alarm_response_settings ADD COLUMN IF NOT EXISTS boombox_on_alarm boolean DEFAULT false"
+
     execute "ALTER TABLE alarm_response_settings ADD COLUMN IF NOT EXISTS boombox_sound integer DEFAULT 0"
+
     execute "ALTER TABLE alarm_response_settings ADD COLUMN IF NOT EXISTS car_id integer"
 
     # Drop the single-column PK so per-car rows can coexist.

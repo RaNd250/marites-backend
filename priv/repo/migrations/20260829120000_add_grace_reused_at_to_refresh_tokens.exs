@@ -13,6 +13,7 @@ defmodule Marites.Repo.Migrations.AddGraceReusedAtToRefreshTokens do
   def up do
     execute "ALTER TABLE refresh_tokens ADD COLUMN IF NOT EXISTS grace_reused_at timestamp(0)"
   end
+
   def down do
     execute "ALTER TABLE refresh_tokens DROP COLUMN IF EXISTS grace_reused_at"
   end

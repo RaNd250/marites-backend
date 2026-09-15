@@ -540,8 +540,7 @@ defmodule MaritesWeb.SettingsLiveTest do
                  |> String.trim()
 
         assert [
-                 {"a",
-                  [_, {"href", "https://github.com/RaNd250/marites-backend"}, _, _, _],
+                 {"a", [_, {"href", "https://github.com/RaNd250/marites-backend"}, _, _, _],
                   [_, {_, _, ["Update available: 1.1.3"]}]},
                  {"a", source_attrs, _}
                ] = Floki.find(html, ".footer a")

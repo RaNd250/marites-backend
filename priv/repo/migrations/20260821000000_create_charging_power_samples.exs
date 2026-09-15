@@ -9,7 +9,9 @@ defmodule Marites.Repo.Migrations.CreateChargingPowerSamples do
   # the /charges/:id/samples endpoint can plot a real power(t) curve.
   def change do
     create table(:charging_power_samples) do
-      add :charging_process_id, references(:charging_processes, on_delete: :delete_all), null: false
+      add :charging_process_id, references(:charging_processes, on_delete: :delete_all),
+        null: false
+
       add :date, :utc_datetime_usec, null: false
       add :power_kw, :float
       add :current_a, :float
