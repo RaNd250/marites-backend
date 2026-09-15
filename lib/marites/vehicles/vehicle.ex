@@ -72,6 +72,7 @@ defmodule Marites.Vehicles.Vehicle do
               "model3" <> _ -> "3"
               "modelx" <> _ -> "X"
               "modely" <> _ -> "Y"
+              "cybertruck" <> _ -> "Cybertruck"
               "lychee" -> "S"
               "tamarind" -> "X"
               _ -> nil
