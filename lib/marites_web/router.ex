@@ -19,13 +19,17 @@ defmodule MaritesWeb.Router do
       cldr: MaritesWeb.Cldr
 
     plug MaritesWeb.Plugs.PutSession
+
     plug :put_root_layout, {MaritesWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_settings
   end
 
-  # ---- Browser routes (Marites internal UI) ----
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
   scope "/", MaritesWeb do
     pipe_through :browser
 
@@ -41,6 +45,13 @@ defmodule MaritesWeb.Router do
       live "/charge-cost/:id", ChargeLive.Cost
       live "/import", ImportLive.Index
     end
+  end
+
+  scope "/api", MaritesWeb do
+    pipe_through :api
+
+    put "/car/:id/logging/resume", CarController, :resume_logging
+    put "/car/:id/logging/suspend", CarController, :suspend_logging
   end
 
   def fetch_settings(conn, _opts) do

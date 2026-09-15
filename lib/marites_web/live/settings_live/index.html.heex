@@ -336,7 +336,7 @@
                 type: :url,
                 class: "input",
                 phx_debounce: "blur",
-                placeholder: "Marites.example.com"
+                placeholder: "marites.example.com"
               ) %>
             </div>
             <p class="help is-danger"><%= error_tag(f, :base_url) %></p>
@@ -374,7 +374,7 @@
           <th align="right"><%= gettext("Version") %></th>
           <td>
             <%= Application.spec(:marites, :vsn) %><strong><%= if @update do
-                  vsn = link @update, to: "https://github.com/Marites-org/Marites/releases",
+                  vsn = link @update, to: "https://github.com/marites-org/marites/releases",
                                       target: "_blank", rel: "noopener noreferrer"
 
                   [" (", gettext("Update available"), ": ", vsn, ")"]
@@ -384,8 +384,8 @@
         <tr>
           <th align="right"><%= gettext("GitHub") %></th>
           <td>
-            <%= link("Marites-org/Marites",
-              to: "https://github.com/Marites-org/Marites",
+            <%= link("marites-org/marites",
+              to: "https://github.com/marites-org/marites",
               target: "_blank",
               rel: "noopener noreferrer"
             ) %>
@@ -394,8 +394,8 @@
         <tr>
           <th align="right"><%= gettext("Documentation") %></th>
           <td>
-            <%= link("docs.teslamate.org",
-              to: "https://docs.teslamate.org",
+            <%= link("docs.marites.org",
+              to: "https://docs.marites.org",
               target: "_blank",
               rel: "noopener noreferrer"
             ) %>
@@ -406,7 +406,7 @@
   </div>
 </div>
 
-<%= if not Marites.Import.enabled?() do %>
+<%= if Marites.Api.signed_in?() and not Marites.Import.enabled?() do %>
   <div class="columns is-mobile is-centered">
     <div class="column is-narrow table-container">
       <button class="button is-text is-rounded" aria-label="sign out" phx-click="sign_out">

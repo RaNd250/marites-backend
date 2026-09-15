@@ -45,7 +45,7 @@ defmodule Marites.MixProject do
       {:castore, "~> 1.0"},
       {:cloak_ecto, "~> 1.3"},
       {:ecto_sql, "~> 3.0"},
-      {:ex_cldr, "~> 2.47.1"},
+      {:ex_cldr, "~> 2.47.2"},
       {:ex_cldr_plugs, "~> 1.0"},
       {:excoveralls, "~> 0.18.5", only: :test},
       {:finch, "~> 0.20"},
