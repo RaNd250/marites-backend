@@ -94,7 +94,10 @@ defmodule LogMock do
   end
 
   def handle_call({:get_current_state, _}, _from, state) do
-    {:reply, {:ok, %Log.State{state: :online, start_date: DateTime.from_unix!(0)}}, state}
+    case state.current_state do
+      %Log.State{start_date: date} when not is_nil(date) -> {:reply, {:ok, state.current_state}, state}
+      _ -> {:reply, {:ok, %Log.State{state: :online, start_date: DateTime.utc_now()}}, state}
+    end
   end
 
   def handle_call({:insert_position, _, attrs} = action, _from, %State{pid: pid} = state) do
