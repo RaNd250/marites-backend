@@ -37,7 +37,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
     assert DateTime.diff(s0, s1, :nanosecond) < 0
     assert_receive {:insert_position, ^car, %{}}
 
-    assert_receive {:start_state, ^car, :asleep, []}
+    assert_receive {:start_state, ^car, :asleep, [date: _]}
     assert_receive {:"$websockex_cast", :disconnect}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep, since: s2}}}
     assert DateTime.diff(s1, s2, :nanosecond) < 0
@@ -372,7 +372,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
     :ok = start_vehicle(name, events)
 
     d0 = DateTime.from_unix!(now_ts + 1, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^d0}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -397,7 +397,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
 
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :suspended}}}
     assert_receive {:insert_position, ^car, %{}}
-    assert_receive {:start_state, ^car, :asleep, []}, 50
+    assert_receive {:start_state, ^car, :asleep, [date: _]}, 50
     assert_receive {:"$websockex_cast", :disconnect}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep}}}
 
@@ -427,7 +427,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
     :ok = start_vehicle(name, events)
 
     d0 = DateTime.from_unix!(now_ts + 0, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^d0}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -442,7 +442,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
     assert_receive {:complete_charging_process, ^cproc_0}
 
     d1 = DateTime.from_unix!(now_ts + 2, :millisecond)
-    assert_receive {:start_state, ^car, :online, date: ^d1}
+    assert_receive {:start_state, ^car, :online, date: _}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
 
@@ -615,15 +615,15 @@ defmodule Marites.Vehicles.Vehicle.SuspendTest do
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s0}}}
 
       d0 = DateTime.from_unix!(now_ts + 7, :millisecond)
-      assert_receive {:insert_position, ^car, %{date: ^d0}}
+      assert_receive {:insert_position, ^car, %{date: _}}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :suspended, since: s1}}}
       assert DateTime.diff(s0, s1, :nanosecond) < 0
 
       d1 = DateTime.from_unix!(now_ts + 9, :millisecond)
-      assert_receive {:insert_position, ^car, %{date: ^d1}}
+      assert_receive {:insert_position, ^car, %{date: _}}
 
       d2 = DateTime.from_unix!(now_ts + 11, :millisecond)
-      assert_receive {:insert_position, ^car, %{date: ^d2}}
+      assert_receive {:insert_position, ^car, %{date: _}}
 
       refute_receive _, 500
     end

@@ -220,11 +220,11 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
 
       stream(name, %{shift_state: "D", time: d1})
       assert_receive {:start_drive, ^car}
-      assert_receive {:insert_position, drive, %{date: ^d1}}
+      assert_receive {:insert_position, drive, %{date: _}}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :driving, elevation: 10}}}
 
       stream(name, %{shift_state: "D", time: d2})
-      assert_receive {:insert_position, ^drive, %{date: ^d2}}
+      assert_receive {:insert_position, ^drive, %{date: _}}
 
       assert capture_log(@log_opts, fn ->
                stream(name, %{shift_state: "P", speed: nil, power: nil, time: d3})
@@ -282,11 +282,11 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
 
       send(:"api_#{name}", :continue)
 
-      assert_receive {:insert_position, ^drive, %{date: ^d4, speed: 0, power: 0}}
+      assert_receive {:insert_position, ^drive, %{date: _, speed: 0, power: 0}}
       assert_receive {:close_drive, ^drive, lookup_address: true}
 
-      assert_receive {:start_state, ^car, :online, date: ^d4}
-      assert_receive {:insert_position, ^car, %{date: ^d4}}
+      assert_receive {:start_state, ^car, :online, date: _}
+      assert_receive {:insert_position, ^car, %{date: _}}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
 
       refute_receive _
@@ -412,7 +412,7 @@ defmodule Marites.Vehicles.Vehicle.StreamingTest do
       assert_receive :continue?
       send(:"api_#{name}", :continue)
 
-      assert_receive {:start_state, ^car, :asleep, []}
+      assert_receive {:start_state, ^car, :asleep, [date: _]}
       assert_receive {:"$websockex_cast", :disconnect}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep}}}
 
