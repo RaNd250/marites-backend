@@ -78,6 +78,7 @@ defmodule Marites.VehicleCase do
   end
 
   defp normalize_ts(%{timestamp: 0} = map, now), do: Map.put(map, :timestamp, now)
+  defp normalize_ts(%{timestamp: nil} = map, now), do: Map.put(map, :timestamp, now)
   defp normalize_ts(map, _now), do: map
 
   def online_event(opts \\ []) do
