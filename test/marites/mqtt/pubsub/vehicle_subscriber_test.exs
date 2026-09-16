@@ -300,4 +300,5 @@ defmodule Marites.Mqtt.PubSub.VehicleSubscriberTest do
                     {:publish, "Marites/account_0/cars/0/healthy", "", [retain: false, qos: 1]}}
 
     refute_receive _
+  end
 end
