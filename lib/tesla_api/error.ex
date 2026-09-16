@@ -43,7 +43,7 @@ defmodule TeslaApi.Error do
     %__MODULE__{error | env: redact_env(error.env)}
   end
 
-  defp redact_env(%Tesla.Env{} = env) do
+  def redact_env(%Tesla.Env{} = env) do
     %Tesla.Env{
       env
       | url: redact_url(env.url),
@@ -53,7 +53,7 @@ defmodule TeslaApi.Error do
     }
   end
 
-  defp redact_env(env), do: env
+  def redact_env(env), do: env
 
   defp redact_headers(headers) when is_list(headers) do
     Enum.map(headers, fn
@@ -91,7 +91,7 @@ defmodule TeslaApi.Error do
 
   defp redact_url(url), do: url
 
-  defp redact_pairs(values) when is_list(values) do
+  def redact_pairs(values) when is_list(values) do
     Enum.map(values, fn
       {key, value} when is_atom(key) or is_binary(key) ->
         if sensitive_key?(key), do: {key, @redacted}, else: {key, value}
@@ -101,16 +101,16 @@ defmodule TeslaApi.Error do
     end)
   end
 
-  defp redact_pairs(values), do: values
+  def redact_pairs(values), do: values
 
-  defp sensitive_key?(key) when is_atom(key), do: key |> Atom.to_string() |> sensitive_key?()
+  def sensitive_key?(key) when is_atom(key), do: key |> Atom.to_string() |> sensitive_key?()
 
-  defp sensitive_key?(key) when is_binary(key),
+  def sensitive_key?(key) when is_binary(key),
     do: key |> String.downcase() |> then(&(&1 in @sensitive_keys))
 
-  defp sensitive_key?(_key), do: false
+  def sensitive_key?(_key), do: false
 
-  defp sensitive_header?(key) do
+  def sensitive_header?(key) do
     key
     |> String.downcase()
     |> then(&(&1 in @sensitive_headers))
