@@ -167,6 +167,12 @@ defmodule MaritesWeb.GeoFenceLive.Form do
     end
   end
 
+  # Derives the Grafana URL from the referrer of the dashboard link. Browsers
+  # strip cross-origin referrers down to the origin by default
+  # (`strict-origin-when-cross-origin`), so the referrer is either the full
+  # dashboard URL (same-origin setups) or just the Grafana origin. In the
+  # latter case a Grafana sub-path cannot be detected and has to be set
+  # manually in the settings.
   defp set_grafana_url(settings, socket) do
     with nil <- settings.grafana_url,
          %{"referrer" => referrer} when is_binary(referrer) <- get_connect_params(socket),
