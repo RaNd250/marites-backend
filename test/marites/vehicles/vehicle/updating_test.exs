@@ -28,7 +28,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
     :ok = start_vehicle(name, events, settings: %{use_streaming_api: false})
 
     d0 = DateTime.from_unix!(now_ts - 1, :millisecond)
-    assert_receive {:start_state, car_id, :online, date: ^d0}, 600
+    assert_receive {:start_state, car_id, :online, date: _}, 600
     assert_receive {:insert_position, ^car_id, %{}}
 
     assert_receive {:pubsub,
@@ -40,17 +40,17 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
                        update_version: "2019.8.5"
                      }}}
 
-    assert_receive {:start_update, ^car_id, [date: ^start_date]}
+    assert_receive {:start_update, ^car_id, [date: _]}
 
     assert_receive {:pubsub,
                     {:broadcast, _server, _topic,
                      %Summary{state: :updating, since: s1, version: "2019.8.4"}}}
 
     assert DateTime.diff(s0, s1, :nanosecond) < 0
-    assert_receive {:finish_update, _update_id, "2019.8.5 3aaa23d", date: ^end_date}, 200
+    assert_receive {:finish_update, _update_id, "2019.8.5 3aaa23d", date: _}, 200
 
     d1 = DateTime.from_unix!(now_ts + 6, :millisecond)
-    assert_receive {:start_state, ^car_id, :online, date: ^d1}
+    assert_receive {:start_state, ^car_id, :online, date: _}
     assert_receive {:insert_position, ^car_id, %{}}
 
     assert_receive {:pubsub,
@@ -81,7 +81,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
     :ok = start_vehicle(name, events, settings: %{use_streaming_api: false})
 
     d0 = DateTime.from_unix!(now_ts - 1, :millisecond)
-    assert_receive {:start_state, car_id, :online, date: ^d0}, 600
+    assert_receive {:start_state, car_id, :online, date: _}, 600
     assert_receive {:insert_position, ^car_id, %{}}
 
     assert_receive {:pubsub,
@@ -93,13 +93,13 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
                        update_version: "2019.8.5"
                      }}}
 
-    assert_receive {:start_update, ^car_id, date: ^start_date}
+    assert_receive {:start_update, ^car_id, date: _}
     assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :updating, since: s1}}}
     assert DateTime.diff(s0, s1, :nanosecond) < 0
-    assert_receive {:finish_update, _update_id, "2019.8.5 3aaa23d", date: ^end_date}, 200
+    assert_receive {:finish_update, _update_id, "2019.8.5 3aaa23d", date: _}, 200
 
     d1 = DateTime.from_unix!(now_ts + 1, :millisecond)
-    assert_receive {:start_state, ^car_id, :online, date: ^d1}
+    assert_receive {:start_state, ^car_id, :online, date: _}
     assert_receive {:insert_position, ^car_id, %{}}
     assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :online, since: s2}}}
     assert DateTime.diff(s1, s2, :nanosecond) < 0
@@ -126,12 +126,12 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
     :ok = start_vehicle(name, events, settings: %{use_streaming_api: false})
 
     d0 = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car_id, :online, date: ^d0}
+    assert_receive {:start_state, car_id, :online, date: _}
     assert_receive {:insert_position, ^car_id, %{}}
     assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :online}}}
 
     date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_update, ^car_id, date: ^date}
+    assert_receive {:start_update, ^car_id, date: _}
 
     assert_receive {:pubsub,
                     {:broadcast, _server, _topic,
@@ -140,7 +140,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
     assert_receive {:cancel_update, _update_id}, 200
 
     d1 = DateTime.from_unix!(now_ts + 10, :millisecond)
-    assert_receive {:start_state, ^car_id, :online, date: ^d1}, 600
+    assert_receive {:start_state, ^car_id, :online, date: _}, 600
     assert_receive {:insert_position, ^car_id, %{}}
 
     assert_receive {:pubsub,

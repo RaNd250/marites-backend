@@ -93,6 +93,7 @@ import {
   Icon,
   Circle,
   CircleMarker,
+  SVG,
 } from "leaflet";
 
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -132,14 +133,36 @@ const DirectionArrow = CircleMarker.extend({
       `translate(${x},${y}) rotate(${this._heading})`,
     );
 
-    const path = this._empty() ? "" : `M0,${3} L-4,${5} L0,${-5} L4,${5} z}`;
+    const path = this._empty() ? "" : "M0,3 L-4,5 L0,-5 L4,5 z";
 
     this._renderer._setPath(this, path);
   },
 });
 
+// Safari resolves an SVG's intrinsic size as attribute / page zoom, so Leaflet's
+// overlay pane renders displaced at any page zoom other than 100 % as soon as an
+// author rule takes sizing away from the width/height attributes - Bulma's global
+// `svg { width: auto; height: auto }` does exactly that. Mirroring the attributes
+// into inline styles pins the used size; it is a no-op in every other browser.
+function createSvgRenderer() {
+  const renderer = new SVG();
+
+  renderer.on("update", () => {
+    const el = renderer.getPane().querySelector("svg");
+    if (!el) return;
+
+    el.style.width = `${el.getAttribute("width")}px`;
+    el.style.height = `${el.getAttribute("height")}px`;
+  });
+
+  return renderer;
+}
+
 function createMap(opts) {
-  const map = new M(opts.elId != null ? `map_${opts.elId}` : "map", opts);
+  const map = new M(opts.elId != null ? `map_${opts.elId}` : "map", {
+    ...opts,
+    renderer: createSvgRenderer(),
+  });
 
   const osm = new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -346,5 +369,21 @@ export const ThemeSelector = {
         document.documentElement.setAttribute("data-theme", actualTheme);
       });
     }
+  },
+};
+
+// Navigates back in the browser history (e.g. to the Grafana dashboard the
+// page was opened from) and falls back to the link's href if there is no
+// history, e.g. when the page was opened in a new tab.
+export const HistoryBack = {
+  mounted() {
+    this.el.addEventListener("click", (e) => {
+      if (e.ctrlKey || e.shiftKey || e.metaKey || e.button === 1) return;
+
+      if (window.history.length > 1) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
   },
 };

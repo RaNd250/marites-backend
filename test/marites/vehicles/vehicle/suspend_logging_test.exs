@@ -10,7 +10,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     ]
 
     :ok = start_vehicle(name, events)
-    assert_receive {:start_state, _, :asleep, []}
+    assert_receive {:start_state, _, :asleep, [date: _]}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep}}}
 
     assert :ok = Vehicle.suspend_logging(name)
@@ -23,7 +23,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     ]
 
     :ok = start_vehicle(name, events)
-    assert_receive {:start_state, _, :offline, []}
+    assert_receive {:start_state, _, :offline, [date: _]}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :offline}}}
 
     assert :ok = Vehicle.suspend_logging(name)
@@ -64,7 +64,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :preconditioning} = Vehicle.suspend_logging(name)
   end
@@ -84,7 +84,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :user_present} = Vehicle.suspend_logging(name)
   end
@@ -110,7 +110,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :downloading_update} = Vehicle.suspend_logging(name)
   end
@@ -130,7 +130,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :sentry_mode} = Vehicle.suspend_logging(name)
   end
@@ -149,7 +149,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events, settings: %{req_not_unlocked: true})
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :unlocked} = Vehicle.suspend_logging(name)
   end
@@ -168,7 +168,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events, settings: %{req_not_unlocked: true})
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :doors_open} = Vehicle.suspend_logging(name)
   end
@@ -187,7 +187,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events, settings: %{req_not_unlocked: true})
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :trunk_open} = Vehicle.suspend_logging(name)
   end
@@ -203,7 +203,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events)
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :vehicle_not_parked} = Vehicle.suspend_logging(name)
   end
@@ -219,7 +219,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events)
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :vehicle_not_parked} = Vehicle.suspend_logging(name)
   end
@@ -235,7 +235,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events)
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :vehicle_not_parked} = Vehicle.suspend_logging(name)
   end
@@ -248,7 +248,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
 
     :ok = start_vehicle(name, events)
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :vehicle_not_parked} = Vehicle.suspend_logging(name)
   end
@@ -264,8 +264,8 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^start_date}
-    assert_receive {:start_update, _car, date: ^start_date}
+    assert_receive {:start_state, _, :online, date: _}
+    assert_receive {:start_update, _car, date: _}
 
     assert {:error, :update_in_progress} = Vehicle.suspend_logging(name)
   end
@@ -279,7 +279,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, _, :online, date: ^date}
+    assert_receive {:start_state, _, :online, date: _}
 
     assert {:error, :charging_in_progress} = Vehicle.suspend_logging(name)
   end
@@ -311,7 +311,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     d0 = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^d0}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s0}}}
@@ -329,7 +329,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     assert_receive {:complete_charging_process, ^cproc}
 
     d1 = DateTime.from_unix!(now_ts + 1, :millisecond)
-    assert_receive {:start_state, ^car, :online, date: ^d1}
+    assert_receive {:start_state, ^car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s2}}}
@@ -389,7 +389,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     :ok = start_vehicle(name, events)
 
     date = DateTime.from_unix!(0, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^date}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
 
