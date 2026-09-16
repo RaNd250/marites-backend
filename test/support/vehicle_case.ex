@@ -77,20 +77,20 @@ defmodule Marites.VehicleCase do
     :ok
   end
 
+  defp normalize_ts(%{timestamp: 0} = map, now), do: Map.put(map, :timestamp, now)
+  defp normalize_ts(map, _now), do: map
+
   def online_event(opts \\ []) do
     now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
 
     drive_state =
       Keyword.get(opts, :drive_state, %{latitude: 0.0, longitude: 0.0})
-      |> Map.update(:timestamp, now, fn
-        nil -> now
-        ts -> ts
-      end)
+      |> normalize_ts(now)
 
-    charge_state = Keyword.get(opts, :charge_state, %{timestamp: 0})
-    climate_state = Keyword.get(opts, :climate_state, %{timestamp: 0})
-    vehicle_state = Keyword.get(opts, :vehicle_state, %{timestamp: 0, car_version: ""})
-    vehicle_config = Keyword.get(opts, :vehicle_config, %{timestamp: 0, car_type: "model3"})
+    charge_state = Keyword.get(opts, :charge_state, %{}) |> normalize_ts(now)
+    climate_state = Keyword.get(opts, :climate_state, %{}) |> normalize_ts(now)
+    vehicle_state = Keyword.get(opts, :vehicle_state, %{}) |> normalize_ts(now)
+    vehicle_config = Keyword.get(opts, :vehicle_config, %{}) |> normalize_ts(now)
 
     %TeslaApi.Vehicle{
       state: "online",
