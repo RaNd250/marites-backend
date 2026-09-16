@@ -305,6 +305,7 @@ defmodule TeslaApi.Vehicle.State do
       :sentry_mode,
       :sentry_mode_active,
       :sentry_mode_available,
+      :service_mode,
       :smart_summon_available,
       :software_update,
       :summon_standby_mode_enabled,

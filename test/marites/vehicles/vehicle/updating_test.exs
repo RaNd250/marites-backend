@@ -57,7 +57,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
                     {:broadcast, _server, _topic,
                      %Summary{state: :online, since: s2, version: "2019.8.5"}}}
 
-    assert DateTime.diff(s1, s2, :nanosecond) < 0
+    assert s2 == d1
 
     refute_receive _
   end
@@ -102,7 +102,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
     assert_receive {:start_state, ^car_id, :online, date: _}
     assert_receive {:insert_position, ^car_id, %{}}
     assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :online, since: s2}}}
-    assert DateTime.diff(s1, s2, :nanosecond) < 0
+    assert s2 == d1
 
     refute_receive _
   end
@@ -137,7 +137,7 @@ defmodule Marites.Vehicles.Vehicle.UpdatingTest do
                     {:broadcast, _server, _topic,
                      %Summary{state: :updating, version: "2019.8.4", update_version: "2019.8.5"}}}
 
-    assert_receive {:cancel_update, _update_id}, 200
+    assert_receive {:cancel_update, %Marites.Log.Update{}}, 200
 
     d1 = DateTime.from_unix!(now_ts + 10, :millisecond)
     assert_receive {:start_state, ^car_id, :online, date: _}, 600

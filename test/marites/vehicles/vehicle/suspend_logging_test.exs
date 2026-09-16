@@ -322,7 +322,8 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     assert_receive {:"$websockex_cast", :disconnect}
     assert_receive {:insert_charge, cproc, %{date: _, charge_energy_added: 1.5}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :charging, since: s1}}}
-    assert DateTime.diff(s0, s1, :nanosecond) < 0
+    # The Charging payload carries the online payload's timestamp: same state start time.
+    assert s1 == s0
 
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:insert_charge, ^cproc, %{date: _, charge_energy_added: 1.5}}
@@ -333,7 +334,7 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s2}}}
-    assert DateTime.diff(s1, s2, :nanosecond) < 0
+    assert s2 == d1
 
     assert :ok = Vehicle.suspend_logging(name)
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :suspended, since: s3}}}
@@ -358,7 +359,8 @@ defmodule Marites.Vehicles.Vehicle.SuspendLoggingTest do
     assert :ok = Vehicle.suspend_logging(name)
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :suspended, since: s1}}}
     assert_receive {:insert_position, ^car, %{}}
-    assert DateTime.diff(s0, s1, :nanosecond) < 0
+    # The suspend's strict fetch is served the online payload again: same state start time.
+    assert s1 == s0
 
     refute_receive _
   end
