@@ -77,8 +77,20 @@ defmodule Marites.VehicleCase do
     :ok
   end
 
-  defp normalize_ts(%{timestamp: 0} = map, now), do: Map.put(map, :timestamp, now)
-  defp normalize_ts(map, _now), do: map
+  # Covers three cases the same way: no :timestamp key at all (e.g. the
+  # default drive_state: %{latitude: 0.0, longitude: 0.0} below has none),
+  # an explicit 0, or an explicit nil. All three previously left the field
+  # unset/invalid on the built struct, which crashed downstream in
+  # Vehicle.create_position/2 with DateTime.from_unix(nil, ...). Using
+  # Map.update/4 with a default handles "key absent" and "key present"
+  # in one place instead of needing a separate clause per case.
+  defp normalize_ts(map, now) do
+    Map.update(map, :timestamp, now, fn
+      0 -> now
+      nil -> now
+      ts -> ts
+    end)
+  end
 
   def online_event(opts \\ []) do
     now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
