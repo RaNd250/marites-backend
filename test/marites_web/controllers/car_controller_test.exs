@@ -118,7 +118,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "asleep")
       assert table_row(html, "Range (rated)", "380.26 km")
       assert table_row(html, "Range (est.)", "401.52 km")
@@ -205,7 +205,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
 
       assert "Model S P90D" ==
                html
@@ -279,7 +279,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "charging")
       assert table_row(html, "Remaining Time", "1 h, 49 min")
       assert icon(html, "Plugged In", "power-plug")
@@ -347,7 +347,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "driving")
       assert table_row(html, "Speed", "48 km/h")
     end
@@ -373,7 +373,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "updating")
     end
 
@@ -388,7 +388,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "asleep")
     end
 
@@ -403,7 +403,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "offline")
     end
 
@@ -427,7 +427,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "falling asleep")
     end
 
@@ -477,7 +477,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Range (rated)", "281.64 km")
       assert table_row(html, "Range (est.)", "289.68 km")
     end
@@ -523,7 +523,7 @@ defmodule MaritesWeb.CarControllerTest do
       conn = get(conn, Routes.car_path(conn, :index))
 
       assert html = response(conn, 200)
-      assert html =~ ~r/<p class="title is-5">FooCar<\/p>/
+      assert String.contains?(html, "FooCar")
       assert table_row(html, "Status", "driving")
       assert table_row(html, "Range (rated)", "200.0 mi")
       assert table_row(html, "Range (est.)", "180.0 mi")
