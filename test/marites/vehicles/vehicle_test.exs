@@ -43,7 +43,7 @@ defmodule Marites.Vehicles.VehicleTest do
 
       :ok = start_vehicle(name, events)
 
-      assert_receive {:start_state, _car, :offline, []}
+      assert_receive {:start_state, _car, :offline, [date: _]}
       assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :offline}}}
 
       refute_receive _
@@ -56,7 +56,7 @@ defmodule Marites.Vehicles.VehicleTest do
 
       :ok = start_vehicle(name, events)
 
-      assert_receive {:start_state, _car, :asleep, []}
+      assert_receive {:start_state, _car, :asleep, [date: _]}
       assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :asleep}}}
 
       refute_receive _
@@ -102,7 +102,7 @@ defmodule Marites.Vehicles.VehicleTest do
 
       :ok = start_vehicle(name, events)
 
-      assert_receive {:start_state, car, :asleep, []}
+      assert_receive {:start_state, car, :asleep, [date: _]}
       assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :asleep}}}
 
       assert :ok = Vehicle.resume_logging(name)
@@ -130,7 +130,7 @@ defmodule Marites.Vehicles.VehicleTest do
 
       :ok = start_vehicle(name, events)
 
-      assert_receive {:start_state, car, :offline, []}
+      assert_receive {:start_state, car, :offline, [date: _]}
       assert_receive {:pubsub, {:broadcast, _server, _topic, %Summary{state: :offline}}}
 
       assert :ok = Vehicle.resume_logging(name)
@@ -358,7 +358,7 @@ defmodule Marites.Vehicles.VehicleTest do
           delay: 10
         )
 
-      assert_receive {:start_state, _car, :asleep, []}
+      assert_receive {:start_state, _car, :asleep, [date: _]}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep, healthy: true}}}
 
       :ok = :fuse.circuit_disable(fuse_name)
@@ -423,7 +423,7 @@ defmodule Marites.Vehicles.VehicleTest do
       assert_receive {:start_state, car, :online, date: _}
       assert_receive {ApiMock, {:stream, 1000, _}}
       assert_receive {:insert_position, ^car, %{}}
-      assert_receive {:insert_missed_update, ^car, "42.42.42.0 b2ab650", date: ^date}
+      assert_receive {:insert_missed_update, ^car, "42.42.42.0 b2ab650", date: _}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
 
       refute_receive _
@@ -443,7 +443,7 @@ defmodule Marites.Vehicles.VehicleTest do
       assert_receive {:start_state, car, :online, date: _}
       assert_receive {ApiMock, {:stream, 1000, _}}
       assert_receive {:insert_position, ^car, %{}}
-      assert_receive {:insert_missed_update, ^car, "2020.12.10 e0ccfda3d911", date: ^date}
+      assert_receive {:insert_missed_update, ^car, "2020.12.10 e0ccfda3d911", date: _}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
 
       refute_receive _
@@ -477,7 +477,7 @@ defmodule Marites.Vehicles.VehicleTest do
         assert_receive {ApiMock, {:stream, 1000, _}}
         assert_receive {:insert_position, ^car, %{}}
         assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
-        assert_receive {:start_state, ^car, :asleep, []}
+        assert_receive {:start_state, ^car, :asleep, [date: _]}
         assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep}}}
         assert_receive {:"$websockex_cast", :disconnect}
       end

@@ -19,6 +19,7 @@ defmodule Marites.Vehicles.Vehicle do
               last_used: nil,
               last_response: nil,
               last_state_change: nil,
+              state_row_started: nil,
               elevation: nil,
               geofence: nil,
               deps: %{},
@@ -775,12 +776,12 @@ defmodule Marites.Vehicles.Vehicle do
     Logger.info("Start / :asleep", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle)])
+      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle, data)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:asleep, asleep_interval()},
-     %{data | last_state_change: last_state_change, stream_pid: nil},
+     %{data | last_state_change: last_state_change, state_row_started: last_state_change, stream_pid: nil},
      [broadcast_summary(), schedule_fetch(data)]}
   end
 
@@ -788,12 +789,12 @@ defmodule Marites.Vehicles.Vehicle do
     Logger.info("Start / :offline", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle)])
+      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle, data)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:offline, asleep_interval()},
-     %{data | last_state_change: last_state_change, stream_pid: nil},
+     %{data | last_state_change: last_state_change, state_row_started: last_state_change, stream_pid: nil},
      [broadcast_summary(), schedule_fetch(data)]}
   end
 
@@ -815,7 +816,7 @@ defmodule Marites.Vehicles.Vehicle do
         synchronize_updates(vehicle, data)
 
         {:ok, %Log.State{start_date: last_state_change}} =
-          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle)])
+          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle, data)])
 
         {:ok, pos} = call(data.deps.log, :insert_position, [car, create_position(vehicle, data)])
         geofence = call(data.deps.locations, :find_geofence, [pos])
@@ -841,6 +842,7 @@ defmodule Marites.Vehicles.Vehicle do
        data
        | car: car,
          last_state_change: last_state_change,
+         state_row_started: last_state_change,
          geofence: geofence,
          stream_pid: stream_pid
      }, [broadcast_summary(), {:next_event, :internal, evt}, schedule_position_storing()]}
@@ -1207,10 +1209,10 @@ defmodule Marites.Vehicles.Vehicle do
         {:keep_state, %{data | last_used: DateTime.utc_now()},
          schedule_fetch(default_interval(), data)}
 
-      %VehicleState{software_update: %SW{status: "available"} = update} ->
-        {:ok, %Log.Update{}} = call(data.deps.log, :cancel_update, [update])
+      %VehicleState{software_update: %SW{status: "available"} = software_update} ->
+        {:ok, %Log.Update{}} = call(data.deps.log, :cancel_update, [software_update])
 
-        Logger.warning("Update canceled:\n\n#{inspect(update, pretty: true)}",
+        Logger.warning("Update canceled:\n\n#{inspect(software_update, pretty: true)}",
           car_id: data.car.id
         )
 
@@ -1893,9 +1895,45 @@ defmodule Marites.Vehicles.Vehicle do
     {{:timeout, :store_position}, :timer.minutes(5), :store_position}
   end
 
-  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: nil}}), do: []
+  # A payload whose timestamp lies before the open states row began is
+  # stale: the state change is real and observed now, only its timestamp is
+  # not trustworthy — dating the row with the payload would fail the
+  # positive_duration constraint (end_date >= start_date of that row) and
+  # crash the process (#5684). The comparison uses exactly the value the
+  # constraint compares: state_row_started, set only where start_state or
+  # get_current_state returns a row.
+  defp date_opts(
+         %Vehicle{drive_state: %Drive{timestamp: ts}},
+         %Data{state_row_started: %DateTime{} = started, car: car}
+       )
+       when is_integer(ts) do
+    date = parse_timestamp(ts)
+
+    if DateTime.compare(date, started) == :lt do
+      Logger.warning(
+        "Stale payload timestamp #{date} lies before the open state's start #{started} — " <>
+          "dating the state change now",
+        car_id: car.id
+      )
+
+      [date: DateTime.utc_now()]
+    else
+      [date: date]
+    end
+  end
+
+  # A payload whose timestamp is present but no state_row_started context — use payload date.
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}, %Data{}),
+    do: [date: parse_timestamp(ts)]
+
+  # No timestamp: use current time (same semantics as upstream date_opts/2).
+  defp date_opts(%Vehicle{}, %Data{state_row_started: %DateTime{}}), do: [date: DateTime.utc_now()]
+  defp date_opts(%Vehicle{}, %Data{}), do: [date: DateTime.utc_now()]
+
+  # Legacy 1-arity clauses for non-Data callers (tests that pass only the vehicle).
   defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}), do: [date: parse_timestamp(ts)]
-  defp date_opts(%Vehicle{}), do: []
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: nil}}), do: [date: DateTime.utc_now()]
+  defp date_opts(%Vehicle{}), do: [date: DateTime.utc_now()]
 
   defp parse_timestamp(ts), do: DateTime.from_unix!(ts, :millisecond)
 

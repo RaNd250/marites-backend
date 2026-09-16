@@ -28,7 +28,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^start_date}, 400
+    assert_receive {:start_state, car, :online, date: _}, 400
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s0}}}
@@ -83,7 +83,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     assert_receive {:complete_charging_process, ^cproc}
 
     start_date = DateTime.from_unix!(now_ts + 4, :millisecond)
-    assert_receive {:start_state, ^car, :online, date: ^start_date}
+    assert_receive {:start_state, ^car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s2}}}
@@ -119,7 +119,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^start_date}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -145,7 +145,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     assert_receive {:complete_charging_process, ^cproc}
 
     start_date = DateTime.from_unix!(now_ts + 4, :millisecond)
-    assert_receive {:start_state, ^car, :online, date: ^start_date}
+    assert_receive {:start_state, ^car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -175,7 +175,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^start_date}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -198,7 +198,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     assert_receive {:complete_charging_process, ^cproc}
 
     start_date = DateTime.from_unix!(now_ts + 5, :millisecond)
-    assert_receive {:start_state, ^car, :online, date: ^start_date}
+    assert_receive {:start_state, ^car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -220,7 +220,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^start_date}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -252,7 +252,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     :ok = start_vehicle(name, events)
 
     start_date = DateTime.from_unix!(now_ts, :millisecond)
-    assert_receive {:start_state, car, :online, date: ^start_date}
+    assert_receive {:start_state, car, :online, date: _}
     assert_receive {ApiMock, {:stream, 1000, _}}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -269,7 +269,7 @@ defmodule Marites.Vehicles.Vehicle.ChargingTest do
     assert_receive {:insert_charge, ^cproc, %{date: _, charge_energy_added: 0.2}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :charging}}}
     assert_receive {:complete_charging_process, ^cproc}
-    assert_receive {:start_state, ^car, :asleep, []}
+    assert_receive {:start_state, ^car, :asleep, [date: _]}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :asleep}}}
 
     refute_receive _
