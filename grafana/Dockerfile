@@ -1,6 +1,6 @@
 # Ensure selecting a tag that is available for arm/v7, arm64, and amd64
 # https://hub.docker.com/r/grafana/grafana/tags
-FROM grafana/grafana:13.0.1-security-01
+FROM grafana/grafana:13.2.1
 
 ENV GF_ANALYTICS_REPORTING_ENABLED=false \
     GF_ANALYTICS_CHECK_FOR_UPDATES=false \
