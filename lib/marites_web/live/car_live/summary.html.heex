@@ -26,15 +26,15 @@
   <div class="card-content">
     <div class="media is-flex mb-5">
       <div class="media-content">
+        <% {display_name, vin_label} = Summary.format_car_title(@summary.display_name, @car.vin) %>
         <p class="title is-5">
-          <%= if @summary.vin do %>
-            <%= link Summary.format_car_title(@summary.display_name, @summary.vin) |> elem(0),
-              to: "#",
-              class: "has-tooltip-bottom",
-              data: [tooltip: Summary.format_car_title(@summary.display_name, @summary.vin) |> elem(1)] %>
-          <% else %>
-            <%= @summary.display_name %>
-          <% end %>
+          <span
+            class="has-tooltip-right has-tooltip-left-mobile"
+            style="border-bottom: none;"
+            data-tooltip={vin_label}
+          >
+            {display_name}
+          </span>
         </p>
         <%= unless is_nil(@car.model) do %>
           <p class="subtitle is-6 has-text-weight-light">
