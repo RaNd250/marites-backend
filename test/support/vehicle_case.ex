@@ -84,13 +84,14 @@ defmodule Marites.VehicleCase do
       Keyword.get(opts, :drive_state, %{latitude: 0.0, longitude: 0.0})
       |> Map.update(:timestamp, now, fn
         nil -> now
+        ts when ts == 0 -> now
         ts -> ts
       end)
 
-    charge_state = Keyword.get(opts, :charge_state, %{timestamp: 0})
-    climate_state = Keyword.get(opts, :climate_state, %{timestamp: 0})
-    vehicle_state = Keyword.get(opts, :vehicle_state, %{timestamp: 0, car_version: ""})
-    vehicle_config = Keyword.get(opts, :vehicle_config, %{timestamp: 0, car_type: "model3"})
+    charge_state = Keyword.get(opts, :charge_state, %{timestamp: now})
+    climate_state = Keyword.get(opts, :climate_state, %{timestamp: now})
+    vehicle_state = Keyword.get(opts, :vehicle_state, %{timestamp: now, car_version: ""})
+    vehicle_config = Keyword.get(opts, :vehicle_config, %{timestamp: now, car_type: "model3"})
 
     %TeslaApi.Vehicle{
       state: "online",
