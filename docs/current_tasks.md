@@ -14,7 +14,7 @@ Vehicle commands (honk, sentry, flash) were silently doing nothing. Root causes 
 5. **VCP required** — Tesla Fleet API deprecated plain REST commands. Now requires Vehicle Command Protocol (VCP). Added tesla-http-proxy Docker service that signs commands with app private key.
 6. **Commands used numeric eid, proxy needs VIN** — changed commands path to use VIN from cars table.
 7. **docker-compose environment: overriding env_file** — dollar-sign{VAR} in environment: section resolves from host shell (empty), overriding env_file values. Fixed by removing redundant environment: entries.
-8. **Client secret dollar-sign expansion** — the client secret contained a literal $ character that was lost via compose interpolation. Fixed with $$ escaping in .env. [secret redacted 2026-09-18]
+8. **Client secret dollar-sign expansion** — the client secret contained a literal `$` character that was lost via compose interpolation. Fixed with `$$` escaping in .env. [REDACTED 2026-09-18: this line previously exposed the actual secret value in plaintext -- see incident note].
 
 ### Files Changed (backend — RaNd250/TeslaMi)
 - lib/tesla_api/auth/refresh.ex — full OAuth scope on token refresh
