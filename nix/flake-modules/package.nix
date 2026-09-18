@@ -7,7 +7,7 @@
     , ...
     }:
     let
-      elixir = pkgs.beam.packages.erlang_29.elixir_1_19;
+      elixir = pkgs.beam.packages.erlang_29.elixir_1_20;
       beamPackages = pkgs.beam.packagesWith pkgs.beam.interpreters.erlang_29;
 
       src = ../..;
