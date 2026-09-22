@@ -85,7 +85,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -166,7 +166,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -275,7 +275,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -342,7 +342,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
-      "description": "Open **Drives** or **Charges** can be active sessions and are not necessarily incomplete. Select a count to review the matching records.\nIf a record is incomplete, follow the official guide: \n<a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>Manually fixing data</a>",
+      "description": "This means you have some **Drives** or **Charges** not closed.\nIf so, you may follow the official guide: \n<a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>Manually fixing data</a>",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -353,54 +353,13 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "super-light-blue",
                 "value": 0
-              },
-              {
-                "color": "orange",
-                "value": 1
               }
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Charges not closed"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Review incomplete charges",
-                    "url": "/d/TSmNYvRRk/charges?var-car_id=$car_id&viewPanel=17"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Drives not closed"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Review incomplete drives",
-                    "url": "/d/Y8upc6ZRk/drives?var-car_id=$car_id&viewPanel=9"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -426,7 +385,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -533,7 +492,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -647,7 +606,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -678,6 +637,7 @@
           }
         }
       ],
+      "title": "",
       "type": "table"
     },
     {
@@ -746,7 +706,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -777,6 +737,7 @@
           }
         }
       ],
+      "title": "",
       "type": "table"
     },
     {
@@ -891,7 +852,7 @@
         "enablePagination": true,
         "showHeader": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -973,7 +934,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1056,7 +1017,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1137,7 +1098,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1229,7 +1190,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1308,7 +1269,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1343,6 +1304,10 @@
       "type": "stat"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 12,
@@ -1359,7 +1324,7 @@
         "content": "Check the [contribution docs](https://docs.teslamate.org/docs/development#enable-pg_stat_statements-to-collect-query-statistics) on how to enable tracking planning and execution statistics of all SQL statements executed by a server.\n",
         "mode": "markdown"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "title": "About pg_stat_statements (track statistics of SQL planning and execution)",
       "type": "text"
     },
@@ -1376,13 +1341,13 @@
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "footer": {
               "reducers": []
             },
-            "inspect": false,
-            "wrapText": false
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -1468,7 +1433,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1515,13 +1480,13 @@
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "footer": {
               "reducers": []
             },
-            "inspect": false,
-            "wrapText": false
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -1607,7 +1572,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1798,7 +1763,7 @@
   },
   "timezone": "browser",
   "title": "Database Information",
-  "weekStart": "",
+  "uid": "jchmDbInfo",
   "version": 1,
-  "uid": "jchmDbInfo"
+  "weekStart": ""
 }

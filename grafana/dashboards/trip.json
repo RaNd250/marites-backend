@@ -160,7 +160,6 @@
         },
         "view": {
           "allLayers": true,
-          "dashboardVariable": false,
           "id": "fit",
           "lat": 0,
           "lon": 0,
@@ -168,7 +167,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -199,6 +198,7 @@
           }
         }
       ],
+      "title": "",
       "transparent": true,
       "type": "geomap"
     },
@@ -286,7 +286,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -317,6 +317,7 @@
           }
         }
       ],
+      "title": "",
       "type": "stat"
     },
     {
@@ -327,7 +328,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -405,7 +405,6 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true,
           "values": [
@@ -428,7 +427,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -584,7 +583,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -615,6 +614,7 @@
           }
         }
       ],
+      "title": "",
       "type": "stat"
     },
     {
@@ -701,7 +701,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -732,6 +732,7 @@
           }
         }
       ],
+      "title": "",
       "type": "stat"
     },
     {
@@ -820,7 +821,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -851,6 +852,7 @@
           }
         }
       ],
+      "title": "",
       "type": "stat"
     },
     {
@@ -938,7 +940,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -969,6 +971,7 @@
           }
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "organize",
@@ -1047,7 +1050,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1078,6 +1081,7 @@
           }
         }
       ],
+      "title": "",
       "type": "stat"
     },
     {
@@ -1142,7 +1146,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1181,6 +1185,7 @@
           "refId": "B"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "joinByField",
@@ -1269,7 +1274,6 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -1289,7 +1293,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1328,6 +1332,7 @@
           }
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1429,13 +1434,8 @@
       "id": 20,
       "options": {
         "alignValue": "center",
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "displayMode": "list",
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -1449,7 +1449,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1480,6 +1480,7 @@
           }
         }
       ],
+      "title": "",
       "transparent": true,
       "type": "state-timeline"
     },
@@ -1824,7 +1825,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -2264,7 +2265,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -2442,10 +2443,6 @@
       },
       "id": 42,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "min",
@@ -2453,8 +2450,6 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2464,7 +2459,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -2612,10 +2607,6 @@
       },
       "id": 8,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "min",
@@ -2623,8 +2614,6 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -2634,7 +2623,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -2808,7 +2797,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Trip",
-  "weekStart": "",
+  "uid": "FkUpJpQZk",
   "version": 1,
-  "uid": "FkUpJpQZk"
+  "weekStart": ""
 }

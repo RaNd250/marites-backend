@@ -8,13 +8,13 @@ Vehicle commands (honk, sentry, flash) were silently doing nothing. Root causes 
 ### Root Cause Chain
 
 1. **Billing threshold exceeded** — excessive REST polling 05/01-05/03 triggered account_disabled: EXCEEDED_LIMIT on all Fleet API calls. Tesla updated limits.
-2. **Partner registration never completed** — POST /api/1/partner_accounts had never been called. Done. Account ID: [REDACTED], domain: app.marit.es.
+2. **Partner registration never completed** — POST /api/1/partner_accounts had never been called. Done. Account ID: a2b261fa-68e9-4a94-8f19-0092d26e7b81, domain: app.marit.es.
 3. **Token refresh stripped vehicle_cmds scope** — tesla_api/auth/refresh.ex only requested openid email offline_access, dropping vehicle_cmds on every refresh. Fixed to include full scope.
 4. **Wrong 403 mapping** — all 403 responses mapped to command_unauthorized (virtual key dialog). Fixed: account disabled prefix -> :account_disabled, "key" in msg -> :command_unauthorized, else -> :missing_scope.
 5. **VCP required** — Tesla Fleet API deprecated plain REST commands. Now requires Vehicle Command Protocol (VCP). Added tesla-http-proxy Docker service that signs commands with app private key.
 6. **Commands used numeric eid, proxy needs VIN** — changed commands path to use VIN from cars table.
 7. **docker-compose environment: overriding env_file** — dollar-sign{VAR} in environment: section resolves from host shell (empty), overriding env_file values. Fixed by removing redundant environment: entries.
-8. **Client secret dollar-sign expansion** — the client secret contained a literal `$` character that was lost via compose interpolation. Fixed with `$$` escaping in .env. [REDACTED 2026-09-18: this line previously exposed the actual secret value in plaintext -- see incident note].
+8. **Client secret dollar-sign expansion** — ta-secret.o+sK$u^YJD^RVNDd was losing the $u via compose interpolation. Fixed with $$u in .env.
 
 ### Files Changed (backend — RaNd250/TeslaMi)
 - lib/tesla_api/auth/refresh.ex — full OAuth scope on token refresh

@@ -57,7 +57,4 @@ defmodule Marites.Vault do
       _ -> :error
     end
   end
-
-  # Returns true: init/1 raises if no key is set, so at runtime a key is always available.
-  def encryption_key_provided?, do: true
 end

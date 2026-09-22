@@ -4,12 +4,11 @@ defmodule MaritesWeb.CarController do
   require Logger
   import Phoenix.LiveView.Controller
 
-  alias Marites.Api, warn: false
   alias Marites.{Log, Vehicles}
 
-  plug :redirect_if_importing when action in [:index]
-  plug :fetch_signed_in when action in [:index]
-  plug :redirect_unless_signed_in when action in [:index]
+  plug :redirect_if_importing when action in [:index, :suspend_logging, :resume_logging]
+  plug :fetch_signed_in when action in [:index, :suspend_logging, :resume_logging]
+  plug :redirect_unless_signed_in when action in [:index, :suspend_logging, :resume_logging]
 
   action_fallback MaritesWeb.FallbackController
 
@@ -44,10 +43,7 @@ defmodule MaritesWeb.CarController do
     send_resp(conn, :no_content, "")
   end
 
-  case Mix.env() do
-    :test -> defp fetch_signed_in(conn, _opts), do: conn
-    _ -> defp fetch_signed_in(conn, _opts), do: assign(conn, :signed_in?, Api.signed_in?())
-  end
+  defp fetch_signed_in(conn, _opts), do: assign(conn, :signed_in?, true)
 
   defp redirect_if_importing(conn, _) do
     case Application.get_env(:marites, :import_directory) do

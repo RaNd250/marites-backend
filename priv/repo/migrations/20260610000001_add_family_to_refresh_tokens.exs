@@ -7,7 +7,6 @@ defmodule Marites.Repo.Migrations.AddFamilyToRefreshTokens do
   def up do
     execute "ALTER TABLE refresh_tokens ADD COLUMN IF NOT EXISTS family_id uuid"
     execute "ALTER TABLE refresh_tokens ADD COLUMN IF NOT EXISTS superseded_at timestamp(0)"
-
     execute "CREATE INDEX IF NOT EXISTS refresh_tokens_family_id_index ON refresh_tokens (family_id)"
   end
 

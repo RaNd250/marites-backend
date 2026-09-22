@@ -19,31 +19,14 @@ defmodule Marites.Vehicles.Vehicle do
               last_used: nil,
               last_response: nil,
               last_state_change: nil,
-              state_row_started: nil,
               elevation: nil,
               geofence: nil,
               deps: %{},
               task: nil,
               import?: false,
               stream_pid: nil,
-              # :start serves both the process start and the return from a
-              # transient state (charging, driving, updating, suspended). On the
-              # return the published state start time is the payload date of the
-              # returning poll; at the process start no state changes and the open
-              # row's start is kept. Separating the two roles of :start is phase 2.
-              initial_fetch?: true,
-              # pre_online_check tracks whether an apparent online event is a real wakeup or a brief
-              # subsystem check. Some vehicles (especially MCU2-upgraded cars) wake briefly (~2-3 min)
-              # each hour for subsystem checks and report online, but requesting vehicle_data causes a
-              # full wakeup (~15 min). The distinguishing signal is the streaming API: power=nil means
-              # a subsystem check (fake online), a numeric power value means a genuine wakeup (real online).
-              #
-              # Values:
-              #   :idle             – no pre-online check in progress (default)
-              #   :probing          – stream connected, waiting for first power reading
-              #   :confirmed_fake   – stream reported power=nil, treating as fake online
-              #   :confirmed_real   – stream reported numeric power, treating as real online
-              pre_online_check: :idle
+              last_fleet_event_at: nil,
+              polling_mode: :full
   end
 
   @asleep_interval 30
@@ -66,14 +49,15 @@ defmodule Marites.Vehicles.Vehicle do
   def online_interval, do: interval("POLLING_ONLINE_INTERVAL", 60)
   def charging_interval, do: interval("POLLING_CHARGING_INTERVAL", 5)
 
-  defp idle_interval(_data), do: online_interval()
+  defp idle_interval(%Data{polling_mode: :sentry_only}), do: 120
+  defp idle_interval(%Data{}), do: online_interval()
   def minimum_interval, do: interval("POLLING_MINIMUM_INTERVAL", 0)
 
   def identify(%Vehicle{display_name: name, vehicle_config: config}) do
     case config do
       %VehicleConfig{
         car_type: type,
-        trim_badging: trim_badging
+        trim_badging: trim_badging,
       } ->
         trim_badging =
           with str when is_binary(str) <- trim_badging do
@@ -118,7 +102,7 @@ defmodule Marites.Vehicles.Vehicle do
            model: model,
            name: name,
            trim_badging: trim_badging,
-           marketing_name: marketing_name
+           marketing_name: marketing_name,
          }}
 
       nil ->
@@ -183,8 +167,7 @@ defmodule Marites.Vehicles.Vehicle do
       settings: Keyword.get(opts, :deps_settings, Settings),
       locations: Keyword.get(opts, :deps_locations, Locations),
       vehicles: Keyword.get(opts, :deps_vehicles, Vehicles),
-      pubsub: Keyword.get(opts, :deps_pubsub, Phoenix.PubSub),
-      clock: Keyword.get(opts, :deps_clock, __MODULE__.Clock.default())
+      pubsub: Keyword.get(opts, :deps_pubsub, Phoenix.PubSub)
     }
 
     last_state_change =
@@ -194,12 +177,14 @@ defmodule Marites.Vehicles.Vehicle do
 
     data = %Data{
       car: car,
-      last_used: deps.clock.utc_now(),
+      last_used: DateTime.utc_now(),
       last_state_change: last_state_change,
-      state_row_started: last_state_change,
       deps: deps,
       import?: Keyword.get(opts, :import?, false)
     }
+
+    polling_mode = :full
+    data = %{data | polling_mode: polling_mode}
     :ok = Phoenix.PubSub.subscribe(Marites.PubSub, "fcm_tokens/changed/#{car.user_id}")
 
     fuses = [
@@ -244,12 +229,11 @@ defmodule Marites.Vehicles.Vehicle do
 
   ### resume_logging
 
-  # A user command carries no payload, so the state start time is the clock.
   def handle_event({:call, from}, :resume_logging, {:suspended, prev_state}, %Data{} = data) do
     Logger.info("Resuming logging", car_id: data.car.id)
 
     {:next_state, prev_state,
-     %{data | last_state_change: data.deps.clock.utc_now(), last_used: data.deps.clock.utc_now()},
+     %{data | last_state_change: DateTime.utc_now(), last_used: DateTime.utc_now()},
      [{:reply, from, :ok}, broadcast_summary(), schedule_fetch(1, data)]}
   end
 
@@ -263,7 +247,7 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   def handle_event({:call, from}, :resume_logging, _state, %Data{} = data) do
-    {:keep_state, %{data | last_used: data.deps.clock.utc_now()}, {:reply, from, :ok}}
+    {:keep_state, %{data | last_used: DateTime.utc_now()}, {:reply, from, :ok}}
   end
 
   ### suspend_logging
@@ -301,17 +285,12 @@ defmodule Marites.Vehicles.Vehicle do
 
       suspend_min =
         case {data.car.settings, streaming?(data)} do
-          {%CarSettings{use_streaming_api: true}, true} -> 30
+          {%CarSettings{use_streaming_api: true}, true} -> 10
           {%CarSettings{suspend_min: s}, _} -> s
         end
 
       {:next_state, {:suspended, :online},
-       %Data{
-         data
-         | last_state_change: state_change_date(vehicle, data),
-           last_response: vehicle,
-           task: nil
-       },
+       %Data{data | last_state_change: DateTime.utc_now(), last_response: vehicle, task: nil},
        [
          {:reply, from, :ok},
          broadcast_fetch(false),
@@ -401,7 +380,7 @@ defmodule Marites.Vehicles.Vehicle do
               car_id: data.car.id
             )
 
-            {:next_state, :start, %Data{data | last_used: data.deps.clock.utc_now()},
+            {:next_state, :start, %Data{data | last_used: DateTime.utc_now()},
              [
                broadcast_fetch(false),
                broadcast_summary(),
@@ -409,8 +388,7 @@ defmodule Marites.Vehicles.Vehicle do
              ]}
 
           _ ->
-            {:keep_state, data,
-             [broadcast_fetch(false), schedule_fetch(idle_interval(data), data)]}
+            {:keep_state, data, [broadcast_fetch(false), schedule_fetch(idle_interval(data), data)]}
         end
 
       {:error, :not_signed_in} ->
@@ -443,9 +421,7 @@ defmodule Marites.Vehicles.Vehicle do
 
       {:error, :account_disabled} ->
         Logger.warning("Account disabled / EXCEEDED_LIMIT — suspending polling for 1 hour",
-          car_id: data.car.id
-        )
-
+          car_id: data.car.id)
         {:keep_state, data,
          [broadcast_fetch(false), broadcast_summary(), schedule_fetch(60, :minutes, data)]}
 
@@ -488,8 +464,9 @@ defmodule Marites.Vehicles.Vehicle do
         Logger.info("Online / Start of drive initiated by: #{inspect(stream_data)}")
 
         %{elevation: elevation} = position = create_position(stream_data, data)
+        {drive, data} = start_drive(position, data)
+
         vehicle = merge(data.last_response, stream_data, time: true)
-        {drive, data} = start_drive(position, state_change_date(vehicle, data), data)
 
         {:next_state, {:driving, :available, drive},
          %Data{data | last_response: vehicle, elevation: elevation},
@@ -532,7 +509,7 @@ defmodule Marites.Vehicles.Vehicle do
           call(data.deps.log, :insert_position, [drv, create_position(stream_data, data)])
 
         vehicle = merge(data.last_response, stream_data)
-        now = data.deps.clock.utc_now()
+        now = DateTime.utc_now()
 
         {:keep_state, %{data | last_used: now, last_response: vehicle, elevation: elevation},
          broadcast_summary()}
@@ -564,8 +541,9 @@ defmodule Marites.Vehicles.Vehicle do
         Logger.info("Suspended / Start of drive initiated by: #{inspect(stream_data)}")
 
         %{elevation: elevation} = position = create_position(stream_data, data)
+        {drive, data} = start_drive(position, data)
+
         vehicle = merge(data.last_response, stream_data, time: true)
-        {drive, data} = start_drive(position, state_change_date(vehicle, data), data)
 
         {:next_state, {:driving, :available, drive},
          %Data{data | last_response: vehicle, elevation: elevation},
@@ -575,7 +553,7 @@ defmodule Marites.Vehicles.Vehicle do
       when s in [nil, "P"] and is_number(power) and power < 0 ->
         Logger.info("Suspended / Charging detected: #{power} kW", car_id: data.car.id)
 
-        {:next_state, prev_state, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, prev_state, %{data | last_used: DateTime.utc_now()},
          schedule_fetch(0, data)}
 
       %Stream.Data{shift_state: s, power: power}
@@ -586,7 +564,7 @@ defmodule Marites.Vehicles.Vehicle do
         vehicle = merge(data.last_response, stream_data, time: true)
 
         {:next_state, prev_state,
-         %Data{data | last_response: vehicle, last_used: data.deps.clock.utc_now()},
+         %Data{data | last_response: vehicle, last_used: DateTime.utc_now()},
          schedule_fetch(0, data)}
 
       %Stream.Data{} ->
@@ -696,7 +674,8 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   def handle_event(:info, {:fcm_tokens_changed, _user_id}, _state, %Data{} = data) do
-    {:keep_state, data}
+    mode = :full
+    {:keep_state, %{data | polling_mode: mode}}
   end
 
   def handle_event(:info, message, _state, data) do
@@ -792,38 +771,26 @@ defmodule Marites.Vehicles.Vehicle do
     Logger.info("Start / :asleep", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle, data)])
+      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:asleep, asleep_interval()},
-     %{
-       data
-       | last_state_change: last_state_change,
-         state_row_started: last_state_change,
-         stream_pid: nil,
-         pre_online_check: :idle,
-         initial_fetch?: false
-     }, [broadcast_summary(), schedule_fetch(data)]}
+     %{data | last_state_change: last_state_change, stream_pid: nil},
+     [broadcast_summary(), schedule_fetch(data)]}
   end
 
   def handle_event(:internal, {:update, {:offline, vehicle}}, :start, %Data{} = data) do
     Logger.info("Start / :offline", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle, data)])
+      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:offline, asleep_interval()},
-     %{
-       data
-       | last_state_change: last_state_change,
-         state_row_started: last_state_change,
-         stream_pid: nil,
-         pre_online_check: :idle,
-         initial_fetch?: false
-     }, [broadcast_summary(), schedule_fetch(data)]}
+     %{data | last_state_change: last_state_change, stream_pid: nil},
+     [broadcast_summary(), schedule_fetch(data)]}
   end
 
   def handle_event(:internal, {:update, {:online, vehicle}} = evt, :start, %Data{} = data) do
@@ -844,7 +811,7 @@ defmodule Marites.Vehicles.Vehicle do
         synchronize_updates(vehicle, data)
 
         {:ok, %Log.State{start_date: last_state_change}} =
-          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle, data)])
+          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle)])
 
         {:ok, pos} = call(data.deps.log, :insert_position, [car, create_position(vehicle, data)])
         geofence = call(data.deps.locations, :find_geofence, [pos])
@@ -865,21 +832,13 @@ defmodule Marites.Vehicles.Vehicle do
           nil
       end
 
-    # The open online row survives a transient state, so on the return its
-    # start would send the published state start time backwards: the return
-    # is dated with the returning poll, the process start keeps the row.
-    since =
-      if data.initial_fetch?, do: last_state_change, else: state_change_date(vehicle, data)
-
     {:next_state, :online,
      %{
        data
        | car: car,
-         last_state_change: since,
-         state_row_started: last_state_change,
+         last_state_change: last_state_change,
          geofence: geofence,
-         stream_pid: stream_pid,
-         initial_fetch?: false
+         stream_pid: stream_pid
      }, [broadcast_summary(), {:next_event, :internal, evt}, schedule_position_storing()]}
   end
 
@@ -896,8 +855,8 @@ defmodule Marites.Vehicles.Vehicle do
 
     if match?({:suspended, _}, state) do
       duration_str =
-        data.deps.clock.utc_now()
-        |> diff_seconds(data.last_used, data)
+        DateTime.utc_now()
+        |> diff_seconds(data.last_used)
         |> Convert.sec_to_str()
         |> Enum.reject(&String.ends_with?(&1, "s"))
         |> Enum.join(" ")
@@ -919,18 +878,15 @@ defmodule Marites.Vehicles.Vehicle do
         {:next_state, {:updating, update},
          %{
            data
-           | last_state_change: state_change_date(vehicle, data),
-             last_used: data.deps.clock.utc_now(),
+           | last_state_change: DateTime.utc_now(),
+             last_used: DateTime.utc_now(),
              stream_pid: nil
          }, [broadcast_summary(), schedule_fetch(15, data)]}
 
       %V{drive_state: %Drive{shift_state: shift_state}} when shift_state in ~w(D N R) ->
         Logger.info("Start of drive initiated by: #{inspect(vehicle.drive_state)}")
 
-        {drive, data} =
-          start_drive(create_position(vehicle, data), state_change_date(vehicle, data), data)
-
-        interval = if streaming?(data), do: default_interval(), else: driving_interval()
+        {drive, data} = start_drive(create_position(vehicle, data), data)
 
         {:next_state, {:driving, :available, drive}, data,
          [
@@ -966,8 +922,8 @@ defmodule Marites.Vehicles.Vehicle do
         {:next_state, {:charging, cproc},
          %Data{
            data
-           | last_state_change: state_change_date(vehicle, data),
-             last_used: data.deps.clock.utc_now(),
+           | last_state_change: DateTime.utc_now(),
+             last_used: DateTime.utc_now(),
              stream_pid: nil
          }, [broadcast_summary(), schedule_fetch(5, data), schedule_position_storing()]}
 
@@ -1001,7 +957,7 @@ defmodule Marites.Vehicles.Vehicle do
   end
 
   def handle_event(:internal, {:update, {:online, vehicle}}, {:charging, cproc}, %Data{} = data) do
-    data = %{data | last_used: data.deps.clock.utc_now()}
+    data = %{data | last_used: DateTime.utc_now()}
 
     case vehicle do
       %Vehicle{charge_state: %Charge{charging_state: charging_state}}
@@ -1045,8 +1001,8 @@ defmodule Marites.Vehicles.Vehicle do
       ) do
     Logger.warning("Vehicle went offline while driving", car_id: data.car.id)
 
-    {:next_state, {:driving, {:unavailable, 0}, drive},
-     %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(5, data)}
+    {:next_state, {:driving, {:unavailable, 0}, drive}, %{data | last_used: DateTime.utc_now()},
+     schedule_fetch(5, data)}
   end
 
   def handle_event(
@@ -1056,8 +1012,8 @@ defmodule Marites.Vehicles.Vehicle do
         %Data{} = data
       )
       when n < 15 do
-    {:next_state, {:driving, {:unavailable, n + 1}, drv},
-     %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(5, data)}
+    {:next_state, {:driving, {:unavailable, n + 1}, drv}, %{data | last_used: DateTime.utc_now()},
+     schedule_fetch(5, data)}
   end
 
   def handle_event(
@@ -1067,8 +1023,7 @@ defmodule Marites.Vehicles.Vehicle do
         %Data{} = data
       ) do
     {:next_state, {:driving, {:offline, data.last_response}, drv},
-     %{data | last_used: data.deps.clock.utc_now()},
-     [broadcast_summary(), schedule_fetch(30, data)]}
+     %{data | last_used: DateTime.utc_now()}, [broadcast_summary(), schedule_fetch(30, data)]}
   end
 
   def handle_event(
@@ -1077,8 +1032,7 @@ defmodule Marites.Vehicles.Vehicle do
         {:driving, {:offline, _last}, nil},
         %Data{} = data
       ) do
-    {:next_state, :start, %Data{data | last_used: data.deps.clock.utc_now()},
-     schedule_fetch(data)}
+    {:next_state, :start, %Data{data | last_used: DateTime.utc_now()}, schedule_fetch(data)}
   end
 
   def handle_event(
@@ -1089,16 +1043,15 @@ defmodule Marites.Vehicles.Vehicle do
       ) do
     offline_since = parse_timestamp(last.drive_state.timestamp)
 
-    case diff_seconds(data.deps.clock.utc_now(), offline_since, data) / 60 do
+    case diff_seconds(DateTime.utc_now(), offline_since) / 60 do
       min when min >= @drive_timeout_min ->
         timeout_drive(drive, data)
 
-        {:next_state, {:driving, {:offline, last}, nil},
-         %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, {:driving, {:offline, last}, nil}, %{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(30, data)]}
 
       _min ->
-        {:keep_state, %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(30, data)}
+        {:keep_state, %{data | last_used: DateTime.utc_now()}, schedule_fetch(30, data)}
     end
   end
 
@@ -1141,19 +1094,17 @@ defmodule Marites.Vehicles.Vehicle do
 
         Logger.info("Vehicle was charged while being offline: #{added} kWh", car_id: data.car.id)
 
-        {:next_state, :start, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, :start, %{data | last_used: DateTime.utc_now()},
          {:next_event, :internal, {:update, {:online, now}}}}
 
       not has_gained_range? and offline_min >= @drive_timeout_min ->
         unless is_nil(drv), do: timeout_drive(drv, data)
 
-        {:next_state, :start, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, :start, %{data | last_used: DateTime.utc_now()},
          {:next_event, :internal, {:update, {:online, now}}}}
 
       not is_nil(drv) ->
-        data = maybe_reconnect_stream(data)
-
-        {:next_state, {:driving, :available, drv}, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, {:driving, :available, drv}, %{data | last_used: DateTime.utc_now()},
          {:next_event, :internal, {:update, {:online, now}}}}
     end
   end
@@ -1175,9 +1126,7 @@ defmodule Marites.Vehicles.Vehicle do
       ) do
     Logger.info("Vehicle is back online", car_id: data.car.id)
 
-    data = maybe_reconnect_stream(data)
-
-    {:next_state, {:driving, :available, drv}, %{data | last_used: data.deps.clock.utc_now()},
+    {:next_state, {:driving, :available, drv}, %{data | last_used: DateTime.utc_now()},
      {:next_event, :internal, {:update, e}}}
   end
 
@@ -1199,7 +1148,7 @@ defmodule Marites.Vehicles.Vehicle do
             call(data.deps.locations, :find_geofence, [pos])
           end)
 
-        {:keep_state, %{data | last_used: data.deps.clock.utc_now(), geofence: geofence},
+        {:keep_state, %{data | last_used: DateTime.utc_now(), geofence: geofence},
          [broadcast_summary(), schedule_fetch(interval, data)]}
 
       %Vehicle{drive_state: %Drive{shift_state: shift_state}} when shift_state in [nil, "P"] ->
@@ -1219,7 +1168,7 @@ defmodule Marites.Vehicles.Vehicle do
         Logger.info("End of drive initiated by: #{inspect(vehicle.drive_state)}")
         Logger.info("Driving / Ended / #{km && round(km)} km – #{min} min", car_id: data.car.id)
 
-        {:next_state, :start, %{data | last_used: data.deps.clock.utc_now(), geofence: geofence},
+        {:next_state, :start, %{data | last_used: DateTime.utc_now(), geofence: geofence},
          {:next_event, :internal, {:update, {:online, vehicle}}}}
 
       %Vehicle{drive_state: nil} ->
@@ -1232,7 +1181,7 @@ defmodule Marites.Vehicles.Vehicle do
 
   def handle_event(:internal, {:update, {:offline, _}}, {:updating, _update_id}, %Data{} = data) do
     Logger.warning("Vehicle went offline while updating", car_id: data.car.id)
-    {:keep_state, %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(data)}
+    {:keep_state, %{data | last_used: DateTime.utc_now()}, schedule_fetch(data)}
   end
 
   def handle_event(:internal, {:update, {:online, vehicle}}, {:updating, update}, data) do
@@ -1241,27 +1190,27 @@ defmodule Marites.Vehicles.Vehicle do
     case vehicle.vehicle_state do
       nil ->
         Logger.warning("Update / empty vehicle_state", car_id: data.car.id)
-        {:keep_state, %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(5, data)}
+        {:keep_state, %{data | last_used: DateTime.utc_now()}, schedule_fetch(5, data)}
 
       %VehicleState{software_update: nil} ->
         Logger.warning("Update / empty payload:\n\n#{inspect(vehicle, pretty: true)}",
           car_id: data.car.id
         )
 
-        {:keep_state, %{data | last_used: data.deps.clock.utc_now()}, schedule_fetch(5, data)}
+        {:keep_state, %{data | last_used: DateTime.utc_now()}, schedule_fetch(5, data)}
 
       %VehicleState{software_update: %SW{status: "installing"}} ->
-        {:keep_state, %{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %{data | last_used: DateTime.utc_now()},
          schedule_fetch(default_interval(), data)}
 
-      %VehicleState{software_update: %SW{status: "available"} = software_update} ->
+      %VehicleState{software_update: %SW{status: "available"} = update} ->
         {:ok, %Log.Update{}} = call(data.deps.log, :cancel_update, [update])
 
-        Logger.warning("Update canceled:\n\n#{inspect(software_update, pretty: true)}",
+        Logger.warning("Update canceled:\n\n#{inspect(update, pretty: true)}",
           car_id: data.car.id
         )
 
-        {:next_state, :start, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, :start, %{data | last_used: DateTime.utc_now()},
          {:next_event, :internal, {:update, {:online, vehicle}}}}
 
       %VehicleState{timestamp: ts, car_version: vsn, software_update: %SW{} = software_update} ->
@@ -1282,7 +1231,7 @@ defmodule Marites.Vehicles.Vehicle do
 
         Logger.info("Update / Installed #{vsn}", car_id: data.car.id)
 
-        {:next_state, :start, %{data | last_used: data.deps.clock.utc_now()},
+        {:next_state, :start, %{data | last_used: DateTime.utc_now()},
          {:next_event, :internal, {:update, {:online, vehicle}}}}
     end
   end
@@ -1292,7 +1241,6 @@ defmodule Marites.Vehicles.Vehicle do
   def handle_event(:internal, {:update, {state, _}}, {state, interval}, data)
       when state in [:asleep, :offline] do
     next_interval = min(interval * 2, @max_asleep_interval)
-
     {:next_state, {state, next_interval}, data,
      [schedule_fetch(next_interval, data), broadcast_summary()]}
   end
@@ -1307,34 +1255,22 @@ defmodule Marites.Vehicles.Vehicle do
 
   def handle_event(:internal, {:update, {:online, _}} = event, {state, _interval}, %Data{} = data)
       when state in [:asleep, :offline] do
-    {:next_state, :start, %{data | last_used: data.deps.clock.utc_now()},
+    {:next_state, :start, %{data | last_used: DateTime.utc_now()},
      {:next_event, :internal, event}}
   end
 
-  def handle_event(
-        :cast,
-        {:fleet_telemetry, fields},
-        {dormant, _interval},
-        %Data{last_response: vehicle} = data
-      )
+  def handle_event(:cast, {:fleet_telemetry, fields}, {dormant, _interval}, %Data{last_response: vehicle} = data)
       when dormant in [:asleep, :offline] and vehicle != nil do
     updated = apply_fleet_fields(vehicle, fields)
-
     {:next_state, :start,
-     %{data | last_response: updated},
+     %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      {:next_event, :internal, :fetch}}
   end
 
-  def handle_event(
-        :cast,
-        {:fleet_telemetry, fields},
-        _state,
-        %Data{last_response: vehicle} = data
-      )
+  def handle_event(:cast, {:fleet_telemetry, fields}, _state, %Data{last_response: vehicle} = data)
       when vehicle != nil do
     updated = apply_fleet_fields(vehicle, fields)
-
-    {:keep_state, %{data | last_response: updated},
+    {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      broadcast_summary()}
   end
 
@@ -1345,10 +1281,8 @@ defmodule Marites.Vehicles.Vehicle do
       climate_state: %Climate{},
       vehicle_state: %VehicleState{}
     }
-
     updated = apply_fleet_fields(blank, fields)
-
-    {:keep_state, %{data | last_response: updated},
+    {:keep_state, %{data | last_response: updated, last_fleet_event_at: DateTime.utc_now()},
      broadcast_summary()}
   end
 
@@ -1415,9 +1349,7 @@ defmodule Marites.Vehicles.Vehicle do
     end
   end
 
-  defp fetch(%Data{car: car, deps: deps},
-         expected_state: expected_state
-       ) do
+  defp fetch(%Data{car: car, deps: deps, polling_mode: polling_mode}, expected_state: expected_state) do
     reachable? =
       case expected_state do
         :online -> true
@@ -1431,19 +1363,31 @@ defmodule Marites.Vehicles.Vehicle do
       end
 
     if reachable? do
-      fetch_with_reachable_assumption(car.eid, deps)
+      fetch_with_reachable_assumption(car.eid, deps, polling_mode)
     else
-      fetch_with_unreachable_assumption(car.eid, deps)
+      fetch_with_unreachable_assumption(car.eid, deps, polling_mode)
     end
   end
 
-  defp fetch_with_reachable_assumption(id, deps) do
+  defp fetch_with_reachable_assumption(id, deps, :sentry_only) do
+    with {:error, :vehicle_unavailable} <- call(deps.api, :get_vehicle_sentry_state, [id]) do
+      call(deps.api, :get_vehicle, [id])
+    end
+  end
+
+  defp fetch_with_reachable_assumption(id, deps, _polling_mode) do
     with {:error, :vehicle_unavailable} <- call(deps.api, :get_vehicle_with_state, [id]) do
       call(deps.api, :get_vehicle, [id])
     end
   end
 
-  defp fetch_with_unreachable_assumption(id, deps) do
+  defp fetch_with_unreachable_assumption(id, deps, :sentry_only) do
+    with {:ok, %Vehicle{state: "online"}} <- call(deps.api, :get_vehicle, [id]) do
+      call(deps.api, :get_vehicle_sentry_state, [id])
+    end
+  end
+
+  defp fetch_with_unreachable_assumption(id, deps, _polling_mode) do
     with {:ok, %Vehicle{state: "online"}} <- call(deps.api, :get_vehicle, [id]) do
       call(deps.api, :get_vehicle_with_state, [id])
     end
@@ -1566,65 +1510,57 @@ defmodule Marites.Vehicles.Vehicle do
   defp try_to_suspend(vehicle, current_state, %Data{car: car} = data) do
     {suspend_after_idle_min, suspend_min, i} =
       case {car.settings, streaming?(data)} do
-        {%CarSettings{use_streaming_api: true}, true} -> {3, 30, 2}
+        {%CarSettings{use_streaming_api: true}, true} -> {3, 10, 2}
         {%CarSettings{suspend_after_idle_min: i, suspend_min: s}, _} -> {i, s, 1}
       end
 
-    suspend? =
-      diff_seconds(data.deps.clock.utc_now(), data.last_used, data) / 60 >= suspend_after_idle_min
-
-    service_mode? = service_mode?(vehicle)
-
-    if suspend? and not service_mode? and unlocked?(vehicle) and
-         not car.settings.req_not_unlocked do
-      Logger.debug("Unlocked ...", car_id: car.id)
-    end
+    suspend? = diff_seconds(DateTime.utc_now(), data.last_used) / 60 >= suspend_after_idle_min
 
     case can_fall_asleep(vehicle, data) do
       {:error, :sentry_mode} ->
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(30 * i, data)]}
 
       {:error, :preconditioning} ->
         if suspend?, do: Logger.warning("Preconditioning ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(30 * i, data)]}
 
       {:error, :dogmode} ->
         if suspend?, do: Logger.warning("Dog Mode is enabled ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(30 * i, data)]}
 
       {:error, :user_present} ->
         if suspend?, do: Logger.warning("User present ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(default_interval(), data)]}
 
       {:error, :downloading_update} ->
         if suspend?, do: Logger.warning("Downloading update ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(default_interval() * i, data)]}
 
       {:error, :doors_open} ->
         if suspend?, do: Logger.warning("Doors open ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(default_interval() * i, data)]}
 
       {:error, :trunk_open} ->
         if suspend?, do: Logger.warning("Trunk open ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(default_interval() * i, data)]}
 
       {:error, :power_usage} ->
         if suspend?, do: Logger.warning("Power usage ...", car_id: car.id)
 
-        {:keep_state, %Data{data | last_used: data.deps.clock.utc_now()},
+        {:keep_state, %Data{data | last_used: DateTime.utc_now()},
          [broadcast_summary(), schedule_fetch(default_interval() * i, data)]}
 
       {:error, :unlocked} ->
@@ -1648,7 +1584,7 @@ defmodule Marites.Vehicles.Vehicle do
               Logger.info("Suspending logging", car_id: car.id)
 
               {:next_state, {:suspended, current_state},
-               %Data{data | last_state_change: state_change_date(vehicle, data)}, events}
+               %Data{data | last_state_change: DateTime.utc_now()}, events}
           end
         else
           {:keep_state_and_data,
@@ -1704,26 +1640,7 @@ defmodule Marites.Vehicles.Vehicle do
     end
   end
 
-  defp service_mode?(%Vehicle{vehicle_state: %VehicleState{service_mode: true}}), do: true
-  defp service_mode?(_vehicle), do: false
-
-  defp unlocked?(%Vehicle{vehicle_state: %VehicleState{locked: false}}), do: true
-  defp unlocked?(_vehicle), do: false
-
-  defp log_service_mode_transition(prev, current, car_id) do
-    case {service_mode?(prev), service_mode?(current)} do
-      {false, true} ->
-        Logger.info("Car entered service mode", car_id: car_id)
-
-      {true, false} ->
-        Logger.info("Car left service mode", car_id: car_id)
-
-      _ ->
-        :ok
-    end
-  end
-
-  defp start_drive(position, %DateTime{} = date, %Data{car: car, deps: deps} = data) do
+  defp start_drive(position, %Data{car: car, deps: deps} = data) do
     Logger.info("Driving / Start", car_id: car.id)
 
     {:ok, {drive, geofence}} =
@@ -1734,12 +1651,8 @@ defmodule Marites.Vehicles.Vehicle do
         {drive, geofence}
       end)
 
-    data = %Data{
-      data
-      | last_state_change: date,
-        last_used: data.deps.clock.utc_now(),
-        geofence: geofence
-    }
+    now = DateTime.utc_now()
+    data = %Data{data | last_state_change: now, last_used: now, geofence: geofence}
 
     {drive, data}
   end
@@ -1875,17 +1788,6 @@ defmodule Marites.Vehicles.Vehicle do
     Stream.disconnect(pid)
   end
 
-  defp maybe_reconnect_stream(%Data{car: %Car{settings: settings}} = data) do
-    case {settings, streaming?(data)} do
-      {%CarSettings{use_streaming_api: true}, false} ->
-        {:ok, pid} = connect_stream(data)
-        %Data{data | stream_pid: pid}
-
-      {%CarSettings{}, _} ->
-        data
-    end
-  end
-
   defp summary_topic(car_id) when is_number(car_id), do: "#{__MODULE__}/summary/#{car_id}"
   defp fetch_topic(car_id) when is_number(car_id), do: "#{__MODULE__}/fetch/#{car_id}"
 
@@ -1903,14 +1805,7 @@ defmodule Marites.Vehicles.Vehicle do
       # Fleet Telemetry has no separate UsableBatteryLevel field; Soc is the
       # BMS usable state of charge, so it feeds both columns.
       {:soc, val}, acc when is_number(val) and acc.charge_state != nil ->
-        %{
-          acc
-          | charge_state: %{
-              acc.charge_state
-              | battery_level: round(val),
-                usable_battery_level: round(val)
-            }
-        }
+        %{acc | charge_state: %{acc.charge_state | battery_level: round(val), usable_battery_level: round(val)}}
 
       {:shift_state, val}, acc when is_binary(val) and acc.drive_state != nil ->
         %{acc | drive_state: %{acc.drive_state | shift_state: val}}
@@ -1970,45 +1865,9 @@ defmodule Marites.Vehicles.Vehicle do
     {{:timeout, :store_position}, :timer.minutes(5), :store_position}
   end
 
-  # A payload whose timestamp lies before the open states row began is
-  # stale: the state change is real and observed now, only its timestamp is
-  # not trustworthy — dating the row with the payload would fail the
-  # positive_duration constraint (end_date >= start_date of that row) and
-  # crash the process (#5684). The comparison uses exactly the value the
-  # constraint compares: state_row_started, set only where start_state or
-  # get_current_state returns a row.
-  defp date_opts(
-         %Vehicle{drive_state: %Drive{timestamp: ts}},
-         %Data{state_row_started: %DateTime{} = started, deps: deps, car: car}
-       )
-       when is_integer(ts) do
-    date = parse_timestamp(ts)
-
-    if DateTime.compare(date, started) == :lt do
-      Logger.warning(
-        "Stale payload timestamp #{date} lies before the open state's start #{started} — " <>
-          "dating the state change now",
-        car_id: car.id
-      )
-
-      [date: deps.clock.utc_now()]
-    else
-      [date: date]
-    end
-  end
-
-  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}, _data) when is_integer(ts),
-    do: [date: parse_timestamp(ts)]
-
-  # A payload without a timestamp is dated by the vehicle's clock, so every
-  # state row carries the vehicle's view of time rather than Log's fallback.
-  defp date_opts(%Vehicle{}, %Data{deps: deps}), do: [date: deps.clock.utc_now()]
-
-  # The published state start time (`since`) is the payload date of the poll
-  # that changes the summary state — the same date a states row would get,
-  # stale protection included — not the server clock.
-  defp state_change_date(%Vehicle{} = vehicle, %Data{} = data),
-    do: Keyword.fetch!(date_opts(vehicle, data), :date)
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: nil}}), do: []
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}), do: [date: parse_timestamp(ts)]
+  defp date_opts(%Vehicle{}), do: []
 
   defp parse_timestamp(ts), do: DateTime.from_unix!(ts, :millisecond)
 
@@ -2019,9 +1878,25 @@ defmodule Marites.Vehicles.Vehicle do
 
   defp schedule_fetch(_n, _unit, %Data{import?: true}), do: {:state_timeout, 0, :fetch}
 
-  defp schedule_fetch(n, unit, data), do: {:state_timeout, fetch_timeout(n, unit, data), :fetch}
+  defp schedule_fetch(n, unit, %Data{last_fleet_event_at: ts}) when not is_nil(ts) do
+    age = DateTime.diff(DateTime.utc_now(), ts, :second)
+    if age < 300 do
+      # Fleet telemetry is active — cap REST polling at 15 min
+      {:state_timeout, fetch_timeout(15, :minutes), :fetch}
+    else
+      {:state_timeout, fetch_timeout(n, unit), :fetch}
+    end
+  end
 
-  defp fetch_timeout(n, unit, %Data{deps: deps}), do: deps.clock.fetch_timeout(n, unit)
+  defp schedule_fetch(n, unit, _data), do: {:state_timeout, fetch_timeout(n, unit), :fetch}
 
-  defp diff_seconds(a, b, %Data{deps: deps}), do: deps.clock.diff_seconds(a, b)
+  case(Mix.env()) do
+    :test -> defp fetch_timeout(n, _), do: round(n)
+    _ -> defp fetch_timeout(n, unit), do: round(apply(:timer, unit, [n]))
+  end
+
+  case(Mix.env()) do
+    :test -> defp diff_seconds(a, b), do: DateTime.diff(a, b, :millisecond)
+    _ -> defp diff_seconds(a, b), do: DateTime.diff(a, b, :second)
+  end
 end

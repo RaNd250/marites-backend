@@ -122,10 +122,6 @@
       },
       "id": 2,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "mean",
@@ -133,8 +129,6 @@
             "min"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -145,7 +139,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -378,7 +372,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Charge Level",
-  "weekStart": "",
+  "uid": "WopVO_mgz",
   "version": 1,
-  "uid": "WopVO_mgz"
+  "weekStart": ""
 }

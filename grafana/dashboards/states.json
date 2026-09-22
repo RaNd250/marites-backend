@@ -104,7 +104,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -190,7 +190,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -288,7 +288,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -412,13 +412,8 @@
       "id": 14,
       "options": {
         "alignValue": "center",
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "displayMode": "list",
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -432,7 +427,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -519,7 +514,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "States",
-  "weekStart": "",
+  "uid": "xo4BNRkZz",
   "version": 1,
-  "uid": "xo4BNRkZz"
+  "weekStart": ""
 }

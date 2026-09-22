@@ -160,10 +160,6 @@
       },
       "id": 2,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "mean",
@@ -171,8 +167,6 @@
             "min"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -183,7 +177,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -339,10 +333,6 @@
       },
       "id": 6,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "mean",
@@ -350,8 +340,6 @@
             "min"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -362,7 +350,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -547,10 +535,6 @@
       },
       "id": 5,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "mean",
@@ -558,8 +542,6 @@
             "min"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -569,7 +551,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -782,7 +764,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Projected Range",
-  "weekStart": "",
+  "uid": "riqUfXgRz",
   "version": 1,
-  "uid": "riqUfXgRz"
+  "weekStart": ""
 }

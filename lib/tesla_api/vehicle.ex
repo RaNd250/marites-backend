@@ -87,7 +87,7 @@ defmodule TeslaApi.Vehicle do
       System.get_env("TESLA_CMD_HOST") ||
         case Auth.region(auth) do
           :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
-          _global -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+          _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
         end
 
     TeslaApi.post(
@@ -102,7 +102,7 @@ defmodule TeslaApi.Vehicle do
     endpoint_url =
       case Auth.region(auth) do
         :chinese -> System.get_env("TESLA_API_HOST", "https://owner-api.vn.cloud.tesla.cn")
-        _global -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
+        _global  -> System.get_env("TESLA_API_HOST", "https://owner-api.teslamotors.com")
       end
 
     TeslaApi.post(
@@ -133,9 +133,7 @@ defmodule TeslaApi.Vehicle do
   defp handle_command_response({:ok, %Tesla.Env{status: 401} = env}),
     do: {:error, %Error{reason: :unauthorized, env: env}}
 
-  defp handle_command_response(
-         {:ok, %Tesla.Env{status: 403, body: %{"error" => "account disabled: " <> _ = msg}}}
-       ) do
+  defp handle_command_response({:ok, %Tesla.Env{status: 403, body: %{"error" => "account disabled: " <> _ = msg}}}) do
     Logger.warning("Tesla command 403 account_disabled: #{msg}")
     {:error, :account_disabled}
   end
@@ -229,11 +227,6 @@ defmodule TeslaApi.Vehicle do
 
       %Tesla.Env{status: status, body: %{"error" => msg}} = env when status >= 500 ->
         {:error, %Error{reason: :unknown, message: msg, env: env}}
-
-      %Tesla.Env{status: 403, body: %{"error" => "account disabled: EXCEEDED_LIMIT"}} = env ->
-        # Tesla sends no retry-after header for this error, so back off for 15
-        # minutes instead of falling through to the :unknown handler's 10-30s retry.
-        {:error, %Error{reason: :too_many_request, message: 900}}
 
       %Tesla.Env{status: 403, body: %{"error" => "account disabled: " <> _}} = env ->
         {:error, %Error{reason: :account_disabled, env: env}}

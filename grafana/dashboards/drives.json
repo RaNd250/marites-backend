@@ -129,7 +129,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -140,6 +140,7 @@
           "refId": "A"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -228,7 +229,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -239,6 +240,7 @@
           "refId": "A"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -346,7 +348,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -357,6 +359,7 @@
           "refId": "A"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -464,7 +467,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -475,6 +478,7 @@
           "refId": "A"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1254,7 +1258,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1302,6 +1306,10 @@
       "type": "row"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 2,
         "w": 24,
@@ -1318,7 +1326,8 @@
         "content": "From here you can check if you have \nincomplete data of **Drives** (drives without ending date)\nIf so, you may follow the official \nguide by <a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>Manually fixing data</a>",
         "mode": "markdown"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
+      "title": "",
       "type": "text"
     },
     {
@@ -1367,7 +1376,7 @@
         "enablePagination": true,
         "showHeader": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -1435,13 +1444,14 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "-- The \"Include All option\" built into Grafana is not initializing correctly if no value is returned by the SQL query anymore\r\n-- If no GeoFence exists, create a Placeholder Geofence entry until fixed (https://github.com/grafana/grafana/issues/119793)\r\n\r\nwith geofences_incl_placeholder as (\r\n\r\n  select 'Giga Texas (Placeholder)' as __text, 0 as __value where ((select count(*) from geofences) = 0)\r\n\r\n  union all\r\n\r\n  SELECT name AS __text, id AS __value from geofences\r\n\r\n)\r\n\r\nSELECT __text, __value from geofences_incl_placeholder order by __text asc",
-        "includeAll": true,
+        "definition": "-- The \"Include All option\" built into Grafana is not initializing correctly if no value is returned by the SQL query anymore\r\n-- Create the option via SQL as a temporary workaround until fixed (https://github.com/grafana/grafana/issues/119793)\r\n\r\nwith geofences_incl_all_option as (\r\n\r\n  select 'All' as __text, -1 as __value, '_all' as name\r\n\r\n  union all\r\n\r\n  SELECT name AS __text, id AS __value, name from geofences\r\n\r\n)\r\n\r\nSELECT __text, __value from geofences_incl_all_option order by name asc",
+        "description": "Start or Destination Geofence",
+        "includeAll": false,
         "label": "Geofence",
         "multi": true,
         "name": "geofence",
         "options": [],
-        "query": "-- The \"Include All option\" built into Grafana is not initializing correctly if no value is returned by the SQL query anymore\r\n-- If no GeoFence exists, create a Placeholder Geofence entry until fixed (https://github.com/grafana/grafana/issues/119793)\r\n\r\nwith geofences_incl_placeholder as (\r\n\r\n  select 'Giga Texas (Placeholder)' as __text, 0 as __value where ((select count(*) from geofences) = 0)\r\n\r\n  union all\r\n\r\n  SELECT name AS __text, id AS __value from geofences\r\n\r\n)\r\n\r\nSELECT __text, __value from geofences_incl_placeholder order by __text asc",
+        "query": "-- The \"Include All option\" built into Grafana is not initializing correctly if no value is returned by the SQL query anymore\r\n-- Create the option via SQL as a temporary workaround until fixed (https://github.com/grafana/grafana/issues/119793)\r\n\r\nwith geofences_incl_all_option as (\r\n\r\n  select 'All' as __text, -1 as __value, '_all' as name\r\n\r\n  union all\r\n\r\n  SELECT name AS __text, id AS __value, name from geofences\r\n\r\n)\r\n\r\nSELECT __text, __value from geofences_incl_all_option order by name asc",
         "refresh": 1,
         "regex": "",
         "regexApplyTo": "value",
@@ -1592,7 +1602,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Drives",
-  "weekStart": "",
+  "uid": "Y8upc6ZRk",
   "version": 1,
-  "uid": "Y8upc6ZRk"
+  "weekStart": ""
 }

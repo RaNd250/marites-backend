@@ -7,8 +7,8 @@
     , ...
     }:
     let
-      elixir = pkgs.beam.packages.erlang_29.elixir_1_19;
-      beamPackages = pkgs.beam.packagesWith pkgs.beam.interpreters.erlang_29;
+      elixir = pkgs.beam.packages.erlang_26.elixir_1_19;
+      beamPackages = pkgs.beam.packagesWith pkgs.beam.interpreters.erlang_26;
 
       src = ../..;
       version = builtins.readFile "${src}/VERSION";
@@ -18,7 +18,7 @@
         TOP_SRC = src;
         pname = "${pname}-mix-deps";
         inherit src version;
-        hash = "sha256-yVRomFUn1qg3/r5pChXdsIpk8boGfPbG1JPndxvR56s="; # if you change the mix deps, you need to update this hash
+        hash = "sha256-5zaqvh2Z8cnFN9Ls0aSKJZZ7ygfpsDrawrRqJ5U2wEA="; # if you change the mix deps, you need to update this hash
         # hash = pkgs.lib.fakeHash;
       };
 

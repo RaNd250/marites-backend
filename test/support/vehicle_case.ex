@@ -11,7 +11,15 @@ defmodule Marites.VehicleCase do
   end
 
   setup tags do
-    Marites.SandboxOwner.start!(tags)
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Marites.Repo, shared: not tags[:async])
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    :ok
+  rescue
+    e in [MatchError] ->
+      case e.term do
+        {:error, {{:badmatch, :already_shared}, _}} -> :ok
+        _ -> reraise e, __STACKTRACE__
+      end
   end
 
   alias Marites.Vehicles.Vehicle
@@ -77,32 +85,20 @@ defmodule Marites.VehicleCase do
     :ok
   end
 
-  # Covers three cases the same way: no :timestamp key at all (e.g. the
-  # default drive_state: %{latitude: 0.0, longitude: 0.0} below has none),
-  # an explicit 0, or an explicit nil. All three previously left the field
-  # unset/invalid on the built struct, which crashed downstream in
-  # Vehicle.create_position/2 with DateTime.from_unix(nil, ...). Using
-  # Map.update/4 with a default handles "key absent" and "key present"
-  # in one place instead of needing a separate clause per case.
-  defp normalize_ts(map, now) do
-    Map.update(map, :timestamp, now, fn
-      0 -> now
-      nil -> now
-      ts -> ts
-    end)
-  end
-
   def online_event(opts \\ []) do
     now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
 
     drive_state =
       Keyword.get(opts, :drive_state, %{latitude: 0.0, longitude: 0.0})
-      |> normalize_ts(now)
+      |> Map.update(:timestamp, now, fn
+        nil -> now
+        ts -> ts
+      end)
 
-    charge_state = Keyword.get(opts, :charge_state, %{}) |> normalize_ts(now)
-    climate_state = Keyword.get(opts, :climate_state, %{}) |> normalize_ts(now)
-    vehicle_state = Keyword.get(opts, :vehicle_state, %{}) |> normalize_ts(now)
-    vehicle_config = Keyword.get(opts, :vehicle_config, %{}) |> normalize_ts(now)
+    charge_state = Keyword.get(opts, :charge_state, %{timestamp: 0})
+    climate_state = Keyword.get(opts, :climate_state, %{timestamp: 0})
+    vehicle_state = Keyword.get(opts, :vehicle_state, %{timestamp: 0, car_version: ""})
+    vehicle_config = Keyword.get(opts, :vehicle_config, %{timestamp: 0, car_type: "model3"})
 
     %TeslaApi.Vehicle{
       state: "online",

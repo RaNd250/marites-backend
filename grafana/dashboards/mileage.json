@@ -161,18 +161,12 @@
       },
       "id": 2,
       "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
         "legend": {
           "calcs": [
             "min",
             "max"
           ],
           "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -183,7 +177,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "targets": [
         {
           "datasource": {
@@ -287,7 +281,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Mileage",
-  "weekStart": "",
+  "uid": "NjtMTFggz",
   "version": 1,
-  "uid": "NjtMTFggz"
+  "weekStart": ""
 }

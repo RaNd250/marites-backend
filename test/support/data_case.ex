@@ -26,7 +26,15 @@ defmodule Marites.DataCase do
   end
 
   setup tags do
-    Marites.SandboxOwner.start!(tags)
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Marites.Repo, shared: not tags[:async])
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    :ok
+  rescue
+    e in [MatchError] ->
+      case e.term do
+        {:error, {{:badmatch, :already_shared}, _}} -> :ok
+        _ -> reraise e, __STACKTRACE__
+      end
   end
 
   @doc """

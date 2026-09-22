@@ -21,6 +21,10 @@
   "links": [],
   "panels": [
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 20,
         "w": 6,
@@ -41,13 +45,17 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
       "type": "dashlist"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 20,
-        "w": 18,
+        "w": 16,
         "x": 6,
         "y": 0
       },
@@ -61,8 +69,29 @@
         "content": "<div style=\"background-size: cover; background-image: url(&quot;https://digitalassets.tesla.com/tesla-contents/image/upload/c_pad,dpr_1.0,f_auto,q_auto/c_pad/Group_67?pgw=1&quot;);width:100%;height:734px;background-position:center;\"></div>",
         "mode": "html"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "12.4.0",
+      "title": "",
       "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 2,
+        "x": 22,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "feedUrl": "https://api.cors.lol/?url=https://github.com/teslamate-org/teslamate/tags.atom",
+        "showImage": false
+      },
+      "pluginVersion": "12.4.0",
+      "title": "Releases",
+      "type": "news"
     }
   ],
   "preload": false,
@@ -80,7 +109,7 @@
   },
   "timezone": "browser",
   "title": "Home",
-  "weekStart": "",
+  "uid": "be2m9kga7b8qoc",
   "version": 1,
-  "uid": "be2m9kga7b8qoc"
+  "weekStart": ""
 }

@@ -117,7 +117,7 @@ defmodule Marites.Vehicles do
             when m in ["S", "X"] and (trim_badging == nil or is_binary(marketing_name)) ->
               %CarSettings{suspend_min: 12}
 
-            {:ok, %{model: m}} when m in ["3", "Y", "Cybertruck"] ->
+            {:ok, %{model: m}} when m in ["3", "Y"] ->
               %CarSettings{suspend_min: 12}
 
             _ ->
