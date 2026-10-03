@@ -28,7 +28,7 @@ defmodule TeslaApi.Middleware.FollowRedirects do
 
   @impl Tesla.Middleware
   def call(env, next, opts \\ []) do
-    max = Keyword.get([], :max_redirects, @max_redirects)
+    max = Keyword.get(opts, :max_redirects, @max_redirects)
     except = opts[:except] || []
 
     redirect(env, next, except, max)

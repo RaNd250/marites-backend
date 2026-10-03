@@ -17,11 +17,17 @@ defmodule TeslaApi.Auth do
 
   adapter Tesla.Adapter.Finch, name: Marites.HTTP, receive_timeout: 60_000
 
-  plug TeslaApi.Middleware.FollowRedirects, except: [@redirect_uri]
+  # Upstream #5781: redirect following during token refresh resends the refresh
+  # token body to the redirect target. Tesla's auth endpoint never redirects,
+  # so we removed the middleware entirely. A 3xx from the auth host now means a
+  # failed refresh (Finch returns it as-is).
   plug Tesla.Middleware.BaseUrl, System.get_env("TESLA_AUTH_HOST", "https://auth.tesla.com")
   plug Tesla.Middleware.Headers, @default_headers
   plug Tesla.Middleware.JSON
-  plug Tesla.Middleware.Logger, debug: true, log_level: &log_level/1
+  plug Tesla.Middleware.Logger,
+    log_level: &log_level/1,
+    filter_headers: ["authorization"],
+    debug: false
 
   defstruct [:token, :type, :expires_in, :refresh_token, :created_at]
 

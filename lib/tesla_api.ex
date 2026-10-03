@@ -9,7 +9,10 @@ defmodule TeslaApi do
   plug Tesla.Middleware.Headers, [{"user-agent", "Marites/#{@version}"}]
   plug Tesla.Middleware.JSON
   plug TeslaApi.Middleware.TokenAuth
-  plug Tesla.Middleware.Logger, debug: true, log_level: &log_level/1
+  plug Tesla.Middleware.Logger,
+    log_level: &log_level/1,
+    filter_headers: ["authorization"],
+    debug: false
 
   defp log_level(%Tesla.Env{} = env) when env.status >= 500, do: :warning
   defp log_level(%Tesla.Env{} = env) when env.status >= 400, do: :info
