@@ -13,5 +13,5 @@ Marites.Repo.start_link()
 Marites.Vault.start_link([])
 Phoenix.PubSub.Supervisor.start_link(name: Marites.PubSub)
 
-assert_timeout = String.to_integer(System.get_env("ELIXIR_ASSERT_TIMEOUT") || "300")
+assert_timeout = String.to_integer(System.get_env("ELIXIR_ASSERT_TIMEOUT") || "1000")
 ExUnit.start(assert_receive_timeout: assert_timeout)

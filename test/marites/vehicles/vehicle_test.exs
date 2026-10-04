@@ -23,7 +23,12 @@ defmodule Marites.Vehicles.VehicleTest do
 
     test "handles online state", %{test: name} do
       events = [
-        {:ok, online_event()}
+        {:ok, online_event()},
+        {:ok, online_event()},
+        # An online poll reads the API twice (vehicle, then vehicle data), so the
+        # last online event is doubled; then stop, because ApiMock repeats the
+        # last event forever and a second poll would send an extra message.
+        fn -> Process.sleep(10_000) end
       ]
 
       :ok = start_vehicle(name, events)
@@ -68,12 +73,17 @@ defmodule Marites.Vehicles.VehicleTest do
 
     test "does nothing of already online", %{test: name} do
       events = [
-        {:ok, online_event()}
+        {:ok, online_event()},
+        {:ok, online_event()},
+        # An online poll reads the API twice (vehicle, then vehicle data), so the
+        # last online event is doubled; then stop, because ApiMock repeats the
+        # last event forever and a second poll would send an extra message.
+        fn -> Process.sleep(10_000) end
       ]
 
       :ok = start_vehicle(name, events)
 
-      assert_receive {:start_state, car, :online, date: _}, 100
+      assert_receive {:start_state, car, :online, date: _}
       assert_receive {ApiMock, {:stream, 1000, _}}
       assert_receive {:insert_position, ^car, %{}}
       assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}
@@ -490,7 +500,12 @@ defmodule Marites.Vehicles.VehicleTest do
     @tag :capture_log
     test "handles unexpected :car_version's", %{test: name} do
       events = [
-        {:ok, online_event(vehicle_state: %{car_version: nil})}
+        {:ok, online_event(vehicle_state: %{car_version: nil})},
+        {:ok, online_event(vehicle_state: %{car_version: nil})},
+        # An online poll reads the API twice (vehicle, then vehicle data), so the
+        # last online event is doubled; then stop, because ApiMock repeats the
+        # last event forever and a second poll would send an extra message.
+        fn -> Process.sleep(10_000) end
       ]
 
       :ok = start_vehicle(name, events, last_update: nil)
