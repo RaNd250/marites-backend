@@ -1,7 +1,7 @@
 defmodule LogMock do
   use GenServer
 
-  defstruct [:pid, :last_update]
+  defstruct [:pid, :last_update, :current_state]
   alias __MODULE__, as: State
 
   alias Marites.Log.{Drive, ChargingProcess, Update, Car, Position}
@@ -71,16 +71,26 @@ defmodule LogMock do
   def init(opts) do
     state = %State{
       pid: Keyword.fetch!(opts, :pid),
-      last_update: Keyword.fetch!(opts, :last_update)
+      last_update: Keyword.fetch!(opts, :last_update),
+      current_state: Keyword.get(opts, :current_state)
     }
 
     {:ok, state}
   end
 
   @impl true
-  def handle_call({:start_state, _car, s, _} = action, _from, %State{pid: pid} = state) do
+  def handle_call({:start_state, _car, s, opts} = action, _from, %State{pid: pid} = state) do
     send(pid, action)
-    {:reply, {:ok, %Log.State{state: s, start_date: DateTime.utc_now()}}, state}
+    # Mirrors Log.start_state/3: the row is dated with the given date
+    # (upstream TeslaMate #5692; Vehicle compares payload timestamps to it).
+    start_date = Keyword.get(opts, :date) || DateTime.utc_now()
+    {:reply, {:ok, %Log.State{state: s, start_date: start_date}}, state}
+  end
+
+  # :current_state lets a test model the open `states` row a restarted vehicle
+  # process finds (returned bare, like Log.get_current_state/1).
+  def handle_call({:get_current_state, _}, _from, %State{current_state: %Log.State{} = s} = state) do
+    {:reply, s, state}
   end
 
   def handle_call({:get_current_state, _}, _from, state) do

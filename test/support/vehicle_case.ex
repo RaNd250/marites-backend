@@ -38,7 +38,14 @@ defmodule Marites.VehicleCase do
     vehicles_name = :"vehicles_#{name}"
     pubsub_name = :"pubsub_#{name}"
 
-    {:ok, _pid} = start_supervised({LogMock, name: log_name, pid: self(), last_update: last})
+    {:ok, _pid} =
+      start_supervised(
+        {LogMock,
+         name: log_name,
+         pid: self(),
+         last_update: last,
+         current_state: Keyword.get(opts, :current_state)}
+      )
     {:ok, _pid} = start_supervised({ApiMock, name: api_name, events: events, pid: self()})
     {:ok, _pid} = start_supervised({SettingsMock, name: settings_name, pid: self()})
     {:ok, _pid} = start_supervised({VehiclesMock, name: vehicles_name, pid: self()})

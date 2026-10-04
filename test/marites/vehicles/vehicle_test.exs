@@ -473,7 +473,9 @@ defmodule Marites.Vehicles.VehicleTest do
         start_vehicle(name, events, last_update: %Update{version: "2019.40.10.7 ad132c7b057e"})
 
       for _ <- 1..4 do
-        assert_receive {:start_state, car, :online, date: _}
+        # online_event/1 timestamps are taken when the list is built, so after
+        # an asleep row they are "stale" and dated now (#5692): [] not date:.
+        assert_receive {:start_state, car, :online, _opts}
         assert_receive {ApiMock, {:stream, 1000, _}}
         assert_receive {:insert_position, ^car, %{}}
         assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online}}}

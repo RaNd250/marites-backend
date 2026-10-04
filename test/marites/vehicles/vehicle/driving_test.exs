@@ -41,7 +41,8 @@ defmodule Marites.Vehicles.Vehicle.DrivingTest do
     assert_receive {:start_state, ^car, :online, date: ^start_date}
     assert_receive {:insert_position, ^car, %{}}
     assert_receive {:pubsub, {:broadcast, _, _, %Summary{state: :online, since: s2}}}
-    assert DateTime.diff(s1, s2, :nanosecond) < 0
+    # The mock now dates the row with the given date, like Log (#5692).
+    assert s2 == start_date
 
     refute_receive _
   end

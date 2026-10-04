@@ -19,6 +19,8 @@ defmodule Marites.Vehicles.Vehicle do
               last_used: nil,
               last_response: nil,
               last_state_change: nil,
+              # start_date of the open `states` row; see date_opts/2.
+              state_row_started: nil,
               elevation: nil,
               geofence: nil,
               deps: %{},
@@ -179,6 +181,7 @@ defmodule Marites.Vehicles.Vehicle do
       car: car,
       last_used: DateTime.utc_now(),
       last_state_change: last_state_change,
+      state_row_started: last_state_change,
       deps: deps,
       import?: Keyword.get(opts, :import?, false)
     }
@@ -771,12 +774,17 @@ defmodule Marites.Vehicles.Vehicle do
     Logger.info("Start / :asleep", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle)])
+      call(data.deps.log, :start_state, [data.car, :asleep, date_opts(vehicle, data)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:asleep, asleep_interval()},
-     %{data | last_state_change: last_state_change, stream_pid: nil},
+     %{
+       data
+       | last_state_change: last_state_change,
+         state_row_started: last_state_change,
+         stream_pid: nil
+     },
      [broadcast_summary(), schedule_fetch(data)]}
   end
 
@@ -784,12 +792,17 @@ defmodule Marites.Vehicles.Vehicle do
     Logger.info("Start / :offline", car_id: data.car.id)
 
     {:ok, %Log.State{start_date: last_state_change}} =
-      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle)])
+      call(data.deps.log, :start_state, [data.car, :offline, date_opts(vehicle, data)])
 
     :ok = disconnect_stream(data)
 
     {:next_state, {:offline, asleep_interval()},
-     %{data | last_state_change: last_state_change, stream_pid: nil},
+     %{
+       data
+       | last_state_change: last_state_change,
+         state_row_started: last_state_change,
+         stream_pid: nil
+     },
      [broadcast_summary(), schedule_fetch(data)]}
   end
 
@@ -811,7 +824,7 @@ defmodule Marites.Vehicles.Vehicle do
         synchronize_updates(vehicle, data)
 
         {:ok, %Log.State{start_date: last_state_change}} =
-          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle)])
+          call(data.deps.log, :start_state, [car, :online, date_opts(vehicle, data)])
 
         {:ok, pos} = call(data.deps.log, :insert_position, [car, create_position(vehicle, data)])
         geofence = call(data.deps.locations, :find_geofence, [pos])
@@ -837,6 +850,7 @@ defmodule Marites.Vehicles.Vehicle do
        data
        | car: car,
          last_state_change: last_state_change,
+         state_row_started: last_state_change,
          geofence: geofence,
          stream_pid: stream_pid
      }, [broadcast_summary(), {:next_event, :internal, evt}, schedule_position_storing()]}
@@ -1203,10 +1217,13 @@ defmodule Marites.Vehicles.Vehicle do
         {:keep_state, %{data | last_used: DateTime.utc_now()},
          schedule_fetch(default_interval(), data)}
 
-      %VehicleState{software_update: %SW{status: "available"} = update} ->
+      # Upstream TeslaMate #5664: binding the API struct as `update` shadowed the
+      # Log.Update row from the state and passed the wrong one to cancel_update,
+      # crashing the vehicle process on every fetch.
+      %VehicleState{software_update: %SW{status: "available"} = software_update} ->
         {:ok, %Log.Update{}} = call(data.deps.log, :cancel_update, [update])
 
-        Logger.warning("Update canceled:\n\n#{inspect(update, pretty: true)}",
+        Logger.warning("Update canceled:\n\n#{inspect(software_update, pretty: true)}",
           car_id: data.car.id
         )
 
@@ -1865,9 +1882,39 @@ defmodule Marites.Vehicles.Vehicle do
     {{:timeout, :store_position}, :timer.minutes(5), :store_position}
   end
 
-  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: nil}}), do: []
-  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}), do: [date: parse_timestamp(ts)]
-  defp date_opts(%Vehicle{}), do: []
+  # Upstream TeslaMate #5692 (#5684): a payload whose timestamp lies before the
+  # open `states` row began is stale (seen after offline/asleep). Dating the new
+  # state with it makes Log.start_state close that row with end_date <
+  # start_date, which the positive_duration constraint rejects; the {:ok, _}
+  # match then crashed the vehicle process on every poll and the state stayed
+  # stuck. Such a change is real and observed now, so it is dated now ([] ->
+  # Log uses utc_now). Positions and updates keep the payload's timestamp.
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: nil}}, _data), do: []
+
+  defp date_opts(%Vehicle{drive_state: %Drive{timestamp: ts}}, %Data{} = data)
+       when is_integer(ts) do
+    date = parse_timestamp(ts)
+
+    case data.state_row_started do
+      %DateTime{} = started ->
+        if DateTime.compare(date, started) == :lt do
+          Logger.warning(
+            "Stale payload timestamp #{date} lies before the open state's start #{started} " <>
+              "- dating the state change now",
+            car_id: data.car.id
+          )
+
+          []
+        else
+          [date: date]
+        end
+
+      _ ->
+        [date: date]
+    end
+  end
+
+  defp date_opts(%Vehicle{}, _data), do: []
 
   defp parse_timestamp(ts), do: DateTime.from_unix!(ts, :millisecond)
 
