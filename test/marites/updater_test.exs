@@ -49,8 +49,9 @@ defmodule Marites.UpdaterTest do
 
       ## current_version < new_version
       {:ok, pid} = start_updater(name, "4.99.0", id: 2)
-      Process.sleep(100)
-      assert "5.1.2" == Updater.get_update(pid)
+      # The release check runs in handle_continue; a fixed 100 ms sleep raced
+      # it on a loaded CI box and blocked deploys. Poll for up to 2 s instead.
+      assert "5.1.2" == wait_for_update(pid)
     end
   end
 
@@ -99,6 +100,17 @@ defmodule Marites.UpdaterTest do
     with_mocks HTTPMocck.json(%{"tag_name" => "v99.0.0", "prerelease" => false, "draft" => true}) do
       {:ok, pid} = start_updater(name, "1.0.0", id: 1)
       assert nil == Updater.get_update(pid)
+    end
+  end
+
+  defp wait_for_update(pid, tries \\ 40) do
+    case Updater.get_update(pid) do
+      nil when tries > 0 ->
+        Process.sleep(50)
+        wait_for_update(pid, tries - 1)
+
+      result ->
+        result
     end
   end
 end
