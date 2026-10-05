@@ -23,5 +23,8 @@
     "esbuild-sass-plugin": "^3.7.0",
     "sass": "^1.99.0"
   },
-  "name": "assets"
+  "name": "assets",
+  "overrides": {
+    "lodash": "^4.18.1"
+  }
 }
